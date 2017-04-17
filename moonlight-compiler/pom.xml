@@ -1,45 +1,55 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>moonlight-compiler</artifactId>
-  <packaging>jar</packaging>
-  
-  <name>moonlight-compiler</name>
-  <url>http://maven.apache.org</url>
+    <artifactId>moonlight-compiler</artifactId>
+    <packaging>jar</packaging>
 
-  <parent>
-      <groupId>com.moonlightsource</groupId>
-      <artifactId>moonlight-framework</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-      <relativePath>../pom.xml</relativePath>
-  </parent>
+    <name>moonlight-compiler</name>
+    <url>http://maven.apache.org</url>
 
-  <build>
-      <finalName>moonlight-compiler</finalName>
-      <defaultGoal>install</defaultGoal>
-      <resources>
-        <resource>
-          <directory>src/main/resources</directory>
-          <filtering>true</filtering>
-        </resource>
-      </resources>
-      <testResources>
-        <testResource>
-          <filtering>true</filtering>
-          <directory>src/test/resources</directory>
-        </testResource>
-      </testResources>
-  </build>
+    <parent>
+        <groupId>com.moonlightsource</groupId>
+        <artifactId>moonlight-framework</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
-  <dependencies>
-    <dependency>
-      <groupId>com.github.spullara.mustache.java</groupId>
-      <artifactId>compiler</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr4-runtime</artifactId>
-    </dependency>
-  </dependencies>
+    <build>
+        <finalName>moonlight-compiler</finalName>
+        <defaultGoal>install</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <filtering>true</filtering>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.spullara.mustache.java</groupId>
+            <artifactId>compiler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fireflysource</groupId>
+            <artifactId>firefly-slf4j</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
