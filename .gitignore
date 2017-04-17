@@ -1,0 +1,13 @@
+.project
+.classpath
+.settings
+*.class
+.DS_Store
+*.iml
+*.iws
+*.ipr
+.idea
+out
+target
+logs/
+temp/
