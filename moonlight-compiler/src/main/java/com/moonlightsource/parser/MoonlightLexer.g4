@@ -18,6 +18,7 @@ EXTENDS : 'extends';
 IMPORT : 'import';
 INTERFACE : 'interface';
 NAMESPACE : 'namespace';
+STRUCT : 'struct';
 
 // Fields
 
