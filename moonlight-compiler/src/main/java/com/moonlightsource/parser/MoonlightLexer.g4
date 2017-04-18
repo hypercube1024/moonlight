@@ -20,61 +20,10 @@ INTERFACE : 'interface';
 NAMESPACE : 'namespace';
 STRUCT : 'struct';
 
-// Fields
-
-Field
-    : FieldReq? FieldType Identifier
-    ;
-
 FieldReq
     : 'required'
     | 'optional'
     ;
-
-
-// Types
-
-FieldType
-    : Identifier
-    | BaseType
-    | ContainerType
-    ;
-
-DefinitionType
-    : BaseType
-    | ContainerType
-    ;
-
-ContainerType
-    : MapType
-    | SetType
-    | ListType
-    ;
-
-MapType
-    : 'map' '<' FieldType ',' FieldType '>'
-    ;
-
-SetType
-    : 'set' '<' FieldType '>'
-    ;
-
-ListType
-    : 'list' '<' FieldType '>'
-    ;
-
-BaseType
-    : BOOLEAN
-    | BYTE
-    | SHORT
-    | CHAR
-    | INT
-    | LONG
-    | FLOAT
-    | DOUBLE
-    | STRING
-    ;
-
 
 // Integer Literals
 
