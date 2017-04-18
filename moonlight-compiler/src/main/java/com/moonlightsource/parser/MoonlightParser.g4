@@ -2,7 +2,7 @@ grammar MoonlightParser;
 import MoonlightLexer;
 
 // IDL
-mlFile
+moonlightFile
     : namespaceDeclaration importDeclaration* structDeclaration* interfaceDeclaration*
     ;
 
