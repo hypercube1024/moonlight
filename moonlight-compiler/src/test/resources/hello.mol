@@ -1,5 +1,27 @@
 namespace com.moonlight.test;
 
+import com.moonlight.test.msg.*;
+
+struct Hello<T> extends Request<string> {
+    T data;
+    string name;
+    int age;
+    required Hero hero;
+}
+
+struct Answer<Foo<T>> extends Response<string> {
+    optional T data;
+    long time;
+}
+
+annotation Realm {
+    int x = 0;
+    int y;
+    string[] names = ["abc", "bcd" ];
+    boolean[] ssss = [false, true];
+}
+
+@Realm(x = 4, y = 3)
 enum Status {
     int open = 1;
     int close = 0;
@@ -10,18 +32,7 @@ enum Msg {
     string success = "";
 }
 
-struct Hello<T> extends Request<string> {
-    T data;
-    string name;
-    int age;
-    required Hero hero;
-}
-
-struct Answer<T> extends Response<string> {
-    optional T data;
-    long time;
-}
-
+com.test.@Realm()
 interface HelloService {
     Answer<string> hello(Hello<string> param);
 }

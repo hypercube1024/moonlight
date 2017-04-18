@@ -3,7 +3,7 @@ import MoonlightLexer;
 
 // IDL
 moonlightFile
-    : namespaceDeclaration importDeclaration* enumDeclaration* structDeclaration* interfaceDeclaration*
+    : namespaceDeclaration importDeclaration* (enumDeclaration | annotationDeclaration | structDeclaration | interfaceDeclaration)*
     ;
 
 // namespace
@@ -20,40 +20,53 @@ importDeclaration
     : IMPORT Identifier ('.' Identifier)* ('.' '*')? ';'
     ;
 
-// enum
-enumDeclaration
-    : ENUM Identifier '{' enumValue* '}'
+// annotation
+annotationDeclaration
+    : ANNOTATION Identifier '{' baseField* '}'
     ;
 
-enumValue
-    : intType Identifier '=' IntegerLiteral ';'
-    | floatType Identifier '=' FloatingPointLiteral ';'
-    | stringType Identifier '=' StringLiteral ';'
-    | singleCharType Identifier '=' CharacterLiteral ';'
-    | boolType Identifier '=' BooleanLiteral ';'
+annotation
+    : (namespaceValue '.')* Label ( ('(' ')') | ('(' baseAssignment (',' baseAssignment)* ')') )?
+    ;
+
+// enum
+enumDeclaration
+    : annotation* ENUM Identifier '{' (annotation* baseField)* '}'
+    ;
+
+
+// base field
+baseField
+    : baseType ARRAY? ( Identifier | baseAssignment) ';';
+
+baseAssignment
+    : Identifier '=' (Literal | baseArrayExpr)
+    ;
+
+baseArrayExpr
+    : ARRAY | '['  ']' | ('['Literal (',' Literal) ']')
     ;
 
 // struct
 structDeclaration
-    : STRUCT referenceType (EXTENDS referenceType )? '{' fieldDeclaration* '}'
+    : annotation* STRUCT referenceType (EXTENDS referenceType )? '{' structField* '}'
     ;
 
-// Field
-fieldDeclaration
-    : FieldReq? fieldType Identifier ';'
+structField
+    : annotation* FieldReq? fieldType Identifier ';'
     ;
 
 
 // function
 functionDeclaration
-    : returnType Identifier '(' (parameter (',' parameter)* )* ')' ';'
+    : annotation* functionReturnType Identifier '(' (functionParameter (',' functionParameter)* )* ')' ';'
     ;
 
-parameter
-    : fieldType Identifier
+functionParameter
+    : annotation* fieldType Identifier
     ;
 
-returnType
+functionReturnType
     : VOID
     | fieldType
     ;
@@ -61,13 +74,12 @@ returnType
 
 // interface
 interfaceDeclaration
-    : INTERFACE interfaceName (EXTENDS interfaceName )? '{' functionDeclaration* '}'
+    : annotation* INTERFACE interfaceName (EXTENDS interfaceName )? '{' functionDeclaration* '}'
     ;
 
 interfaceName
     : (namespaceValue '.')? Identifier
     ;
-
 
 // Type
 fieldType
@@ -77,11 +89,11 @@ fieldType
     ;
 
 referenceType
-    : (Identifier | parametricType)
+    : (namespaceValue '.')? Identifier parametricType?
     ;
 
 parametricType
-    : (namespaceValue '.')? Identifier '<' fieldType (',' fieldType)* '>'
+    : '<' fieldType (',' fieldType)* '>'
     ;
 
 containerType
@@ -113,29 +125,3 @@ baseType
     | DOUBLE
     | STRING
     ;
-
-boolType
-    : BOOLEAN
-    ;
-
-singleCharType
-    : CHAR
-    ;
-
-intType
-    : BYTE
-    | SHORT
-    | CHAR
-    | INT
-    | LONG
-    ;
-
-floatType
-    : FLOAT
-    | DOUBLE
-    ;
-
-stringType
-    : STRING
-    ;
-

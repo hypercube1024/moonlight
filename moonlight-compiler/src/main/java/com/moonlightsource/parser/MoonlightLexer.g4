@@ -19,6 +19,21 @@ IMPORT : 'import';
 INTERFACE : 'interface';
 NAMESPACE : 'namespace';
 STRUCT : 'struct';
+ANNOTATION : 'annotation';
+
+ARRAY : '[' ']';
+
+Label : '@' Identifier;
+
+Literal
+    : IntegerLiteral
+    | FloatingPointLiteral
+    | StringLiteral
+    | CharacterLiteral
+    | BooleanLiteral
+    | NullLiteral
+    ;
+
 
 FieldReq
     : 'required'
