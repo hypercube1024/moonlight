@@ -1,6 +1,12 @@
 grammar MoonlightParser;
 import MoonlightLexer;
 
+// IDL
+mlFile
+    : namespaceDeclaration importDeclaration* structDeclaration* interfaceDeclaration*
+    ;
+
+// namespace
 namespaceDeclaration
     : NAMESPACE namespaceValue ';'
     ;
@@ -9,19 +15,48 @@ namespaceValue
     : Identifier ('.' Identifier)*
     ;
 
+// import
+importDeclaration
+    : IMPORT Identifier ('.' Identifier)* ('.' '*')? ';'
+    ;
+
+// struct
 structDeclaration
-    : STRUCT referenceType (EXTENDS referenceType )? '{' (field ';')* '}'
+    : STRUCT referenceType (EXTENDS referenceType )? '{' fieldDeclaration* '}'
+    ;
+
+// Field
+fieldDeclaration
+    : FieldReq? fieldType Identifier ';'
     ;
 
 
-// Fields
-
-field
-    : FieldReq? fieldType Identifier
+// function
+functionDeclaration
+    : returnType Identifier '(' (parameter (',' parameter)* )* ')' ';'
     ;
 
-// Types
+parameter
+    : fieldType Identifier
+    ;
 
+returnType
+    : VOID
+    | fieldType
+    ;
+
+
+// interface
+interfaceDeclaration
+    : INTERFACE interfaceName (EXTENDS interfaceName )? '{' functionDeclaration* '}'
+    ;
+
+interfaceName
+    : (namespaceValue '.')? Identifier
+    ;
+
+
+// Type
 fieldType
     : baseType
     | containerType

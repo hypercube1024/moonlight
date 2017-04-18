@@ -1,5 +1,8 @@
+namespace com.moonlight.test;
+
 struct Hello<T> extends Request<string> {
-    long test;
-    int test2;
+    T data;
+    string name;
+    int age;
     required Hero hero;
 }
