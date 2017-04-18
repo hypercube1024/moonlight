@@ -13,7 +13,6 @@ DOUBLE : 'double'; // f64
 STRING : 'string';
 VOID : 'void';
 
-CONST : 'const';
 ENUM : 'enum';
 EXTENDS : 'extends';
 IMPORT : 'import';

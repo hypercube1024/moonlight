@@ -1,8 +1,27 @@
 namespace com.moonlight.test;
 
+enum Status {
+    int open = 1;
+    int close = 0;
+}
+
+enum Msg {
+    string error = "resource not found";
+    string success = "";
+}
+
 struct Hello<T> extends Request<string> {
     T data;
     string name;
     int age;
     required Hero hero;
+}
+
+struct Answer<T> extends Response<string> {
+    optional T data;
+    long time;
+}
+
+interface HelloService {
+    Answer<string> hello(Hello<string> param);
 }

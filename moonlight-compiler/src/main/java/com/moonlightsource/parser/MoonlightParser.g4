@@ -3,7 +3,7 @@ import MoonlightLexer;
 
 // IDL
 moonlightFile
-    : namespaceDeclaration importDeclaration* structDeclaration* interfaceDeclaration*
+    : namespaceDeclaration importDeclaration* enumDeclaration* structDeclaration* interfaceDeclaration*
     ;
 
 // namespace
@@ -18,6 +18,19 @@ namespaceValue
 // import
 importDeclaration
     : IMPORT Identifier ('.' Identifier)* ('.' '*')? ';'
+    ;
+
+// enum
+enumDeclaration
+    : ENUM Identifier '{' enumValue* '}'
+    ;
+
+enumValue
+    : intType Identifier '=' IntegerLiteral ';'
+    | floatType Identifier '=' FloatingPointLiteral ';'
+    | stringType Identifier '=' StringLiteral ';'
+    | singleCharType Identifier '=' CharacterLiteral ';'
+    | boolType Identifier '=' BooleanLiteral ';'
     ;
 
 // struct
@@ -100,3 +113,29 @@ baseType
     | DOUBLE
     | STRING
     ;
+
+boolType
+    : BOOLEAN
+    ;
+
+singleCharType
+    : CHAR
+    ;
+
+intType
+    : BYTE
+    | SHORT
+    | CHAR
+    | INT
+    | LONG
+    ;
+
+floatType
+    : FLOAT
+    | DOUBLE
+    ;
+
+stringType
+    : STRING
+    ;
+
