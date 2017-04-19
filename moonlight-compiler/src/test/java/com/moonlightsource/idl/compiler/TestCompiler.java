@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 public class TestCompiler {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
-        Path path = Paths.get(TestCompiler.class.getResource("/com/moonlightsource/idl/test/TestNamespace.mol").toURI());
+        Path path = Paths.get(TestCompiler.class.getResource("/com/moonlightsource/idl/test2/TestImport.mol").toURI());
         Compiler.INSTANCE.compile(path, StandardCharsets.UTF_8);
     }
 }

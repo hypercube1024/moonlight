@@ -4,6 +4,7 @@ import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
 import com.moonlightsource.idl.compiler.parser.MoonlightLexer;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,5 +42,11 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         for (int i = 0; i < ctx.getChildCount(); i++) {
             log.debug("namespace value -> {}", ctx.getChild(i).getText());
         }
+    }
+
+    @Override
+    public void enterImportDeclaration(MoonlightParser.ImportDeclarationContext ctx) {
+        Token token = ctx.getStart();
+        log.debug("import declaration line -> {}, {}", token.getLine(), token.getCharPositionInLine());
     }
 }
