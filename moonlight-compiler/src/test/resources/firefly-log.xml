@@ -14,4 +14,11 @@
 		<path>${log.path}</path>
 	</logger>
 
+	<logger>
+		<name>moonlight-system</name>
+		<level>DEBUG</level>
+		<path>${log.path}</path>
+		<enable-console>true</enable-console>
+	</logger>
+
 </loggers>
