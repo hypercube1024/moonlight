@@ -1,5 +1,6 @@
 package com.moonlightsource.idl.compiler.listener;
 
+import com.moonlightsource.idl.compiler.model.SourceFile;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
 import com.moonlightsource.idl.compiler.parser.MoonlightLexer;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
@@ -18,11 +19,13 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
     private final MoonlightParser parser;
     private final CommonTokenStream tokenStream;
     private final MoonlightLexer lexer;
+    private final SourceFile sourceFile;
 
-    public MoonlightSourceListener(MoonlightParser parser, CommonTokenStream tokenStream, MoonlightLexer lexer) {
+    public MoonlightSourceListener(MoonlightParser parser, CommonTokenStream tokenStream, MoonlightLexer lexer, SourceFile sourceFile) {
         this.parser = parser;
         this.tokenStream = tokenStream;
         this.lexer = lexer;
+        this.sourceFile = sourceFile;
     }
 
     public MoonlightParser getParser() {
@@ -37,16 +40,20 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         return lexer;
     }
 
+    public SourceFile getSourceFile() {
+        return sourceFile;
+    }
+
     @Override
     public void enterNamespaceDeclaration(MoonlightParser.NamespaceDeclarationContext ctx) {
-        for (int i = 0; i < ctx.getChildCount(); i++) {
-            log.debug("namespace value -> {}", ctx.getChild(i).getText());
-        }
+        sourceFile.setNamespace(ctx.namespaceValue().getText());
+        log.debug("namespace -> {}", sourceFile.getNamespace());
     }
 
     @Override
     public void enterImportDeclaration(MoonlightParser.ImportDeclarationContext ctx) {
-        Token token = ctx.getStart();
-        log.debug("import declaration line -> {}, {}", token.getLine(), token.getCharPositionInLine());
+        String importValue = ctx.importValue().getText();
+        log.debug("import -> {}", importValue);
+        sourceFile.getImports().add(importValue);
     }
 }

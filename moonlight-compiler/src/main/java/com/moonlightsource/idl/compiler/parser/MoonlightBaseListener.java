@@ -64,6 +64,18 @@ public class MoonlightBaseListener implements MoonlightListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterImportValue(MoonlightParser.ImportValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitImportValue(MoonlightParser.ImportValueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAnnotationDeclaration(MoonlightParser.AnnotationDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}

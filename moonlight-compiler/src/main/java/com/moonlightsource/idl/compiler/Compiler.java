@@ -1,5 +1,6 @@
 package com.moonlightsource.idl.compiler;
 
+import com.moonlightsource.idl.compiler.model.SourceFile;
 import com.moonlightsource.idl.compiler.parser.MoonlightLexer;
 import com.moonlightsource.idl.compiler.listener.MoonlightSourceListener;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
@@ -17,23 +18,26 @@ import java.nio.file.Path;
 public enum Compiler {
     INSTANCE;
 
-    public void compile(Path path, Charset charset) throws IOException {
+    public SourceFile compile(Path path, Charset charset) throws IOException {
+        SourceFile sourceFile = new SourceFile();
+        sourceFile.setPath(path);
         CharStream input = CharStreams.fromPath(path, charset);
-        compile(input);
+        compile(input, sourceFile);
+        return sourceFile;
     }
 
-    public void compile(CharStream input) {
-        MoonlightSourceListener listener = createListener(input);
+    public void compile(CharStream input, SourceFile sourceFile) {
+        MoonlightSourceListener listener = createListener(input, sourceFile);
         ParseTree tree = listener.getParser().moonlightFile();
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(listener, tree);
     }
 
-    public MoonlightSourceListener createListener(CharStream input) {
+    public MoonlightSourceListener createListener(CharStream input, SourceFile sourceFile) {
         MoonlightLexer lexer = createLexer(input);
         CommonTokenStream tokenStream = createTokenStream(lexer);
         MoonlightParser parser = createParser(tokenStream);
-        return new MoonlightSourceListener(parser, tokenStream, lexer);
+        return new MoonlightSourceListener(parser, tokenStream, lexer, sourceFile);
     }
 
     public MoonlightLexer createLexer(CharStream input) {

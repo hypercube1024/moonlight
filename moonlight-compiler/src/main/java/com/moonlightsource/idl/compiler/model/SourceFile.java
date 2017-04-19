@@ -1,6 +1,7 @@
 package com.moonlightsource.idl.compiler.model;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ public class SourceFile {
 
     private Path path;
     private String namespace;
-    private List<String> imports;
+    private List<String> imports = new ArrayList<>();
     private List<EnumDefinition> enumDefinitions;
     private List<AnnotationDefinition> annotationDefinitions;
     private List<StructDefinition> structDefinitions;

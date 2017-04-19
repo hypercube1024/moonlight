@@ -48,6 +48,16 @@ public interface MoonlightListener extends ParseTreeListener {
 	 */
 	void exitImportDeclaration(MoonlightParser.ImportDeclarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#importValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterImportValue(MoonlightParser.ImportValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#importValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitImportValue(MoonlightParser.ImportValueContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MoonlightParser#annotationDeclaration}.
 	 * @param ctx the parse tree
 	 */

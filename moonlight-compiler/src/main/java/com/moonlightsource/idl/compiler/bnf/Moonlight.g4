@@ -17,7 +17,11 @@ namespaceValue
 
 // import
 importDeclaration
-    : IMPORT Identifier ('.' Identifier)* ('.' '*')? ';'
+    : IMPORT importValue ';'
+    ;
+
+importValue
+    : Identifier ('.' Identifier)* ('.' '*')?
     ;
 
 // annotation

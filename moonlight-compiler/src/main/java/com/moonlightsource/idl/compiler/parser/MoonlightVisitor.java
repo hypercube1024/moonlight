@@ -35,6 +35,12 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitImportDeclaration(MoonlightParser.ImportDeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#importValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImportValue(MoonlightParser.ImportValueContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MoonlightParser#annotationDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
