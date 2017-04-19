@@ -22,7 +22,7 @@ importDeclaration
 
 // annotation
 annotationDeclaration
-    : ANNOTATION Identifier '{' baseField* '}'
+    : annotation* ANNOTATION Identifier '{' baseField* '}'
     ;
 
 annotation
@@ -81,7 +81,7 @@ interfaceName
     : (namespaceValue '.')? Identifier
     ;
 
-// Type
+// TypeEnum
 fieldType
     : baseType
     | containerType

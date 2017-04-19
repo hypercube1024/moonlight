@@ -1,4 +1,4 @@
-// Generated from /Users/bjhl/Develop/local_git/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/parser/MoonlightParser.g4 by ANTLR 4.7
+// Generated from /Users/bjhl/Develop/local_git/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/bnf/MoonlightParser.g4 by ANTLR 4.7
 package com.moonlightsource.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
