@@ -23,7 +23,7 @@ public class TestCompiler {
     @Test
     public void test() throws IOException {
         Path path = Paths.get("/com/moonlightsource/idl/test2/TestImport.mol");
-        SourceFile sourceFile = Compiler.INSTANCE.compile(path, StandardCharsets.UTF_8);
+        SourceFile sourceFile = Compiler.compile(path, StandardCharsets.UTF_8);
 
         Assert.assertThat(sourceFile.getNamespace(), is("com.moonlightsource.idl.test2"));
         Assert.assertThat(sourceFile.getImports().size(), greaterThanOrEqualTo(2));
@@ -31,7 +31,7 @@ public class TestCompiler {
 
     @Test
     public void test2() throws IOException {
-        List<SourceFile> sourceFiles = Compiler.INSTANCE.compileAll(Compiler.INSTANCE.getClasspath(), ".mol", StandardCharsets.UTF_8);
+        List<SourceFile> sourceFiles = Compiler.compileAll(Compiler.getClasspath(), ".mol", StandardCharsets.UTF_8);
         Assert.assertThat(sourceFiles.size(), greaterThanOrEqualTo(2));
 
         Path path = Paths.get("/com/moonlightsource/idl/test2/TestImport.mol");

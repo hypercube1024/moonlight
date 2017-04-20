@@ -26,9 +26,7 @@ import java.util.stream.Collectors;
 /**
  * @author Pengtao Qiu
  */
-public enum Compiler {
-
-    INSTANCE;
+abstract public class Compiler {
 
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
 
@@ -41,7 +39,7 @@ public enum Compiler {
      * @return All SourceFile objects
      * @throws IOException Read source file I/O exception
      */
-    public List<SourceFile> compileAll(Path root, String suffix, Charset charset) throws IOException {
+    public static List<SourceFile> compileAll(Path root, String suffix, Charset charset) throws IOException {
         List<SourceFile> sourceFiles = new ArrayList<>();
         Files.walk(root)
              .filter(path -> !Files.isDirectory(path))
@@ -53,7 +51,7 @@ public enum Compiler {
         return sourceFiles;
     }
 
-    private void getAsyncResult(CompletableFuture<SourceFile> future, List<SourceFile> sourceFiles) {
+    private static void getAsyncResult(CompletableFuture<SourceFile> future, List<SourceFile> sourceFiles) {
         try {
             sourceFiles.add(future.get());
         } catch (InterruptedException | ExecutionException e) {
@@ -61,7 +59,7 @@ public enum Compiler {
         }
     }
 
-    private CompletableFuture<SourceFile> asyncCompile(Path root, Path path, Charset charset) {
+    private static CompletableFuture<SourceFile> asyncCompile(Path root, Path path, Charset charset) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 if (log.isDebugEnabled()) {
@@ -82,11 +80,11 @@ public enum Compiler {
      * @return SourceFile object
      * @throws IOException Read source file I/O exception
      */
-    public SourceFile compile(Path path, Charset charset) throws IOException {
+    public static SourceFile compile(Path path, Charset charset) throws IOException {
         return compile(getClasspath(), path, charset);
     }
 
-    public Path getClasspath() {
+    public static Path getClasspath() {
         try {
             return Paths.get(Compiler.class.getResource("/").toURI());
         } catch (URISyntaxException e) {
@@ -103,7 +101,7 @@ public enum Compiler {
      * @return SourceFile object
      * @throws IOException Read source file I/O exception
      */
-    public SourceFile compile(Path root, Path path, Charset charset) throws IOException {
+    public static SourceFile compile(Path root, Path path, Charset charset) throws IOException {
         SourceFile sourceFile = new SourceFile();
         sourceFile.setPath(path);
         sourceFile.setRoot(root);
@@ -113,29 +111,29 @@ public enum Compiler {
         return sourceFile;
     }
 
-    public void compile(CharStream input, SourceFile sourceFile) {
+    public static void compile(CharStream input, SourceFile sourceFile) {
         MoonlightSourceListener listener = createListener(input, sourceFile);
         ParseTree tree = listener.getParser().moonlightFile();
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(listener, tree);
     }
 
-    public MoonlightSourceListener createListener(CharStream input, SourceFile sourceFile) {
+    public static MoonlightSourceListener createListener(CharStream input, SourceFile sourceFile) {
         MoonlightLexer lexer = createLexer(input);
         CommonTokenStream tokenStream = createTokenStream(lexer);
         MoonlightParser parser = createParser(tokenStream);
         return new MoonlightSourceListener(parser, tokenStream, lexer, sourceFile);
     }
 
-    public MoonlightLexer createLexer(CharStream input) {
+    public static MoonlightLexer createLexer(CharStream input) {
         return new MoonlightLexer(input);
     }
 
-    public CommonTokenStream createTokenStream(Lexer lexer) {
+    public static CommonTokenStream createTokenStream(Lexer lexer) {
         return new CommonTokenStream(lexer);
     }
 
-    public MoonlightParser createParser(TokenStream tokenStream) {
+    public static MoonlightParser createParser(TokenStream tokenStream) {
         return new MoonlightParser(tokenStream);
     }
 }
