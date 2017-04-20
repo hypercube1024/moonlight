@@ -24,6 +24,7 @@ public enum TypeEnum {
     ENUM,
     INTERFACE,
     ANNOTATION,
+    GENERIC,
     VOID;
 
 
