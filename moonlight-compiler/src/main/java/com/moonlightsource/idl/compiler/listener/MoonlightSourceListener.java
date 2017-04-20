@@ -1,5 +1,6 @@
 package com.moonlightsource.idl.compiler.listener;
 
+import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.SourceFile;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
 import com.moonlightsource.idl.compiler.parser.MoonlightLexer;
@@ -54,6 +55,13 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
     public void enterImportDeclaration(MoonlightParser.ImportDeclarationContext ctx) {
         String importValue = ctx.importValue().getText();
         log.debug("import -> {}", importValue);
+        if (!importDeclarationCheck(importValue)) {
+            throw new CompilingRuntimeException("the import declaration \"" + importValue + "\" is duplicated.");
+        }
         sourceFile.getImports().add(importValue);
+    }
+
+    protected boolean importDeclarationCheck(String importValue) {
+        return !sourceFile.getImports().contains(importValue);
     }
 }
