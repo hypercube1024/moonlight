@@ -32,6 +32,15 @@ public enum Compiler {
 
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
 
+    /**
+     * Parallel compiling all files in the root directory
+     *
+     * @param root    The source file's root path
+     * @param suffix  The source file suffix
+     * @param charset The source file charset
+     * @return All SourceFile objects
+     * @throws IOException Read source file I/O exception
+     */
     public List<SourceFile> compileAll(Path root, String suffix, Charset charset) throws IOException {
         List<SourceFile> sourceFiles = new ArrayList<>();
         Files.walk(root)
