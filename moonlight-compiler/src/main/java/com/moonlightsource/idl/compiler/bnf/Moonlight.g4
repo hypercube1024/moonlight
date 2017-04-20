@@ -30,12 +30,16 @@ annotationDeclaration
     ;
 
 annotation
-    : (namespaceValue '.')* Label ( ('(' ')') | ('(' baseAssignment (',' baseAssignment)* ')') )?
+    : (namespaceValue '.')? Label ( ('(' ')') | ('(' baseAssignment (',' baseAssignment)* ')') )?
     ;
 
 // enum
 enumDeclaration
-    : annotation* ENUM Identifier '{' (annotation* baseField)* '}'
+    : annotation* ENUM Identifier '{' enumField* '}'
+    ;
+
+enumField
+    : annotation* baseField
     ;
 
 
@@ -48,7 +52,7 @@ baseAssignment
     ;
 
 baseArrayExpr
-    : ARRAY | '['  ']' | ('['Literal (',' Literal) ']')
+    : ARRAY | '['  ']' | ('['Literal (',' Literal)* ']')
     ;
 
 // struct

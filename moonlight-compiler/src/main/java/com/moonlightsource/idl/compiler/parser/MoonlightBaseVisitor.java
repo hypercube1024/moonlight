@@ -72,6 +72,13 @@ public class MoonlightBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitEnumField(MoonlightParser.EnumFieldContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitBaseField(MoonlightParser.BaseFieldContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

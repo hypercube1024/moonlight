@@ -111,6 +111,18 @@ public class MoonlightBaseListener implements MoonlightListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterEnumField(MoonlightParser.EnumFieldContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEnumField(MoonlightParser.EnumFieldContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBaseField(MoonlightParser.BaseFieldContext ctx) { }
 	/**
 	 * {@inheritDoc}

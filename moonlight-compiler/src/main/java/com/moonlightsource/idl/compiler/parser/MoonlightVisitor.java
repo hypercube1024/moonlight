@@ -58,6 +58,12 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEnumDeclaration(MoonlightParser.EnumDeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#enumField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEnumField(MoonlightParser.EnumFieldContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MoonlightParser#baseField}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

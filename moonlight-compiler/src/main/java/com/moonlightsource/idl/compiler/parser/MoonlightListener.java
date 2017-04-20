@@ -87,6 +87,16 @@ public interface MoonlightListener extends ParseTreeListener {
 	 */
 	void exitEnumDeclaration(MoonlightParser.EnumDeclarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#enumField}.
+	 * @param ctx the parse tree
+	 */
+	void enterEnumField(MoonlightParser.EnumFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#enumField}.
+	 * @param ctx the parse tree
+	 */
+	void exitEnumField(MoonlightParser.EnumFieldContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MoonlightParser#baseField}.
 	 * @param ctx the parse tree
 	 */
