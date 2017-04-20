@@ -3,6 +3,7 @@ package com.moonlightsource.idl.compiler.listener;
 import com.firefly.utils.function.Action1;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.AnnotationValue;
+import com.moonlightsource.idl.compiler.model.DefinitionReferenceManager;
 import com.moonlightsource.idl.compiler.model.SourceFile;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
 import com.moonlightsource.idl.compiler.parser.MoonlightLexer;
@@ -22,17 +23,20 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
 
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
 
+    private final DefinitionReferenceManager referenceManager;
     private final MoonlightParser parser;
     private final CommonTokenStream tokenStream;
     private final MoonlightLexer lexer;
     private final SourceFile sourceFile;
     private final Map<Class<? extends ParserRuleContext>, Action1<MoonlightParser.AnnotationContext>> annotationListeners = new HashMap<>();
 
-    public MoonlightSourceListener(MoonlightParser parser, CommonTokenStream tokenStream, MoonlightLexer lexer, SourceFile sourceFile) {
+    public MoonlightSourceListener(MoonlightParser parser, CommonTokenStream tokenStream, MoonlightLexer lexer,
+                                   SourceFile sourceFile, DefinitionReferenceManager referenceManager) {
         this.parser = parser;
         this.tokenStream = tokenStream;
         this.lexer = lexer;
         this.sourceFile = sourceFile;
+        this.referenceManager = referenceManager;
 
         annotationListeners.put(MoonlightParser.MoonlightFileContext.class, this::enterSourceFileAnnotation);
         annotationListeners.put(MoonlightParser.AnnotationDeclarationContext.class, this::enterAnnotationDeclarationAnnotation);

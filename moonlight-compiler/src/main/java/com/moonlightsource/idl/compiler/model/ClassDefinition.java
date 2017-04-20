@@ -67,4 +67,13 @@ public class ClassDefinition {
     public int hashCode() {
         return Objects.hash(name, namespace);
     }
+
+    @Override
+    public String toString() {
+        return "ClassDefinition{" +
+                "type=" + type +
+                ", name='" + name + '\'' +
+                ", namespace='" + namespace + '\'' +
+                '}';
+    }
 }
