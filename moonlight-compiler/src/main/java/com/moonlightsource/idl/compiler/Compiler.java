@@ -37,6 +37,7 @@ public enum Compiler {
         Files.walk(root)
              .filter(path -> !Files.isDirectory(path))
              .filter(path -> path.getFileName().toString().endsWith(suffix))
+             .map(path -> Paths.get(path.toString().substring(root.toString().length())))
              .map(path -> asyncCompile(root, path, charset))
              .collect(Collectors.toList())
              .forEach(future -> getAsyncResult(future, sourceFiles));
@@ -51,13 +52,13 @@ public enum Compiler {
         }
     }
 
-    private CompletableFuture<SourceFile> asyncCompile(Path root, Path absolutePath, Charset charset) {
+    private CompletableFuture<SourceFile> asyncCompile(Path root, Path path, Charset charset) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 if (log.isDebugEnabled()) {
                     log.debug("moonlight compiling thread -> {}", Thread.currentThread().getName());
                 }
-                return compile(root, Paths.get(absolutePath.toString().substring(root.toString().length())), charset);
+                return compile(root, path, charset);
             } catch (IOException e) {
                 throw new CompilingRuntimeException(e);
             }
