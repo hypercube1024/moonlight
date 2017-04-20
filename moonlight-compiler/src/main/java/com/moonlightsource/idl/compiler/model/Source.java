@@ -8,12 +8,21 @@ import java.util.List;
  */
 public class Source {
 
+    private List<AnnotationValue> annotations;
     private String namespace = "";
     private List<String> imports = new ArrayList<>();
     private List<EnumDefinition> enumDefinitions = new ArrayList<>();
     private List<AnnotationDefinition> annotationDefinitions = new ArrayList<>();
     private List<StructDefinition> structDefinitions = new ArrayList<>();
     private List<InterfaceDefinition> interfaceDefinitions = new ArrayList<>();
+
+    public List<AnnotationValue> getAnnotations() {
+        return annotations;
+    }
+
+    public void setAnnotations(List<AnnotationValue> annotations) {
+        this.annotations = annotations;
+    }
 
     public String getNamespace() {
         return namespace;

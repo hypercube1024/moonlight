@@ -1,3 +1,4 @@
+@Include(name = "hello.h")
 namespace com.moonlight.test;
 
 import com.moonlight.test.msg.*;

@@ -3,7 +3,7 @@ import MoonlightCommonLexer;
 
 // IDL
 moonlightFile
-    : namespaceDeclaration importDeclaration* (enumDeclaration | annotationDeclaration | structDeclaration | interfaceDeclaration)*
+    : annotation* namespaceDeclaration importDeclaration* (enumDeclaration | annotationDeclaration | structDeclaration | interfaceDeclaration)*
     ;
 
 // namespace

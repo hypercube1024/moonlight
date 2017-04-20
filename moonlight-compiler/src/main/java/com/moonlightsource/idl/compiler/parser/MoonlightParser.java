@@ -1,4 +1,3 @@
-// Generated from /Users/qiupengtao/Develop/github_project/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -113,6 +112,12 @@ public class MoonlightParser extends Parser {
 		public NamespaceDeclarationContext namespaceDeclaration() {
 			return getRuleContext(NamespaceDeclarationContext.class,0);
 		}
+		public List<AnnotationContext> annotation() {
+			return getRuleContexts(AnnotationContext.class);
+		}
+		public AnnotationContext annotation(int i) {
+			return getRuleContext(AnnotationContext.class,i);
+		}
 		public List<ImportDeclarationContext> importDeclaration() {
 			return getRuleContexts(ImportDeclarationContext.class);
 		}
@@ -169,57 +174,71 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(52);
+			setState(55);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==Label || _la==Identifier) {
+				{
+				{
+				setState(52);
+				annotation();
+				}
+				}
+				setState(57);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			setState(58);
 			namespaceDeclaration();
-			setState(56);
+			setState(62);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==IMPORT) {
 				{
 				{
-				setState(53);
+				setState(59);
 				importDeclaration();
 				}
 				}
-				setState(58);
+				setState(64);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(65);
+			setState(71);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << ENUM) | (1L << INTERFACE) | (1L << STRUCT) | (1L << ANNOTATION) | (1L << Label) | (1L << Identifier))) != 0)) {
 				{
-				setState(63);
+				setState(69);
 				_errHandler.sync(this);
-				switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
+				switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 				case 1:
 					{
-					setState(59);
+					setState(65);
 					enumDeclaration();
 					}
 					break;
 				case 2:
 					{
-					setState(60);
+					setState(66);
 					annotationDeclaration();
 					}
 					break;
 				case 3:
 					{
-					setState(61);
+					setState(67);
 					structDeclaration();
 					}
 					break;
 				case 4:
 					{
-					setState(62);
+					setState(68);
 					interfaceDeclaration();
 					}
 					break;
 				}
 				}
-				setState(67);
+				setState(73);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -266,11 +285,11 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(68);
+			setState(74);
 			match(NAMESPACE);
-			setState(69);
+			setState(75);
 			namespaceValue();
-			setState(70);
+			setState(76);
 			match(SEMI);
 			}
 		}
@@ -316,25 +335,25 @@ public class MoonlightParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(72);
+			setState(78);
 			match(Identifier);
-			setState(77);
+			setState(83);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(73);
+					setState(79);
 					match(DOT);
-					setState(74);
+					setState(80);
 					match(Identifier);
 					}
 					} 
 				}
-				setState(79);
+				setState(85);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			}
 			}
 		}
@@ -379,11 +398,11 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(80);
+			setState(86);
 			match(IMPORT);
-			setState(81);
+			setState(87);
 			importValue();
-			setState(82);
+			setState(88);
 			match(SEMI);
 			}
 		}
@@ -430,34 +449,34 @@ public class MoonlightParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(84);
+			setState(90);
 			match(Identifier);
-			setState(89);
+			setState(95);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(85);
+					setState(91);
 					match(DOT);
-					setState(86);
+					setState(92);
 					match(Identifier);
 					}
 					} 
 				}
-				setState(91);
+				setState(97);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
-			setState(94);
+			setState(100);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==DOT) {
 				{
-				setState(92);
+				setState(98);
 				match(DOT);
-				setState(93);
+				setState(99);
 				match(T__0);
 				}
 			}
@@ -516,41 +535,41 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(99);
+			setState(105);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==Label || _la==Identifier) {
 				{
 				{
-				setState(96);
+				setState(102);
 				annotation();
 				}
 				}
-				setState(101);
+				setState(107);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(102);
-			match(ANNOTATION);
-			setState(103);
-			match(Identifier);
-			setState(104);
-			match(LBRACE);
 			setState(108);
+			match(ANNOTATION);
+			setState(109);
+			match(Identifier);
+			setState(110);
+			match(LBRACE);
+			setState(114);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << SHORT) | (1L << CHAR) | (1L << INT) | (1L << LONG) | (1L << FLOAT) | (1L << DOUBLE) | (1L << STRING))) != 0)) {
 				{
 				{
-				setState(105);
+				setState(111);
 				baseField();
 				}
 				}
-				setState(110);
+				setState(116);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(111);
+			setState(117);
 			match(RBRACE);
 			}
 		}
@@ -605,33 +624,33 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(118);
+			setState(124);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==Identifier) {
 				{
 				{
-				setState(113);
+				setState(119);
 				namespaceValue();
-				setState(114);
+				setState(120);
 				match(DOT);
 				}
 				}
-				setState(120);
+				setState(126);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(121);
+			setState(127);
 			match(Label);
-			setState(135);
+			setState(141);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
 			case 1:
 				{
 				{
-				setState(122);
+				setState(128);
 				match(LPAREN);
-				setState(123);
+				setState(129);
 				match(RPAREN);
 				}
 				}
@@ -639,27 +658,27 @@ public class MoonlightParser extends Parser {
 			case 2:
 				{
 				{
-				setState(124);
-				match(LPAREN);
-				setState(125);
-				baseAssignment();
 				setState(130);
+				match(LPAREN);
+				setState(131);
+				baseAssignment();
+				setState(136);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(126);
+					setState(132);
 					match(COMMA);
-					setState(127);
+					setState(133);
 					baseAssignment();
 					}
 					}
-					setState(132);
+					setState(138);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(133);
+				setState(139);
 				match(RPAREN);
 				}
 				}
@@ -719,55 +738,55 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(140);
+			setState(146);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==Label || _la==Identifier) {
 				{
 				{
-				setState(137);
+				setState(143);
 				annotation();
 				}
 				}
-				setState(142);
+				setState(148);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(143);
+			setState(149);
 			match(ENUM);
-			setState(144);
+			setState(150);
 			match(Identifier);
-			setState(145);
+			setState(151);
 			match(LBRACE);
-			setState(155);
+			setState(161);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << SHORT) | (1L << CHAR) | (1L << INT) | (1L << LONG) | (1L << FLOAT) | (1L << DOUBLE) | (1L << STRING) | (1L << Label) | (1L << Identifier))) != 0)) {
 				{
 				{
-				setState(149);
+				setState(155);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==Label || _la==Identifier) {
 					{
 					{
-					setState(146);
+					setState(152);
 					annotation();
 					}
 					}
-					setState(151);
+					setState(157);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
-				setState(152);
+				setState(158);
 				baseField();
 				}
 				}
-				setState(157);
+				setState(163);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(158);
+			setState(164);
 			match(RBRACE);
 			}
 		}
@@ -817,35 +836,35 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(160);
+			setState(166);
 			baseType();
-			setState(162);
+			setState(168);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==ARRAY) {
 				{
-				setState(161);
+				setState(167);
 				match(ARRAY);
 				}
 			}
 
-			setState(166);
+			setState(172);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,15,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,16,_ctx) ) {
 			case 1:
 				{
-				setState(164);
+				setState(170);
 				match(Identifier);
 				}
 				break;
 			case 2:
 				{
-				setState(165);
+				setState(171);
 				baseAssignment();
 				}
 				break;
 			}
-			setState(168);
+			setState(174);
 			match(SEMI);
 			}
 		}
@@ -891,23 +910,23 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(170);
+			setState(176);
 			match(Identifier);
-			setState(171);
+			setState(177);
 			match(T__1);
-			setState(174);
+			setState(180);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case Literal:
 				{
-				setState(172);
+				setState(178);
 				match(Literal);
 				}
 				break;
 			case ARRAY:
 			case LBRACK:
 				{
-				setState(173);
+				setState(179);
 				baseArrayExpr();
 				}
 				break;
@@ -956,22 +975,22 @@ public class MoonlightParser extends Parser {
 		BaseArrayExprContext _localctx = new BaseArrayExprContext(_ctx, getState());
 		enterRule(_localctx, 20, RULE_baseArrayExpr);
 		try {
-			setState(185);
+			setState(191);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(176);
+				setState(182);
 				match(ARRAY);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(177);
+				setState(183);
 				match(LBRACK);
-				setState(178);
+				setState(184);
 				match(RBRACK);
 				}
 				break;
@@ -979,17 +998,17 @@ public class MoonlightParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				{
-				setState(179);
+				setState(185);
 				match(LBRACK);
-				setState(180);
+				setState(186);
 				match(Literal);
 				{
-				setState(181);
+				setState(187);
 				match(COMMA);
-				setState(182);
+				setState(188);
 				match(Literal);
 				}
-				setState(184);
+				setState(190);
 				match(RBRACK);
 				}
 				}
@@ -1054,53 +1073,53 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(190);
+			setState(196);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==Label || _la==Identifier) {
 				{
 				{
-				setState(187);
+				setState(193);
 				annotation();
 				}
 				}
-				setState(192);
+				setState(198);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(193);
+			setState(199);
 			match(STRUCT);
-			setState(194);
+			setState(200);
 			referenceType();
-			setState(197);
+			setState(203);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==EXTENDS) {
 				{
-				setState(195);
+				setState(201);
 				match(EXTENDS);
-				setState(196);
+				setState(202);
 				referenceType();
 				}
 			}
 
-			setState(199);
+			setState(205);
 			match(LBRACE);
-			setState(203);
+			setState(209);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << BOOLEAN) | (1L << BYTE) | (1L << SHORT) | (1L << CHAR) | (1L << INT) | (1L << LONG) | (1L << FLOAT) | (1L << DOUBLE) | (1L << STRING) | (1L << Label) | (1L << FieldReq) | (1L << Identifier))) != 0)) {
 				{
 				{
-				setState(200);
+				setState(206);
 				structField();
 				}
 				}
-				setState(205);
+				setState(211);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(206);
+			setState(212);
 			match(RBRACE);
 			}
 		}
@@ -1154,37 +1173,37 @@ public class MoonlightParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(211);
+			setState(217);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,22,_ctx);
 			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(208);
+					setState(214);
 					annotation();
 					}
 					} 
 				}
-				setState(213);
+				setState(219);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,21,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,22,_ctx);
 			}
-			setState(215);
+			setState(221);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==FieldReq) {
 				{
-				setState(214);
+				setState(220);
 				match(FieldReq);
 				}
 			}
 
-			setState(217);
+			setState(223);
 			fieldType();
-			setState(218);
+			setState(224);
 			match(Identifier);
-			setState(219);
+			setState(225);
 			match(SEMI);
 			}
 		}
@@ -1243,61 +1262,61 @@ public class MoonlightParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(224);
+			setState(230);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,23,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(221);
+					setState(227);
 					annotation();
 					}
 					} 
 				}
-				setState(226);
+				setState(232);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,23,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,24,_ctx);
 			}
-			setState(227);
+			setState(233);
 			functionReturnType();
-			setState(228);
+			setState(234);
 			match(Identifier);
-			setState(229);
+			setState(235);
 			match(LPAREN);
-			setState(240);
+			setState(246);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << BOOLEAN) | (1L << BYTE) | (1L << SHORT) | (1L << CHAR) | (1L << INT) | (1L << LONG) | (1L << FLOAT) | (1L << DOUBLE) | (1L << STRING) | (1L << Label) | (1L << Identifier))) != 0)) {
 				{
 				{
-				setState(230);
+				setState(236);
 				functionParameter();
-				setState(235);
+				setState(241);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				while (_la==COMMA) {
 					{
 					{
-					setState(231);
+					setState(237);
 					match(COMMA);
-					setState(232);
+					setState(238);
 					functionParameter();
 					}
 					}
-					setState(237);
+					setState(243);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
 				}
 				}
 				}
-				setState(242);
+				setState(248);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(243);
+			setState(249);
 			match(RPAREN);
-			setState(244);
+			setState(250);
 			match(SEMI);
 			}
 		}
@@ -1349,25 +1368,25 @@ public class MoonlightParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(249);
+			setState(255);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
 			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(246);
+					setState(252);
 					annotation();
 					}
 					} 
 				}
-				setState(251);
+				setState(257);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,26,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
 			}
-			setState(252);
+			setState(258);
 			fieldType();
-			setState(253);
+			setState(259);
 			match(Identifier);
 			}
 		}
@@ -1410,13 +1429,13 @@ public class MoonlightParser extends Parser {
 		FunctionReturnTypeContext _localctx = new FunctionReturnTypeContext(_ctx, getState());
 		enterRule(_localctx, 30, RULE_functionReturnType);
 		try {
-			setState(257);
+			setState(263);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case VOID:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(255);
+				setState(261);
 				match(VOID);
 				}
 				break;
@@ -1435,7 +1454,7 @@ public class MoonlightParser extends Parser {
 			case Identifier:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(256);
+				setState(262);
 				fieldType();
 				}
 				break;
@@ -1501,53 +1520,53 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(262);
+			setState(268);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==Label || _la==Identifier) {
 				{
 				{
-				setState(259);
+				setState(265);
 				annotation();
 				}
 				}
-				setState(264);
+				setState(270);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(265);
+			setState(271);
 			match(INTERFACE);
-			setState(266);
+			setState(272);
 			interfaceName();
-			setState(269);
+			setState(275);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==EXTENDS) {
 				{
-				setState(267);
+				setState(273);
 				match(EXTENDS);
-				setState(268);
+				setState(274);
 				interfaceName();
 				}
 			}
 
-			setState(271);
+			setState(277);
 			match(LBRACE);
-			setState(275);
+			setState(281);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__4) | (1L << T__5) | (1L << T__6) | (1L << BOOLEAN) | (1L << BYTE) | (1L << SHORT) | (1L << CHAR) | (1L << INT) | (1L << LONG) | (1L << FLOAT) | (1L << DOUBLE) | (1L << STRING) | (1L << VOID) | (1L << Label) | (1L << Identifier))) != 0)) {
 				{
 				{
-				setState(272);
+				setState(278);
 				functionDeclaration();
 				}
 				}
-				setState(277);
+				setState(283);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(278);
+			setState(284);
 			match(RBRACE);
 			}
 		}
@@ -1592,19 +1611,19 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(283);
+			setState(289);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,31,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
 			case 1:
 				{
-				setState(280);
+				setState(286);
 				namespaceValue();
-				setState(281);
+				setState(287);
 				match(DOT);
 				}
 				break;
 			}
-			setState(285);
+			setState(291);
 			match(Identifier);
 			}
 		}
@@ -1652,7 +1671,7 @@ public class MoonlightParser extends Parser {
 		FieldTypeContext _localctx = new FieldTypeContext(_ctx, getState());
 		enterRule(_localctx, 36, RULE_fieldType);
 		try {
-			setState(290);
+			setState(296);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case BOOLEAN:
@@ -1666,7 +1685,7 @@ public class MoonlightParser extends Parser {
 			case STRING:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(287);
+				setState(293);
 				baseType();
 				}
 				break;
@@ -1675,14 +1694,14 @@ public class MoonlightParser extends Parser {
 			case T__6:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(288);
+				setState(294);
 				containerType();
 				}
 				break;
 			case Identifier:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(289);
+				setState(295);
 				referenceType();
 				}
 				break;
@@ -1735,26 +1754,26 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(295);
+			setState(301);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,33,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,34,_ctx) ) {
 			case 1:
 				{
-				setState(292);
+				setState(298);
 				namespaceValue();
-				setState(293);
+				setState(299);
 				match(DOT);
 				}
 				break;
 			}
-			setState(297);
+			setState(303);
 			match(Identifier);
-			setState(299);
+			setState(305);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__2) {
 				{
-				setState(298);
+				setState(304);
 				parametricType();
 				}
 			}
@@ -1805,27 +1824,27 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(301);
-			match(T__2);
-			setState(302);
-			fieldType();
 			setState(307);
+			match(T__2);
+			setState(308);
+			fieldType();
+			setState(313);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==COMMA) {
 				{
 				{
-				setState(303);
+				setState(309);
 				match(COMMA);
-				setState(304);
+				setState(310);
 				fieldType();
 				}
 				}
-				setState(309);
+				setState(315);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(310);
+			setState(316);
 			match(T__3);
 			}
 		}
@@ -1873,27 +1892,27 @@ public class MoonlightParser extends Parser {
 		ContainerTypeContext _localctx = new ContainerTypeContext(_ctx, getState());
 		enterRule(_localctx, 42, RULE_containerType);
 		try {
-			setState(315);
+			setState(321);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__4:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(312);
+				setState(318);
 				mapType();
 				}
 				break;
 			case T__5:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(313);
+				setState(319);
 				setType();
 				}
 				break;
 			case T__6:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(314);
+				setState(320);
 				listType();
 				}
 				break;
@@ -1944,17 +1963,17 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(317);
+			setState(323);
 			match(T__4);
-			setState(318);
+			setState(324);
 			match(T__2);
-			setState(319);
+			setState(325);
 			fieldType();
-			setState(320);
+			setState(326);
 			match(COMMA);
-			setState(321);
+			setState(327);
 			fieldType();
-			setState(322);
+			setState(328);
 			match(T__3);
 			}
 		}
@@ -1998,13 +2017,13 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(324);
+			setState(330);
 			match(T__5);
-			setState(325);
+			setState(331);
 			match(T__2);
-			setState(326);
+			setState(332);
 			fieldType();
-			setState(327);
+			setState(333);
 			match(T__3);
 			}
 		}
@@ -2048,13 +2067,13 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(329);
+			setState(335);
 			match(T__6);
-			setState(330);
+			setState(336);
 			match(T__2);
-			setState(331);
+			setState(337);
 			fieldType();
-			setState(332);
+			setState(338);
 			match(T__3);
 			}
 		}
@@ -2105,7 +2124,7 @@ public class MoonlightParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(334);
+			setState(340);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << BOOLEAN) | (1L << BYTE) | (1L << SHORT) | (1L << CHAR) | (1L << INT) | (1L << LONG) | (1L << FLOAT) | (1L << DOUBLE) | (1L << STRING))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -2129,123 +2148,125 @@ public class MoonlightParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\61\u0153\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\61\u0159\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
 		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
-		"\4\32\t\32\4\33\t\33\3\2\3\2\7\29\n\2\f\2\16\2<\13\2\3\2\3\2\3\2\3\2\7"+
-		"\2B\n\2\f\2\16\2E\13\2\3\3\3\3\3\3\3\3\3\4\3\4\3\4\7\4N\n\4\f\4\16\4Q"+
-		"\13\4\3\5\3\5\3\5\3\5\3\6\3\6\3\6\7\6Z\n\6\f\6\16\6]\13\6\3\6\3\6\5\6"+
-		"a\n\6\3\7\7\7d\n\7\f\7\16\7g\13\7\3\7\3\7\3\7\3\7\7\7m\n\7\f\7\16\7p\13"+
-		"\7\3\7\3\7\3\b\3\b\3\b\7\bw\n\b\f\b\16\bz\13\b\3\b\3\b\3\b\3\b\3\b\3\b"+
-		"\3\b\7\b\u0083\n\b\f\b\16\b\u0086\13\b\3\b\3\b\5\b\u008a\n\b\3\t\7\t\u008d"+
-		"\n\t\f\t\16\t\u0090\13\t\3\t\3\t\3\t\3\t\7\t\u0096\n\t\f\t\16\t\u0099"+
-		"\13\t\3\t\7\t\u009c\n\t\f\t\16\t\u009f\13\t\3\t\3\t\3\n\3\n\5\n\u00a5"+
-		"\n\n\3\n\3\n\5\n\u00a9\n\n\3\n\3\n\3\13\3\13\3\13\3\13\5\13\u00b1\n\13"+
-		"\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\5\f\u00bc\n\f\3\r\7\r\u00bf\n\r\f"+
-		"\r\16\r\u00c2\13\r\3\r\3\r\3\r\3\r\5\r\u00c8\n\r\3\r\3\r\7\r\u00cc\n\r"+
-		"\f\r\16\r\u00cf\13\r\3\r\3\r\3\16\7\16\u00d4\n\16\f\16\16\16\u00d7\13"+
-		"\16\3\16\5\16\u00da\n\16\3\16\3\16\3\16\3\16\3\17\7\17\u00e1\n\17\f\17"+
-		"\16\17\u00e4\13\17\3\17\3\17\3\17\3\17\3\17\3\17\7\17\u00ec\n\17\f\17"+
-		"\16\17\u00ef\13\17\7\17\u00f1\n\17\f\17\16\17\u00f4\13\17\3\17\3\17\3"+
-		"\17\3\20\7\20\u00fa\n\20\f\20\16\20\u00fd\13\20\3\20\3\20\3\20\3\21\3"+
-		"\21\5\21\u0104\n\21\3\22\7\22\u0107\n\22\f\22\16\22\u010a\13\22\3\22\3"+
-		"\22\3\22\3\22\5\22\u0110\n\22\3\22\3\22\7\22\u0114\n\22\f\22\16\22\u0117"+
-		"\13\22\3\22\3\22\3\23\3\23\3\23\5\23\u011e\n\23\3\23\3\23\3\24\3\24\3"+
-		"\24\5\24\u0125\n\24\3\25\3\25\3\25\5\25\u012a\n\25\3\25\3\25\5\25\u012e"+
-		"\n\25\3\26\3\26\3\26\3\26\7\26\u0134\n\26\f\26\16\26\u0137\13\26\3\26"+
-		"\3\26\3\27\3\27\3\27\5\27\u013e\n\27\3\30\3\30\3\30\3\30\3\30\3\30\3\30"+
-		"\3\31\3\31\3\31\3\31\3\31\3\32\3\32\3\32\3\32\3\32\3\33\3\33\3\33\2\2"+
-		"\34\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\2\3\3\2\n"+
-		"\22\2\u0163\2\66\3\2\2\2\4F\3\2\2\2\6J\3\2\2\2\bR\3\2\2\2\nV\3\2\2\2\f"+
-		"e\3\2\2\2\16x\3\2\2\2\20\u008e\3\2\2\2\22\u00a2\3\2\2\2\24\u00ac\3\2\2"+
-		"\2\26\u00bb\3\2\2\2\30\u00c0\3\2\2\2\32\u00d5\3\2\2\2\34\u00e2\3\2\2\2"+
-		"\36\u00fb\3\2\2\2 \u0103\3\2\2\2\"\u0108\3\2\2\2$\u011d\3\2\2\2&\u0124"+
-		"\3\2\2\2(\u0129\3\2\2\2*\u012f\3\2\2\2,\u013d\3\2\2\2.\u013f\3\2\2\2\60"+
-		"\u0146\3\2\2\2\62\u014b\3\2\2\2\64\u0150\3\2\2\2\66:\5\4\3\2\679\5\b\5"+
-		"\28\67\3\2\2\29<\3\2\2\2:8\3\2\2\2:;\3\2\2\2;C\3\2\2\2<:\3\2\2\2=B\5\20"+
-		"\t\2>B\5\f\7\2?B\5\30\r\2@B\5\"\22\2A=\3\2\2\2A>\3\2\2\2A?\3\2\2\2A@\3"+
-		"\2\2\2BE\3\2\2\2CA\3\2\2\2CD\3\2\2\2D\3\3\2\2\2EC\3\2\2\2FG\7\30\2\2G"+
-		"H\5\6\4\2HI\7+\2\2I\5\3\2\2\2JO\7.\2\2KL\7-\2\2LN\7.\2\2MK\3\2\2\2NQ\3"+
-		"\2\2\2OM\3\2\2\2OP\3\2\2\2P\7\3\2\2\2QO\3\2\2\2RS\7\26\2\2ST\5\n\6\2T"+
-		"U\7+\2\2U\t\3\2\2\2V[\7.\2\2WX\7-\2\2XZ\7.\2\2YW\3\2\2\2Z]\3\2\2\2[Y\3"+
-		"\2\2\2[\\\3\2\2\2\\`\3\2\2\2][\3\2\2\2^_\7-\2\2_a\7\3\2\2`^\3\2\2\2`a"+
-		"\3\2\2\2a\13\3\2\2\2bd\5\16\b\2cb\3\2\2\2dg\3\2\2\2ec\3\2\2\2ef\3\2\2"+
-		"\2fh\3\2\2\2ge\3\2\2\2hi\7\32\2\2ij\7.\2\2jn\7\'\2\2km\5\22\n\2lk\3\2"+
-		"\2\2mp\3\2\2\2nl\3\2\2\2no\3\2\2\2oq\3\2\2\2pn\3\2\2\2qr\7(\2\2r\r\3\2"+
-		"\2\2st\5\6\4\2tu\7-\2\2uw\3\2\2\2vs\3\2\2\2wz\3\2\2\2xv\3\2\2\2xy\3\2"+
-		"\2\2y{\3\2\2\2zx\3\2\2\2{\u0089\7\34\2\2|}\7%\2\2}\u008a\7&\2\2~\177\7"+
-		"%\2\2\177\u0084\5\24\13\2\u0080\u0081\7,\2\2\u0081\u0083\5\24\13\2\u0082"+
-		"\u0080\3\2\2\2\u0083\u0086\3\2\2\2\u0084\u0082\3\2\2\2\u0084\u0085\3\2"+
-		"\2\2\u0085\u0087\3\2\2\2\u0086\u0084\3\2\2\2\u0087\u0088\7&\2\2\u0088"+
-		"\u008a\3\2\2\2\u0089|\3\2\2\2\u0089~\3\2\2\2\u0089\u008a\3\2\2\2\u008a"+
-		"\17\3\2\2\2\u008b\u008d\5\16\b\2\u008c\u008b\3\2\2\2\u008d\u0090\3\2\2"+
-		"\2\u008e\u008c\3\2\2\2\u008e\u008f\3\2\2\2\u008f\u0091\3\2\2\2\u0090\u008e"+
-		"\3\2\2\2\u0091\u0092\7\24\2\2\u0092\u0093\7.\2\2\u0093\u009d\7\'\2\2\u0094"+
-		"\u0096\5\16\b\2\u0095\u0094\3\2\2\2\u0096\u0099\3\2\2\2\u0097\u0095\3"+
-		"\2\2\2\u0097\u0098\3\2\2\2\u0098\u009a\3\2\2\2\u0099\u0097\3\2\2\2\u009a"+
-		"\u009c\5\22\n\2\u009b\u0097\3\2\2\2\u009c\u009f\3\2\2\2\u009d\u009b\3"+
-		"\2\2\2\u009d\u009e\3\2\2\2\u009e\u00a0\3\2\2\2\u009f\u009d\3\2\2\2\u00a0"+
-		"\u00a1\7(\2\2\u00a1\21\3\2\2\2\u00a2\u00a4\5\64\33\2\u00a3\u00a5\7\33"+
-		"\2\2\u00a4\u00a3\3\2\2\2\u00a4\u00a5\3\2\2\2\u00a5\u00a8\3\2\2\2\u00a6"+
-		"\u00a9\7.\2\2\u00a7\u00a9\5\24\13\2\u00a8\u00a6\3\2\2\2\u00a8\u00a7\3"+
-		"\2\2\2\u00a9\u00aa\3\2\2\2\u00aa\u00ab\7+\2\2\u00ab\23\3\2\2\2\u00ac\u00ad"+
-		"\7.\2\2\u00ad\u00b0\7\4\2\2\u00ae\u00b1\7\35\2\2\u00af\u00b1\5\26\f\2"+
-		"\u00b0\u00ae\3\2\2\2\u00b0\u00af\3\2\2\2\u00b1\25\3\2\2\2\u00b2\u00bc"+
-		"\7\33\2\2\u00b3\u00b4\7)\2\2\u00b4\u00bc\7*\2\2\u00b5\u00b6\7)\2\2\u00b6"+
-		"\u00b7\7\35\2\2\u00b7\u00b8\7,\2\2\u00b8\u00b9\7\35\2\2\u00b9\u00ba\3"+
-		"\2\2\2\u00ba\u00bc\7*\2\2\u00bb\u00b2\3\2\2\2\u00bb\u00b3\3\2\2\2\u00bb"+
-		"\u00b5\3\2\2\2\u00bc\27\3\2\2\2\u00bd\u00bf\5\16\b\2\u00be\u00bd\3\2\2"+
-		"\2\u00bf\u00c2\3\2\2\2\u00c0\u00be\3\2\2\2\u00c0\u00c1\3\2\2\2\u00c1\u00c3"+
-		"\3\2\2\2\u00c2\u00c0\3\2\2\2\u00c3\u00c4\7\31\2\2\u00c4\u00c7\5(\25\2"+
-		"\u00c5\u00c6\7\25\2\2\u00c6\u00c8\5(\25\2\u00c7\u00c5\3\2\2\2\u00c7\u00c8"+
-		"\3\2\2\2\u00c8\u00c9\3\2\2\2\u00c9\u00cd\7\'\2\2\u00ca\u00cc\5\32\16\2"+
-		"\u00cb\u00ca\3\2\2\2\u00cc\u00cf\3\2\2\2\u00cd\u00cb\3\2\2\2\u00cd\u00ce"+
-		"\3\2\2\2\u00ce\u00d0\3\2\2\2\u00cf\u00cd\3\2\2\2\u00d0\u00d1\7(\2\2\u00d1"+
-		"\31\3\2\2\2\u00d2\u00d4\5\16\b\2\u00d3\u00d2\3\2\2\2\u00d4\u00d7\3\2\2"+
-		"\2\u00d5\u00d3\3\2\2\2\u00d5\u00d6\3\2\2\2\u00d6\u00d9\3\2\2\2\u00d7\u00d5"+
-		"\3\2\2\2\u00d8\u00da\7\36\2\2\u00d9\u00d8\3\2\2\2\u00d9\u00da\3\2\2\2"+
-		"\u00da\u00db\3\2\2\2\u00db\u00dc\5&\24\2\u00dc\u00dd\7.\2\2\u00dd\u00de"+
-		"\7+\2\2\u00de\33\3\2\2\2\u00df\u00e1\5\16\b\2\u00e0\u00df\3\2\2\2\u00e1"+
-		"\u00e4\3\2\2\2\u00e2\u00e0\3\2\2\2\u00e2\u00e3\3\2\2\2\u00e3\u00e5\3\2"+
-		"\2\2\u00e4\u00e2\3\2\2\2\u00e5\u00e6\5 \21\2\u00e6\u00e7\7.\2\2\u00e7"+
-		"\u00f2\7%\2\2\u00e8\u00ed\5\36\20\2\u00e9\u00ea\7,\2\2\u00ea\u00ec\5\36"+
-		"\20\2\u00eb\u00e9\3\2\2\2\u00ec\u00ef\3\2\2\2\u00ed\u00eb\3\2\2\2\u00ed"+
-		"\u00ee\3\2\2\2\u00ee\u00f1\3\2\2\2\u00ef\u00ed\3\2\2\2\u00f0\u00e8\3\2"+
-		"\2\2\u00f1\u00f4\3\2\2\2\u00f2\u00f0\3\2\2\2\u00f2\u00f3\3\2\2\2\u00f3"+
-		"\u00f5\3\2\2\2\u00f4\u00f2\3\2\2\2\u00f5\u00f6\7&\2\2\u00f6\u00f7\7+\2"+
-		"\2\u00f7\35\3\2\2\2\u00f8\u00fa\5\16\b\2\u00f9\u00f8\3\2\2\2\u00fa\u00fd"+
-		"\3\2\2\2\u00fb\u00f9\3\2\2\2\u00fb\u00fc\3\2\2\2\u00fc\u00fe\3\2\2\2\u00fd"+
-		"\u00fb\3\2\2\2\u00fe\u00ff\5&\24\2\u00ff\u0100\7.\2\2\u0100\37\3\2\2\2"+
-		"\u0101\u0104\7\23\2\2\u0102\u0104\5&\24\2\u0103\u0101\3\2\2\2\u0103\u0102"+
-		"\3\2\2\2\u0104!\3\2\2\2\u0105\u0107\5\16\b\2\u0106\u0105\3\2\2\2\u0107"+
-		"\u010a\3\2\2\2\u0108\u0106\3\2\2\2\u0108\u0109\3\2\2\2\u0109\u010b\3\2"+
-		"\2\2\u010a\u0108\3\2\2\2\u010b\u010c\7\27\2\2\u010c\u010f\5$\23\2\u010d"+
-		"\u010e\7\25\2\2\u010e\u0110\5$\23\2\u010f\u010d\3\2\2\2\u010f\u0110\3"+
-		"\2\2\2\u0110\u0111\3\2\2\2\u0111\u0115\7\'\2\2\u0112\u0114\5\34\17\2\u0113"+
-		"\u0112\3\2\2\2\u0114\u0117\3\2\2\2\u0115\u0113\3\2\2\2\u0115\u0116\3\2"+
-		"\2\2\u0116\u0118\3\2\2\2\u0117\u0115\3\2\2\2\u0118\u0119\7(\2\2\u0119"+
-		"#\3\2\2\2\u011a\u011b\5\6\4\2\u011b\u011c\7-\2\2\u011c\u011e\3\2\2\2\u011d"+
-		"\u011a\3\2\2\2\u011d\u011e\3\2\2\2\u011e\u011f\3\2\2\2\u011f\u0120\7."+
-		"\2\2\u0120%\3\2\2\2\u0121\u0125\5\64\33\2\u0122\u0125\5,\27\2\u0123\u0125"+
-		"\5(\25\2\u0124\u0121\3\2\2\2\u0124\u0122\3\2\2\2\u0124\u0123\3\2\2\2\u0125"+
-		"\'\3\2\2\2\u0126\u0127\5\6\4\2\u0127\u0128\7-\2\2\u0128\u012a\3\2\2\2"+
-		"\u0129\u0126\3\2\2\2\u0129\u012a\3\2\2\2\u012a\u012b\3\2\2\2\u012b\u012d"+
-		"\7.\2\2\u012c\u012e\5*\26\2\u012d\u012c\3\2\2\2\u012d\u012e\3\2\2\2\u012e"+
-		")\3\2\2\2\u012f\u0130\7\5\2\2\u0130\u0135\5&\24\2\u0131\u0132\7,\2\2\u0132"+
-		"\u0134\5&\24\2\u0133\u0131\3\2\2\2\u0134\u0137\3\2\2\2\u0135\u0133\3\2"+
-		"\2\2\u0135\u0136\3\2\2\2\u0136\u0138\3\2\2\2\u0137\u0135\3\2\2\2\u0138"+
-		"\u0139\7\6\2\2\u0139+\3\2\2\2\u013a\u013e\5.\30\2\u013b\u013e\5\60\31"+
-		"\2\u013c\u013e\5\62\32\2\u013d\u013a\3\2\2\2\u013d\u013b\3\2\2\2\u013d"+
-		"\u013c\3\2\2\2\u013e-\3\2\2\2\u013f\u0140\7\7\2\2\u0140\u0141\7\5\2\2"+
-		"\u0141\u0142\5&\24\2\u0142\u0143\7,\2\2\u0143\u0144\5&\24\2\u0144\u0145"+
-		"\7\6\2\2\u0145/\3\2\2\2\u0146\u0147\7\b\2\2\u0147\u0148\7\5\2\2\u0148"+
-		"\u0149\5&\24\2\u0149\u014a\7\6\2\2\u014a\61\3\2\2\2\u014b\u014c\7\t\2"+
-		"\2\u014c\u014d\7\5\2\2\u014d\u014e\5&\24\2\u014e\u014f\7\6\2\2\u014f\63"+
-		"\3\2\2\2\u0150\u0151\t\2\2\2\u0151\65\3\2\2\2\':ACO[`enx\u0084\u0089\u008e"+
-		"\u0097\u009d\u00a4\u00a8\u00b0\u00bb\u00c0\u00c7\u00cd\u00d5\u00d9\u00e2"+
-		"\u00ed\u00f2\u00fb\u0103\u0108\u010f\u0115\u011d\u0124\u0129\u012d\u0135"+
-		"\u013d";
+		"\4\32\t\32\4\33\t\33\3\2\7\28\n\2\f\2\16\2;\13\2\3\2\3\2\7\2?\n\2\f\2"+
+		"\16\2B\13\2\3\2\3\2\3\2\3\2\7\2H\n\2\f\2\16\2K\13\2\3\3\3\3\3\3\3\3\3"+
+		"\4\3\4\3\4\7\4T\n\4\f\4\16\4W\13\4\3\5\3\5\3\5\3\5\3\6\3\6\3\6\7\6`\n"+
+		"\6\f\6\16\6c\13\6\3\6\3\6\5\6g\n\6\3\7\7\7j\n\7\f\7\16\7m\13\7\3\7\3\7"+
+		"\3\7\3\7\7\7s\n\7\f\7\16\7v\13\7\3\7\3\7\3\b\3\b\3\b\7\b}\n\b\f\b\16\b"+
+		"\u0080\13\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\7\b\u0089\n\b\f\b\16\b\u008c\13"+
+		"\b\3\b\3\b\5\b\u0090\n\b\3\t\7\t\u0093\n\t\f\t\16\t\u0096\13\t\3\t\3\t"+
+		"\3\t\3\t\7\t\u009c\n\t\f\t\16\t\u009f\13\t\3\t\7\t\u00a2\n\t\f\t\16\t"+
+		"\u00a5\13\t\3\t\3\t\3\n\3\n\5\n\u00ab\n\n\3\n\3\n\5\n\u00af\n\n\3\n\3"+
+		"\n\3\13\3\13\3\13\3\13\5\13\u00b7\n\13\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f"+
+		"\3\f\5\f\u00c2\n\f\3\r\7\r\u00c5\n\r\f\r\16\r\u00c8\13\r\3\r\3\r\3\r\3"+
+		"\r\5\r\u00ce\n\r\3\r\3\r\7\r\u00d2\n\r\f\r\16\r\u00d5\13\r\3\r\3\r\3\16"+
+		"\7\16\u00da\n\16\f\16\16\16\u00dd\13\16\3\16\5\16\u00e0\n\16\3\16\3\16"+
+		"\3\16\3\16\3\17\7\17\u00e7\n\17\f\17\16\17\u00ea\13\17\3\17\3\17\3\17"+
+		"\3\17\3\17\3\17\7\17\u00f2\n\17\f\17\16\17\u00f5\13\17\7\17\u00f7\n\17"+
+		"\f\17\16\17\u00fa\13\17\3\17\3\17\3\17\3\20\7\20\u0100\n\20\f\20\16\20"+
+		"\u0103\13\20\3\20\3\20\3\20\3\21\3\21\5\21\u010a\n\21\3\22\7\22\u010d"+
+		"\n\22\f\22\16\22\u0110\13\22\3\22\3\22\3\22\3\22\5\22\u0116\n\22\3\22"+
+		"\3\22\7\22\u011a\n\22\f\22\16\22\u011d\13\22\3\22\3\22\3\23\3\23\3\23"+
+		"\5\23\u0124\n\23\3\23\3\23\3\24\3\24\3\24\5\24\u012b\n\24\3\25\3\25\3"+
+		"\25\5\25\u0130\n\25\3\25\3\25\5\25\u0134\n\25\3\26\3\26\3\26\3\26\7\26"+
+		"\u013a\n\26\f\26\16\26\u013d\13\26\3\26\3\26\3\27\3\27\3\27\5\27\u0144"+
+		"\n\27\3\30\3\30\3\30\3\30\3\30\3\30\3\30\3\31\3\31\3\31\3\31\3\31\3\32"+
+		"\3\32\3\32\3\32\3\32\3\33\3\33\3\33\2\2\34\2\4\6\b\n\f\16\20\22\24\26"+
+		"\30\32\34\36 \"$&(*,.\60\62\64\2\3\3\2\n\22\2\u016a\29\3\2\2\2\4L\3\2"+
+		"\2\2\6P\3\2\2\2\bX\3\2\2\2\n\\\3\2\2\2\fk\3\2\2\2\16~\3\2\2\2\20\u0094"+
+		"\3\2\2\2\22\u00a8\3\2\2\2\24\u00b2\3\2\2\2\26\u00c1\3\2\2\2\30\u00c6\3"+
+		"\2\2\2\32\u00db\3\2\2\2\34\u00e8\3\2\2\2\36\u0101\3\2\2\2 \u0109\3\2\2"+
+		"\2\"\u010e\3\2\2\2$\u0123\3\2\2\2&\u012a\3\2\2\2(\u012f\3\2\2\2*\u0135"+
+		"\3\2\2\2,\u0143\3\2\2\2.\u0145\3\2\2\2\60\u014c\3\2\2\2\62\u0151\3\2\2"+
+		"\2\64\u0156\3\2\2\2\668\5\16\b\2\67\66\3\2\2\28;\3\2\2\29\67\3\2\2\29"+
+		":\3\2\2\2:<\3\2\2\2;9\3\2\2\2<@\5\4\3\2=?\5\b\5\2>=\3\2\2\2?B\3\2\2\2"+
+		"@>\3\2\2\2@A\3\2\2\2AI\3\2\2\2B@\3\2\2\2CH\5\20\t\2DH\5\f\7\2EH\5\30\r"+
+		"\2FH\5\"\22\2GC\3\2\2\2GD\3\2\2\2GE\3\2\2\2GF\3\2\2\2HK\3\2\2\2IG\3\2"+
+		"\2\2IJ\3\2\2\2J\3\3\2\2\2KI\3\2\2\2LM\7\30\2\2MN\5\6\4\2NO\7+\2\2O\5\3"+
+		"\2\2\2PU\7.\2\2QR\7-\2\2RT\7.\2\2SQ\3\2\2\2TW\3\2\2\2US\3\2\2\2UV\3\2"+
+		"\2\2V\7\3\2\2\2WU\3\2\2\2XY\7\26\2\2YZ\5\n\6\2Z[\7+\2\2[\t\3\2\2\2\\a"+
+		"\7.\2\2]^\7-\2\2^`\7.\2\2_]\3\2\2\2`c\3\2\2\2a_\3\2\2\2ab\3\2\2\2bf\3"+
+		"\2\2\2ca\3\2\2\2de\7-\2\2eg\7\3\2\2fd\3\2\2\2fg\3\2\2\2g\13\3\2\2\2hj"+
+		"\5\16\b\2ih\3\2\2\2jm\3\2\2\2ki\3\2\2\2kl\3\2\2\2ln\3\2\2\2mk\3\2\2\2"+
+		"no\7\32\2\2op\7.\2\2pt\7\'\2\2qs\5\22\n\2rq\3\2\2\2sv\3\2\2\2tr\3\2\2"+
+		"\2tu\3\2\2\2uw\3\2\2\2vt\3\2\2\2wx\7(\2\2x\r\3\2\2\2yz\5\6\4\2z{\7-\2"+
+		"\2{}\3\2\2\2|y\3\2\2\2}\u0080\3\2\2\2~|\3\2\2\2~\177\3\2\2\2\177\u0081"+
+		"\3\2\2\2\u0080~\3\2\2\2\u0081\u008f\7\34\2\2\u0082\u0083\7%\2\2\u0083"+
+		"\u0090\7&\2\2\u0084\u0085\7%\2\2\u0085\u008a\5\24\13\2\u0086\u0087\7,"+
+		"\2\2\u0087\u0089\5\24\13\2\u0088\u0086\3\2\2\2\u0089\u008c\3\2\2\2\u008a"+
+		"\u0088\3\2\2\2\u008a\u008b\3\2\2\2\u008b\u008d\3\2\2\2\u008c\u008a\3\2"+
+		"\2\2\u008d\u008e\7&\2\2\u008e\u0090\3\2\2\2\u008f\u0082\3\2\2\2\u008f"+
+		"\u0084\3\2\2\2\u008f\u0090\3\2\2\2\u0090\17\3\2\2\2\u0091\u0093\5\16\b"+
+		"\2\u0092\u0091\3\2\2\2\u0093\u0096\3\2\2\2\u0094\u0092\3\2\2\2\u0094\u0095"+
+		"\3\2\2\2\u0095\u0097\3\2\2\2\u0096\u0094\3\2\2\2\u0097\u0098\7\24\2\2"+
+		"\u0098\u0099\7.\2\2\u0099\u00a3\7\'\2\2\u009a\u009c\5\16\b\2\u009b\u009a"+
+		"\3\2\2\2\u009c\u009f\3\2\2\2\u009d\u009b\3\2\2\2\u009d\u009e\3\2\2\2\u009e"+
+		"\u00a0\3\2\2\2\u009f\u009d\3\2\2\2\u00a0\u00a2\5\22\n\2\u00a1\u009d\3"+
+		"\2\2\2\u00a2\u00a5\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4"+
+		"\u00a6\3\2\2\2\u00a5\u00a3\3\2\2\2\u00a6\u00a7\7(\2\2\u00a7\21\3\2\2\2"+
+		"\u00a8\u00aa\5\64\33\2\u00a9\u00ab\7\33\2\2\u00aa\u00a9\3\2\2\2\u00aa"+
+		"\u00ab\3\2\2\2\u00ab\u00ae\3\2\2\2\u00ac\u00af\7.\2\2\u00ad\u00af\5\24"+
+		"\13\2\u00ae\u00ac\3\2\2\2\u00ae\u00ad\3\2\2\2\u00af\u00b0\3\2\2\2\u00b0"+
+		"\u00b1\7+\2\2\u00b1\23\3\2\2\2\u00b2\u00b3\7.\2\2\u00b3\u00b6\7\4\2\2"+
+		"\u00b4\u00b7\7\35\2\2\u00b5\u00b7\5\26\f\2\u00b6\u00b4\3\2\2\2\u00b6\u00b5"+
+		"\3\2\2\2\u00b7\25\3\2\2\2\u00b8\u00c2\7\33\2\2\u00b9\u00ba\7)\2\2\u00ba"+
+		"\u00c2\7*\2\2\u00bb\u00bc\7)\2\2\u00bc\u00bd\7\35\2\2\u00bd\u00be\7,\2"+
+		"\2\u00be\u00bf\7\35\2\2\u00bf\u00c0\3\2\2\2\u00c0\u00c2\7*\2\2\u00c1\u00b8"+
+		"\3\2\2\2\u00c1\u00b9\3\2\2\2\u00c1\u00bb\3\2\2\2\u00c2\27\3\2\2\2\u00c3"+
+		"\u00c5\5\16\b\2\u00c4\u00c3\3\2\2\2\u00c5\u00c8\3\2\2\2\u00c6\u00c4\3"+
+		"\2\2\2\u00c6\u00c7\3\2\2\2\u00c7\u00c9\3\2\2\2\u00c8\u00c6\3\2\2\2\u00c9"+
+		"\u00ca\7\31\2\2\u00ca\u00cd\5(\25\2\u00cb\u00cc\7\25\2\2\u00cc\u00ce\5"+
+		"(\25\2\u00cd\u00cb\3\2\2\2\u00cd\u00ce\3\2\2\2\u00ce\u00cf\3\2\2\2\u00cf"+
+		"\u00d3\7\'\2\2\u00d0\u00d2\5\32\16\2\u00d1\u00d0\3\2\2\2\u00d2\u00d5\3"+
+		"\2\2\2\u00d3\u00d1\3\2\2\2\u00d3\u00d4\3\2\2\2\u00d4\u00d6\3\2\2\2\u00d5"+
+		"\u00d3\3\2\2\2\u00d6\u00d7\7(\2\2\u00d7\31\3\2\2\2\u00d8\u00da\5\16\b"+
+		"\2\u00d9\u00d8\3\2\2\2\u00da\u00dd\3\2\2\2\u00db\u00d9\3\2\2\2\u00db\u00dc"+
+		"\3\2\2\2\u00dc\u00df\3\2\2\2\u00dd\u00db\3\2\2\2\u00de\u00e0\7\36\2\2"+
+		"\u00df\u00de\3\2\2\2\u00df\u00e0\3\2\2\2\u00e0\u00e1\3\2\2\2\u00e1\u00e2"+
+		"\5&\24\2\u00e2\u00e3\7.\2\2\u00e3\u00e4\7+\2\2\u00e4\33\3\2\2\2\u00e5"+
+		"\u00e7\5\16\b\2\u00e6\u00e5\3\2\2\2\u00e7\u00ea\3\2\2\2\u00e8\u00e6\3"+
+		"\2\2\2\u00e8\u00e9\3\2\2\2\u00e9\u00eb\3\2\2\2\u00ea\u00e8\3\2\2\2\u00eb"+
+		"\u00ec\5 \21\2\u00ec\u00ed\7.\2\2\u00ed\u00f8\7%\2\2\u00ee\u00f3\5\36"+
+		"\20\2\u00ef\u00f0\7,\2\2\u00f0\u00f2\5\36\20\2\u00f1\u00ef\3\2\2\2\u00f2"+
+		"\u00f5\3\2\2\2\u00f3\u00f1\3\2\2\2\u00f3\u00f4\3\2\2\2\u00f4\u00f7\3\2"+
+		"\2\2\u00f5\u00f3\3\2\2\2\u00f6\u00ee\3\2\2\2\u00f7\u00fa\3\2\2\2\u00f8"+
+		"\u00f6\3\2\2\2\u00f8\u00f9\3\2\2\2\u00f9\u00fb\3\2\2\2\u00fa\u00f8\3\2"+
+		"\2\2\u00fb\u00fc\7&\2\2\u00fc\u00fd\7+\2\2\u00fd\35\3\2\2\2\u00fe\u0100"+
+		"\5\16\b\2\u00ff\u00fe\3\2\2\2\u0100\u0103\3\2\2\2\u0101\u00ff\3\2\2\2"+
+		"\u0101\u0102\3\2\2\2\u0102\u0104\3\2\2\2\u0103\u0101\3\2\2\2\u0104\u0105"+
+		"\5&\24\2\u0105\u0106\7.\2\2\u0106\37\3\2\2\2\u0107\u010a\7\23\2\2\u0108"+
+		"\u010a\5&\24\2\u0109\u0107\3\2\2\2\u0109\u0108\3\2\2\2\u010a!\3\2\2\2"+
+		"\u010b\u010d\5\16\b\2\u010c\u010b\3\2\2\2\u010d\u0110\3\2\2\2\u010e\u010c"+
+		"\3\2\2\2\u010e\u010f\3\2\2\2\u010f\u0111\3\2\2\2\u0110\u010e\3\2\2\2\u0111"+
+		"\u0112\7\27\2\2\u0112\u0115\5$\23\2\u0113\u0114\7\25\2\2\u0114\u0116\5"+
+		"$\23\2\u0115\u0113\3\2\2\2\u0115\u0116\3\2\2\2\u0116\u0117\3\2\2\2\u0117"+
+		"\u011b\7\'\2\2\u0118\u011a\5\34\17\2\u0119\u0118\3\2\2\2\u011a\u011d\3"+
+		"\2\2\2\u011b\u0119\3\2\2\2\u011b\u011c\3\2\2\2\u011c\u011e\3\2\2\2\u011d"+
+		"\u011b\3\2\2\2\u011e\u011f\7(\2\2\u011f#\3\2\2\2\u0120\u0121\5\6\4\2\u0121"+
+		"\u0122\7-\2\2\u0122\u0124\3\2\2\2\u0123\u0120\3\2\2\2\u0123\u0124\3\2"+
+		"\2\2\u0124\u0125\3\2\2\2\u0125\u0126\7.\2\2\u0126%\3\2\2\2\u0127\u012b"+
+		"\5\64\33\2\u0128\u012b\5,\27\2\u0129\u012b\5(\25\2\u012a\u0127\3\2\2\2"+
+		"\u012a\u0128\3\2\2\2\u012a\u0129\3\2\2\2\u012b\'\3\2\2\2\u012c\u012d\5"+
+		"\6\4\2\u012d\u012e\7-\2\2\u012e\u0130\3\2\2\2\u012f\u012c\3\2\2\2\u012f"+
+		"\u0130\3\2\2\2\u0130\u0131\3\2\2\2\u0131\u0133\7.\2\2\u0132\u0134\5*\26"+
+		"\2\u0133\u0132\3\2\2\2\u0133\u0134\3\2\2\2\u0134)\3\2\2\2\u0135\u0136"+
+		"\7\5\2\2\u0136\u013b\5&\24\2\u0137\u0138\7,\2\2\u0138\u013a\5&\24\2\u0139"+
+		"\u0137\3\2\2\2\u013a\u013d\3\2\2\2\u013b\u0139\3\2\2\2\u013b\u013c\3\2"+
+		"\2\2\u013c\u013e\3\2\2\2\u013d\u013b\3\2\2\2\u013e\u013f\7\6\2\2\u013f"+
+		"+\3\2\2\2\u0140\u0144\5.\30\2\u0141\u0144\5\60\31\2\u0142\u0144\5\62\32"+
+		"\2\u0143\u0140\3\2\2\2\u0143\u0141\3\2\2\2\u0143\u0142\3\2\2\2\u0144-"+
+		"\3\2\2\2\u0145\u0146\7\7\2\2\u0146\u0147\7\5\2\2\u0147\u0148\5&\24\2\u0148"+
+		"\u0149\7,\2\2\u0149\u014a\5&\24\2\u014a\u014b\7\6\2\2\u014b/\3\2\2\2\u014c"+
+		"\u014d\7\b\2\2\u014d\u014e\7\5\2\2\u014e\u014f\5&\24\2\u014f\u0150\7\6"+
+		"\2\2\u0150\61\3\2\2\2\u0151\u0152\7\t\2\2\u0152\u0153\7\5\2\2\u0153\u0154"+
+		"\5&\24\2\u0154\u0155\7\6\2\2\u0155\63\3\2\2\2\u0156\u0157\t\2\2\2\u0157"+
+		"\65\3\2\2\2(9@GIUafkt~\u008a\u008f\u0094\u009d\u00a3\u00aa\u00ae\u00b6"+
+		"\u00c1\u00c6\u00cd\u00d3\u00db\u00df\u00e8\u00f3\u00f8\u0101\u0109\u010e"+
+		"\u0115\u011b\u0123\u012a\u012f\u0133\u013b\u0143";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
