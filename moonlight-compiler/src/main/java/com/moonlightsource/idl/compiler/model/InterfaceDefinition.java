@@ -12,8 +12,8 @@ public class InterfaceDefinition extends ClassDefinition {
     private final List<FunctionDefinition> functions;
     private final List<DefinitionReference> extendedInterfaceReferences;
 
-    public InterfaceDefinition(TypeEnum type, String name, String namespace, List<ClassDefinition> parametricTypes, List<AnnotationValue> annotations, List<FunctionDefinition> functions, List<DefinitionReference> extendedInterfaceReferences) {
-        super(type, name, namespace, parametricTypes, annotations);
+    public InterfaceDefinition(TypeEnum type, String name, String namespace, List<AnnotationValue> annotations, List<FunctionDefinition> functions, List<DefinitionReference> extendedInterfaceReferences) {
+        super(type, name, namespace, Collections.emptyList(), annotations);
         this.functions = functions;
         this.extendedInterfaceReferences = extendedInterfaceReferences;
     }

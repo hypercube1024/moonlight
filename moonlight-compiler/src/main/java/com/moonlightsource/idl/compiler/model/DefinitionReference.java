@@ -1,5 +1,7 @@
 package com.moonlightsource.idl.compiler.model;
 
+import java.util.Objects;
+
 /**
  * @author Pengtao Qiu
  */
@@ -25,5 +27,24 @@ public class DefinitionReference {
 
     public ClassDefinition getClassDefinition() {
         return manager.getClassDefinition(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DefinitionReference that = (DefinitionReference) o;
+        return Objects.equals(namespace, that.namespace) &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(namespace, name);
+    }
+
+    @Override
+    public String toString() {
+        return namespace + "." + name;
     }
 }

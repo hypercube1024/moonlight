@@ -1,15 +1,16 @@
 package com.moonlightsource.idl.compiler.model;
 
 import com.firefly.utils.function.Func0;
+import com.moonlightsource.idl.compiler.exception.ClassNotFoundRuntimeException;
 
 /**
  * @author Pengtao Qiu
  */
 public class ClassDefNotFound implements Func0<ClassDefinition> {
 
-    private final RuntimeException runtimeException;
+    private final ClassNotFoundRuntimeException runtimeException;
 
-    public ClassDefNotFound(RuntimeException runtimeException) {
+    public ClassDefNotFound(ClassNotFoundRuntimeException runtimeException) {
         this.runtimeException = runtimeException;
     }
 

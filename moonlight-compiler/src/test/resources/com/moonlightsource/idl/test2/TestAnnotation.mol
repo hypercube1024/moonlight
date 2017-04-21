@@ -1,2 +1,2 @@
-com.moonlightsource.idl.common.@Template(name = ["java", "c++", "javascript"])
+com.moonlightsource.idl.common.@Template(names = ["java", "c++", "javascript"])
 namespace com.moonlightsource.idl.test2;
