@@ -7,13 +7,14 @@ import java.util.List;
  */
 public class EnumDefinition extends ClassDefinition {
 
-    private List<EnumFieldDefinition> fields;
+    private final List<EnumFieldDefinition> fields;
+
+    public EnumDefinition(TypeEnum type, String name, String namespace, List<ClassDefinition> parametricTypes, List<AnnotationValue> annotations, List<EnumFieldDefinition> fields) {
+        super(type, name, namespace, parametricTypes, annotations);
+        this.fields = fields;
+    }
 
     public List<EnumFieldDefinition> getFields() {
         return fields;
-    }
-
-    public void setFields(List<EnumFieldDefinition> fields) {
-        this.fields = fields;
     }
 }

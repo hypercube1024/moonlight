@@ -40,6 +40,18 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitImportValue(MoonlightParser.ImportValueContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#structDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructDeclaration(MoonlightParser.StructDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#structField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStructField(MoonlightParser.StructFieldContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link MoonlightParser#annotationDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -76,23 +88,53 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBaseAssignment(MoonlightParser.BaseAssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MoonlightParser#baseArrayExpr}.
+	 * Visit a parse tree produced by {@link MoonlightParser#literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBaseArrayExpr(MoonlightParser.BaseArrayExprContext ctx);
+	T visitLiteral(MoonlightParser.LiteralContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MoonlightParser#structDeclaration}.
+	 * Visit a parse tree produced by {@link MoonlightParser#baseListExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStructDeclaration(MoonlightParser.StructDeclarationContext ctx);
+	T visitBaseListExpr(MoonlightParser.BaseListExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MoonlightParser#structField}.
+	 * Visit a parse tree produced by {@link MoonlightParser#boolListExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStructField(MoonlightParser.StructFieldContext ctx);
+	T visitBoolListExpr(MoonlightParser.BoolListExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#intListExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntListExpr(MoonlightParser.IntListExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#charListExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharListExpr(MoonlightParser.CharListExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#floatListExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatListExpr(MoonlightParser.FloatListExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#stringListExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringListExpr(MoonlightParser.StringListExprContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#emptyListExpr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyListExpr(MoonlightParser.EmptyListExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MoonlightParser#functionDeclaration}.
 	 * @param ctx the parse tree
@@ -136,11 +178,11 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitReferenceType(MoonlightParser.ReferenceTypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MoonlightParser#parametricType}.
+	 * Visit a parse tree produced by {@link MoonlightParser#parametricTypeExpr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParametricType(MoonlightParser.ParametricTypeContext ctx);
+	T visitParametricTypeExpr(MoonlightParser.ParametricTypeExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MoonlightParser#containerType}.
 	 * @param ctx the parse tree
@@ -160,11 +202,86 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSetType(MoonlightParser.SetTypeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MoonlightParser#listType}.
+	 * Visit a parse tree produced by the {@code baseTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitListType(MoonlightParser.ListTypeContext ctx);
+	T visitBaseTypeList(MoonlightParser.BaseTypeListContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code containerTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitContainerTypeList(MoonlightParser.ContainerTypeListContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code referenceTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReferenceTypeList(MoonlightParser.ReferenceTypeListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#baseList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBaseList(MoonlightParser.BaseListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#boolList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolList(MoonlightParser.BoolListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#byteList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitByteList(MoonlightParser.ByteListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#shortList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitShortList(MoonlightParser.ShortListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#charList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharList(MoonlightParser.CharListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#intList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntList(MoonlightParser.IntListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#longList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLongList(MoonlightParser.LongListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#floatList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatList(MoonlightParser.FloatListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#doubleList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoubleList(MoonlightParser.DoubleListContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#stringList}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringList(MoonlightParser.StringListContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MoonlightParser#baseType}.
 	 * @param ctx the parse tree

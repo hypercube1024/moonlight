@@ -10,7 +10,13 @@ import java.util.Map;
  */
 public class AnnotationValue {
 
-    private Map<AnnotationFieldDefinition, List<Object>> fieldMap = new HashMap<>();
+    private final DefinitionReference annotationDefinitionReference;
+    private final Map<AnnotationFieldDefinition, List<Object>> fieldMap;
+
+    public AnnotationValue(DefinitionReference annotationDefinitionReference, Map<AnnotationFieldDefinition, List<Object>> fieldMap) {
+        this.annotationDefinitionReference = annotationDefinitionReference;
+        this.fieldMap = fieldMap;
+    }
 
     public Object getValue(String fieldName) {
         Map<String, List<Object>> fieldNameMap = new HashMap<>();
@@ -36,11 +42,7 @@ public class AnnotationValue {
         }
     }
 
-    public Map<AnnotationFieldDefinition, List<Object>> getFieldMap() {
-        return fieldMap;
-    }
-
-    public void setFieldMap(Map<AnnotationFieldDefinition, List<Object>> fieldMap) {
-        this.fieldMap = fieldMap;
+    public AnnotationDefinition getAnnotationDefinition() {
+        return (AnnotationDefinition) annotationDefinitionReference.getClassDefinition();
     }
 }

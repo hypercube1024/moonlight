@@ -8,20 +8,16 @@ import java.util.List;
  */
 public class Source {
 
-    private List<AnnotationValue> annotations;
-    private String namespace = "";
-    private List<String> imports = new ArrayList<>();
-    private List<EnumDefinition> enumDefinitions = new ArrayList<>();
-    private List<AnnotationDefinition> annotationDefinitions = new ArrayList<>();
-    private List<StructDefinition> structDefinitions = new ArrayList<>();
-    private List<InterfaceDefinition> interfaceDefinitions = new ArrayList<>();
+    private final List<AnnotationValue> annotations = new ArrayList<>();
+    private String namespace;
+    private final List<String> imports = new ArrayList<>();
+    private final List<EnumDefinition> enumDefinitions = new ArrayList<>();
+    private final List<AnnotationDefinition> annotationDefinitions = new ArrayList<>();
+    private final List<StructDefinition> structDefinitions = new ArrayList<>();
+    private final List<InterfaceDefinition> interfaceDefinitions = new ArrayList<>();
 
     public List<AnnotationValue> getAnnotations() {
         return annotations;
-    }
-
-    public void setAnnotations(List<AnnotationValue> annotations) {
-        this.annotations = annotations;
     }
 
     public String getNamespace() {
@@ -36,39 +32,19 @@ public class Source {
         return imports;
     }
 
-    public void setImports(List<String> imports) {
-        this.imports = imports;
-    }
-
     public List<EnumDefinition> getEnumDefinitions() {
         return enumDefinitions;
-    }
-
-    public void setEnumDefinitions(List<EnumDefinition> enumDefinitions) {
-        this.enumDefinitions = enumDefinitions;
     }
 
     public List<AnnotationDefinition> getAnnotationDefinitions() {
         return annotationDefinitions;
     }
 
-    public void setAnnotationDefinitions(List<AnnotationDefinition> annotationDefinitions) {
-        this.annotationDefinitions = annotationDefinitions;
-    }
-
     public List<StructDefinition> getStructDefinitions() {
         return structDefinitions;
     }
 
-    public void setStructDefinitions(List<StructDefinition> structDefinitions) {
-        this.structDefinitions = structDefinitions;
-    }
-
     public List<InterfaceDefinition> getInterfaceDefinitions() {
         return interfaceDefinitions;
-    }
-
-    public void setInterfaceDefinitions(List<InterfaceDefinition> interfaceDefinitions) {
-        this.interfaceDefinitions = interfaceDefinitions;
     }
 }

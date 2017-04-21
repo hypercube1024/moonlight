@@ -7,13 +7,14 @@ import java.util.List;
  */
 public class AnnotationDefinition extends ClassDefinition {
 
-    private List<AnnotationFieldDefinition> fields;
+    private final List<AnnotationFieldDefinition> fields;
+
+    public AnnotationDefinition(TypeEnum type, String name, String namespace, List<ClassDefinition> parametricTypes, List<AnnotationValue> annotations, List<AnnotationFieldDefinition> fields) {
+        super(type, name, namespace, parametricTypes, annotations);
+        this.fields = fields;
+    }
 
     public List<AnnotationFieldDefinition> getFields() {
         return fields;
-    }
-
-    public void setFields(List<AnnotationFieldDefinition> fields) {
-        this.fields = fields;
     }
 }

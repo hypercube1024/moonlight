@@ -7,22 +7,20 @@ import java.util.List;
  */
 public class StructDefinition extends ClassDefinition {
 
-    private ClassDefinition parent;
-    private List<StructFieldDefinition> fields;
+    private final DefinitionReference parentReference;
+    private final List<StructFieldDefinition> fields;
 
-    public ClassDefinition getParent() {
-        return parent;
+    public StructDefinition(TypeEnum type, String name, String namespace, List<ClassDefinition> parametricTypes, List<AnnotationValue> annotations, DefinitionReference parentReference, List<StructFieldDefinition> fields) {
+        super(type, name, namespace, parametricTypes, annotations);
+        this.parentReference = parentReference;
+        this.fields = fields;
     }
 
-    public void setParent(ClassDefinition parent) {
-        this.parent = parent;
+    public StructDefinition getParent() {
+        return (StructDefinition) parentReference.getClassDefinition();
     }
 
     public List<StructFieldDefinition> getFields() {
         return fields;
-    }
-
-    public void setFields(List<StructFieldDefinition> fields) {
-        this.fields = fields;
     }
 }

@@ -1,26 +1,26 @@
 package com.moonlightsource.idl.compiler.model;
 
+import java.util.List;
+
 /**
  * @author Pengtao Qiu
  */
 public class StructFieldDefinition extends FieldDefinition {
 
-    private ModifierEnum modifier;
-    private StructDefinition declaredStruct;
+    private final ModifierEnum modifier;
+    private final DefinitionReference declaredStructReference;
+
+    public StructFieldDefinition(String name, List<AnnotationValue> annotations, DefinitionReference typeReference, ModifierEnum modifier, DefinitionReference declaredStructReference) {
+        super(name, annotations, typeReference);
+        this.modifier = modifier;
+        this.declaredStructReference = declaredStructReference;
+    }
 
     public ModifierEnum getModifier() {
         return modifier;
     }
 
-    public void setModifier(ModifierEnum modifier) {
-        this.modifier = modifier;
-    }
-
-    public StructDefinition getDeclaredStruct() {
-        return declaredStruct;
-    }
-
-    public void setDeclaredStruct(StructDefinition declaredStruct) {
-        this.declaredStruct = declaredStruct;
+    public ClassDefinition getDeclaredStruct() {
+        return declaredStructReference.getClassDefinition();
     }
 }

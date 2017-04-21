@@ -7,7 +7,7 @@ struct Hello<T> extends Request<string> {
     T data;
     string name;
     int age;
-    required Hero hero;
+    required list<Hero> heroList;
 }
 
 struct Answer<Foo<T>> extends Response<string> {
@@ -20,8 +20,9 @@ struct Answer<Foo<T>> extends Response<string> {
 annotation Realm {
     int x = 0;
     int y;
-    string[] names = ["abc", "bcd" ];
-    boolean[] ssss = [false, true];
+    list<string> names = ["abc", "bcd"];
+    list<boolean> ssss = [false, true];
+    list<int> empty = [];
 }
 
 @Realm(x = 4, y = 3)

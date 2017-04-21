@@ -8,50 +8,38 @@ import java.util.Objects;
  */
 public class ClassDefinition {
 
-    private TypeEnum type;
-    private String name;
-    private String namespace;
-    private List<ClassDefinition> parametricTypes;
-    private List<AnnotationValue> annotations;
+    private final TypeEnum type;
+    private final String name;
+    private final String namespace;
+    private final List<ClassDefinition> parametricTypes;
+    private final List<AnnotationValue> annotations;
+
+    public ClassDefinition(TypeEnum type, String name, String namespace, List<ClassDefinition> parametricTypes, List<AnnotationValue> annotations) {
+        this.type = type;
+        this.name = name;
+        this.namespace = namespace;
+        this.parametricTypes = parametricTypes;
+        this.annotations = annotations;
+    }
 
     public TypeEnum getType() {
         return type;
-    }
-
-    public void setType(TypeEnum type) {
-        this.type = type;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getNamespace() {
         return namespace;
-    }
-
-    public void setNamespace(String namespace) {
-        this.namespace = namespace;
     }
 
     public List<ClassDefinition> getParametricTypes() {
         return parametricTypes;
     }
 
-    public void setParametricTypes(List<ClassDefinition> parametricTypes) {
-        this.parametricTypes = parametricTypes;
-    }
-
     public List<AnnotationValue> getAnnotations() {
         return annotations;
-    }
-
-    public void setAnnotations(List<AnnotationValue> annotations) {
-        this.annotations = annotations;
     }
 
     @Override

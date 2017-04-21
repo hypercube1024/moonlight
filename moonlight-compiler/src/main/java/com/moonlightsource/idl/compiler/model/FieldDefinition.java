@@ -8,32 +8,26 @@ import java.util.Objects;
  */
 public class FieldDefinition {
 
-    private String name;
-    private ClassDefinition classDefinition;
-    private List<AnnotationValue> annotations;
+    private final String name;
+    private final List<AnnotationValue> annotations;
+    private final DefinitionReference typeReference;
+
+    public FieldDefinition(String name, List<AnnotationValue> annotations, DefinitionReference typeReference) {
+        this.name = name;
+        this.annotations = annotations;
+        this.typeReference = typeReference;
+    }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public ClassDefinition getClassDefinition() {
-        return classDefinition;
-    }
-
-    public void setClassDefinition(ClassDefinition classDefinition) {
-        this.classDefinition = classDefinition;
     }
 
     public List<AnnotationValue> getAnnotations() {
         return annotations;
     }
 
-    public void setAnnotations(List<AnnotationValue> annotations) {
-        this.annotations = annotations;
+    public ClassDefinition getClassDefinition() {
+        return typeReference.getClassDefinition();
     }
 
     @Override

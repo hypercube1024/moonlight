@@ -57,6 +57,26 @@ public interface MoonlightListener extends ParseTreeListener {
 	 */
 	void exitImportValue(MoonlightParser.ImportValueContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#structDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructDeclaration(MoonlightParser.StructDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#structDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructDeclaration(MoonlightParser.StructDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#structField}.
+	 * @param ctx the parse tree
+	 */
+	void enterStructField(MoonlightParser.StructFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#structField}.
+	 * @param ctx the parse tree
+	 */
+	void exitStructField(MoonlightParser.StructFieldContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MoonlightParser#annotationDeclaration}.
 	 * @param ctx the parse tree
 	 */
@@ -117,35 +137,85 @@ public interface MoonlightListener extends ParseTreeListener {
 	 */
 	void exitBaseAssignment(MoonlightParser.BaseAssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MoonlightParser#baseArrayExpr}.
+	 * Enter a parse tree produced by {@link MoonlightParser#literal}.
 	 * @param ctx the parse tree
 	 */
-	void enterBaseArrayExpr(MoonlightParser.BaseArrayExprContext ctx);
+	void enterLiteral(MoonlightParser.LiteralContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MoonlightParser#baseArrayExpr}.
+	 * Exit a parse tree produced by {@link MoonlightParser#literal}.
 	 * @param ctx the parse tree
 	 */
-	void exitBaseArrayExpr(MoonlightParser.BaseArrayExprContext ctx);
+	void exitLiteral(MoonlightParser.LiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MoonlightParser#structDeclaration}.
+	 * Enter a parse tree produced by {@link MoonlightParser#baseListExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterStructDeclaration(MoonlightParser.StructDeclarationContext ctx);
+	void enterBaseListExpr(MoonlightParser.BaseListExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MoonlightParser#structDeclaration}.
+	 * Exit a parse tree produced by {@link MoonlightParser#baseListExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitStructDeclaration(MoonlightParser.StructDeclarationContext ctx);
+	void exitBaseListExpr(MoonlightParser.BaseListExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MoonlightParser#structField}.
+	 * Enter a parse tree produced by {@link MoonlightParser#boolListExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterStructField(MoonlightParser.StructFieldContext ctx);
+	void enterBoolListExpr(MoonlightParser.BoolListExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MoonlightParser#structField}.
+	 * Exit a parse tree produced by {@link MoonlightParser#boolListExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitStructField(MoonlightParser.StructFieldContext ctx);
+	void exitBoolListExpr(MoonlightParser.BoolListExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#intListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntListExpr(MoonlightParser.IntListExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#intListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntListExpr(MoonlightParser.IntListExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#charListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharListExpr(MoonlightParser.CharListExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#charListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharListExpr(MoonlightParser.CharListExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#floatListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloatListExpr(MoonlightParser.FloatListExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#floatListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloatListExpr(MoonlightParser.FloatListExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#stringListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringListExpr(MoonlightParser.StringListExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#stringListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringListExpr(MoonlightParser.StringListExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#emptyListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmptyListExpr(MoonlightParser.EmptyListExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#emptyListExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmptyListExpr(MoonlightParser.EmptyListExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MoonlightParser#functionDeclaration}.
 	 * @param ctx the parse tree
@@ -217,15 +287,15 @@ public interface MoonlightListener extends ParseTreeListener {
 	 */
 	void exitReferenceType(MoonlightParser.ReferenceTypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MoonlightParser#parametricType}.
+	 * Enter a parse tree produced by {@link MoonlightParser#parametricTypeExpr}.
 	 * @param ctx the parse tree
 	 */
-	void enterParametricType(MoonlightParser.ParametricTypeContext ctx);
+	void enterParametricTypeExpr(MoonlightParser.ParametricTypeExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MoonlightParser#parametricType}.
+	 * Exit a parse tree produced by {@link MoonlightParser#parametricTypeExpr}.
 	 * @param ctx the parse tree
 	 */
-	void exitParametricType(MoonlightParser.ParametricTypeContext ctx);
+	void exitParametricTypeExpr(MoonlightParser.ParametricTypeExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MoonlightParser#containerType}.
 	 * @param ctx the parse tree
@@ -257,15 +327,141 @@ public interface MoonlightListener extends ParseTreeListener {
 	 */
 	void exitSetType(MoonlightParser.SetTypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MoonlightParser#listType}.
+	 * Enter a parse tree produced by the {@code baseTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
 	 * @param ctx the parse tree
 	 */
-	void enterListType(MoonlightParser.ListTypeContext ctx);
+	void enterBaseTypeList(MoonlightParser.BaseTypeListContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MoonlightParser#listType}.
+	 * Exit a parse tree produced by the {@code baseTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
 	 * @param ctx the parse tree
 	 */
-	void exitListType(MoonlightParser.ListTypeContext ctx);
+	void exitBaseTypeList(MoonlightParser.BaseTypeListContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code containerTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
+	 * @param ctx the parse tree
+	 */
+	void enterContainerTypeList(MoonlightParser.ContainerTypeListContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code containerTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
+	 * @param ctx the parse tree
+	 */
+	void exitContainerTypeList(MoonlightParser.ContainerTypeListContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code referenceTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
+	 * @param ctx the parse tree
+	 */
+	void enterReferenceTypeList(MoonlightParser.ReferenceTypeListContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code referenceTypeList}
+	 * labeled alternative in {@link MoonlightParser#listType}.
+	 * @param ctx the parse tree
+	 */
+	void exitReferenceTypeList(MoonlightParser.ReferenceTypeListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#baseList}.
+	 * @param ctx the parse tree
+	 */
+	void enterBaseList(MoonlightParser.BaseListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#baseList}.
+	 * @param ctx the parse tree
+	 */
+	void exitBaseList(MoonlightParser.BaseListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#boolList}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolList(MoonlightParser.BoolListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#boolList}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolList(MoonlightParser.BoolListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#byteList}.
+	 * @param ctx the parse tree
+	 */
+	void enterByteList(MoonlightParser.ByteListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#byteList}.
+	 * @param ctx the parse tree
+	 */
+	void exitByteList(MoonlightParser.ByteListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#shortList}.
+	 * @param ctx the parse tree
+	 */
+	void enterShortList(MoonlightParser.ShortListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#shortList}.
+	 * @param ctx the parse tree
+	 */
+	void exitShortList(MoonlightParser.ShortListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#charList}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharList(MoonlightParser.CharListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#charList}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharList(MoonlightParser.CharListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#intList}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntList(MoonlightParser.IntListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#intList}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntList(MoonlightParser.IntListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#longList}.
+	 * @param ctx the parse tree
+	 */
+	void enterLongList(MoonlightParser.LongListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#longList}.
+	 * @param ctx the parse tree
+	 */
+	void exitLongList(MoonlightParser.LongListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#floatList}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloatList(MoonlightParser.FloatListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#floatList}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloatList(MoonlightParser.FloatListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#doubleList}.
+	 * @param ctx the parse tree
+	 */
+	void enterDoubleList(MoonlightParser.DoubleListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#doubleList}.
+	 * @param ctx the parse tree
+	 */
+	void exitDoubleList(MoonlightParser.DoubleListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#stringList}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringList(MoonlightParser.StringListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#stringList}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringList(MoonlightParser.StringListContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MoonlightParser#baseType}.
 	 * @param ctx the parse tree

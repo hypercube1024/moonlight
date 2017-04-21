@@ -24,13 +24,22 @@ importValue
     : Identifier ('.' Identifier)* ('.' '*')?
     ;
 
+// struct
+structDeclaration
+    : annotation* STRUCT referenceType (EXTENDS referenceType )? '{' structField* '}'
+    ;
+
+structField
+    : annotation* FieldReq? fieldType Identifier ';'
+    ;
+
 // annotation
 annotationDeclaration
     : annotation* ANNOTATION Identifier '{' baseField* '}'
     ;
 
 annotation
-    : (namespaceValue '.')? Label ( ('(' ')') | ('(' baseAssignment (',' baseAssignment)* ')') )?
+    : (namespaceValue '.')? AnnotationLabel ( ('(' ')') | ('(' baseAssignment (',' baseAssignment)* ')') )?
     ;
 
 // enum
@@ -43,25 +52,73 @@ enumField
     ;
 
 
-// base field
+// base field definition
 baseField
-    : baseType ARRAY? ( Identifier | baseAssignment) ';';
+    : BOOLEAN Identifier ('=' BooleanLiteral)? ';'
+    | BYTE Identifier ('=' IntegerLiteral)? ';'
+    | SHORT Identifier ('=' IntegerLiteral)? ';'
+    | INT Identifier ('=' IntegerLiteral)? ';'
+    | LONG Identifier ('=' IntegerLiteral)? ';'
+    | CHAR Identifier ('=' CharacterLiteral)? ';'
+    | FLOAT Identifier ('=' FloatingPointLiteral)? ';'
+    | DOUBLE Identifier ('=' FloatingPointLiteral)? ';'
+    | STRING Identifier ('=' StringLiteral)? ';'
+    | boolList Identifier ('=' (boolListExpr | emptyListExpr))? ';'
+    | byteList Identifier ('=' (intListExpr | emptyListExpr))? ';'
+    | shortList Identifier ('=' (intListExpr | emptyListExpr))? ';'
+    | intList Identifier ('=' (intListExpr | emptyListExpr))? ';'
+    | longList Identifier ('=' (intListExpr | emptyListExpr))? ';'
+    | charList Identifier ('=' (charListExpr | emptyListExpr))? ';'
+    | floatList Identifier ('=' (floatListExpr | emptyListExpr))? ';'
+    | doubleList Identifier ('=' (floatListExpr | emptyListExpr))? ';'
+    | stringList Identifier ('=' (stringListExpr| emptyListExpr))? ';'
+    ;
 
 baseAssignment
-    : Identifier '=' (Literal | baseArrayExpr)
+    : Identifier '=' (literal | baseListExpr)
     ;
 
-baseArrayExpr
-    : ARRAY | '['  ']' | ('['Literal (',' Literal)* ']')
+literal
+    : BooleanLiteral
+    | IntegerLiteral
+    | CharacterLiteral
+    | FloatingPointLiteral
+    | StringLiteral
+    | NullLiteral
     ;
 
-// struct
-structDeclaration
-    : annotation* STRUCT referenceType (EXTENDS referenceType )? '{' structField* '}'
+baseListExpr
+    : emptyListExpr
+    | boolListExpr
+    | intListExpr
+    | charListExpr
+    | floatListExpr
+    | stringListExpr
     ;
 
-structField
-    : annotation* FieldReq? fieldType Identifier ';'
+boolListExpr
+    : '[' BooleanLiteral (',' BooleanLiteral)* ']'
+    ;
+
+intListExpr
+    : '[' IntegerLiteral (',' IntegerLiteral)* ']'
+    ;
+
+charListExpr
+    : '[' CharacterLiteral (',' CharacterLiteral)* ']'
+    ;
+
+floatListExpr
+    : '[' FloatingPointLiteral (',' FloatingPointLiteral)* ']'
+    ;
+
+stringListExpr
+    : '[' StringLiteral (',' StringLiteral)* ']'
+    ;
+
+emptyListExpr
+    : EMPTY_LIST
+    | '['  ']'
     ;
 
 
@@ -97,10 +154,10 @@ fieldType
     ;
 
 referenceType
-    : (namespaceValue '.')? Identifier parametricType?
+    : (namespaceValue '.')? Identifier parametricTypeExpr?
     ;
 
-parametricType
+parametricTypeExpr
     : '<' fieldType (',' fieldType)* '>'
     ;
 
@@ -119,7 +176,57 @@ setType
     ;
 
 listType
-    : 'list' '<' fieldType '>'
+    : baseList                      #baseTypeList
+    | 'list' '<' containerType '>'  #containerTypeList
+    | 'list' '<' referenceType '>'  #referenceTypeList
+    ;
+
+baseList
+    : boolList
+    | byteList
+    | shortList
+    | charList
+    | intList
+    | longList
+    | floatList
+    | doubleList
+    | stringList
+    ;
+
+boolList
+    : 'list' '<' BOOLEAN '>'
+    ;
+
+byteList
+    : 'list' '<' BYTE '>'
+    ;
+
+shortList
+    : 'list' '<' SHORT '>'
+    ;
+
+charList
+    : 'list' '<' CHAR '>'
+    ;
+
+intList
+    : 'list' '<' INT '>'
+    ;
+
+longList
+    : 'list' '<' LONG '>'
+    ;
+
+floatList
+    : 'list' '<' FLOAT '>'
+    ;
+
+doubleList
+    : 'list' '<' DOUBLE '>'
+    ;
+
+stringList
+    : 'list' '<' STRING '>'
     ;
 
 baseType

@@ -21,19 +21,8 @@ NAMESPACE : 'namespace';
 STRUCT : 'struct';
 ANNOTATION : 'annotation';
 
-ARRAY : '[' ']';
-
-Label : '@' Identifier;
-
-Literal
-    : IntegerLiteral
-    | FloatingPointLiteral
-    | StringLiteral
-    | CharacterLiteral
-    | BooleanLiteral
-    | NullLiteral
-    ;
-
+EMPTY_LIST : '[]';
+AnnotationLabel : '@' Identifier;
 
 FieldReq
     : 'required'

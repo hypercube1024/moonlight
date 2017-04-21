@@ -7,40 +7,41 @@ import java.util.List;
  */
 public class FunctionDefinition {
 
-    private ClassDefinition returnType;
-    private List<AnnotationValue> annotations;
-    private InterfaceDefinition declaredInterface;
-    private List<ParameterDefinition> parameters;
+    private final String name;
+    private final DefinitionReference returnTypeReference;
+    private final List<AnnotationValue> annotations;
+    private final DefinitionReference declaredInterfaceReference;
+    private final List<ParameterDefinition> parameters;
 
-    public ClassDefinition getReturnType() {
-        return returnType;
+    public FunctionDefinition(String name,
+                              DefinitionReference returnTypeReference,
+                              List<AnnotationValue> annotations,
+                              DefinitionReference declaredInterfaceReference,
+                              List<ParameterDefinition> parameters) {
+        this.name = name;
+        this.returnTypeReference = returnTypeReference;
+        this.annotations = annotations;
+        this.declaredInterfaceReference = declaredInterfaceReference;
+        this.parameters = parameters;
     }
 
-    public void setReturnType(ClassDefinition returnType) {
-        this.returnType = returnType;
+    public String getName() {
+        return name;
+    }
+
+    public ClassDefinition getReturnType() {
+        return returnTypeReference.getClassDefinition();
     }
 
     public List<AnnotationValue> getAnnotations() {
         return annotations;
     }
 
-    public void setAnnotations(List<AnnotationValue> annotations) {
-        this.annotations = annotations;
-    }
-
     public InterfaceDefinition getDeclaredInterface() {
-        return declaredInterface;
-    }
-
-    public void setDeclaredInterface(InterfaceDefinition declaredInterface) {
-        this.declaredInterface = declaredInterface;
+        return (InterfaceDefinition) declaredInterfaceReference.getClassDefinition();
     }
 
     public List<ParameterDefinition> getParameters() {
         return parameters;
-    }
-
-    public void setParameters(List<ParameterDefinition> parameters) {
-        this.parameters = parameters;
     }
 }

@@ -1,5 +1,6 @@
 package com.moonlightsource.idl.compiler.model;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -7,13 +8,22 @@ import java.util.List;
  */
 public class AnnotationFieldDefinition extends FieldDefinition {
 
-    private List<Object> values;
+    private final List<Object> values;
+
+    public AnnotationFieldDefinition(String name, DefinitionReference typeReference, List<Object> values) {
+        super(name, Collections.emptyList(), typeReference);
+        this.values = values;
+    }
 
     public List<Object> getValues() {
         return values;
     }
 
-    public void setValues(List<Object> values) {
-        this.values = values;
+    public Object getValue() {
+        if (values == null || values.isEmpty()) {
+            return null;
+        } else {
+            return values.get(0);
+        }
     }
 }
