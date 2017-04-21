@@ -31,33 +31,12 @@ public class DefinitionReferenceManager {
     }
 
     public synchronized void put(DefinitionReference ref, Func0<ClassDefinition> func0) {
-        if (func0 instanceof ClassDefNotFound) {
-            throw new IllegalArgumentException("the func0 must not be ClassDefNotFound");
-        }
-
-        if (func0 instanceof ReferenceCheck) {
-            throw new IllegalArgumentException("the func0 must not be ReferenceCheck");
-        }
-
         Func0<ClassDefinition> func = map.get(ref);
         if (func != null && func.call().equals(func0.call())) {
             throw new CompilingRuntimeException("the class " + func.call() + " exists");
         } else {
             map.put(ref, func0);
         }
-    }
-
-    public synchronized void putPlaceholder(DefinitionReference ref, TerminalNode node, Path path) {
-        map.computeIfAbsent(ref, k -> new ClassDefNotFound(new ClassNotFoundRuntimeException("the class " + ref + " not found.", node, path)));
-    }
-
-    public synchronized void putReferenceCheck(DefinitionReference ref) {
-        map.computeIfAbsent(ref, k -> new ReferenceCheck());
-    }
-
-    public synchronized boolean isReferenceCheck(DefinitionReference ref) {
-        Func0<ClassDefinition> func = map.get(ref);
-        return func != null && func instanceof ReferenceCheck;
     }
 
     public synchronized void putNamespace(String namespace) {

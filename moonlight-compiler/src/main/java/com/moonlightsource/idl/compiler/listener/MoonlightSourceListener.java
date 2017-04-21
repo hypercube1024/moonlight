@@ -86,7 +86,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         }
         String namespace = sb.toString();
         if (!referenceManager.containNamespace(namespace)) {
-            throw new CompilingRuntimeException("the namespace " + namespace + " does not exists.", ctx.IMPORT(), sourceFile.getPath());
+            throw new CompilingRuntimeException("the namespace " + namespace + " is not found.", ctx.IMPORT(), sourceFile.getPath());
         }
 
         Set<String> classNameSet = referenceManager.getClassNames(namespace);
@@ -95,7 +95,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
             sourceFile.getImports().computeIfAbsent(namespace, k -> new HashSet<>()).addAll(classNameSet);
         } else {
             if (!classNameSet.contains(className)) {
-                throw new CompilingRuntimeException("the class " + className + " does not exists.", ctx.IMPORT(), sourceFile.getPath());
+                throw new CompilingRuntimeException("the class " + className + " is not found.", ctx.IMPORT(), sourceFile.getPath());
             }
             sourceFile.getImports().computeIfAbsent(namespace, k -> new HashSet<>()).add(className);
         }
@@ -166,11 +166,14 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
 
     protected void enterSourceFileAnnotation(MoonlightParser.AnnotationContext ctx) {
         String namespace = ctx.namespaceValue().getText();
-        String name = ctx.AnnotationLabel().getText();
+        String name = ctx.AnnotationLabel().getText().substring(1);
         log.debug("source file annotation, namespace -> {}, name -> {}", namespace, name);
 
+        if (!referenceManager.containClass(namespace, name)) {
+            throw new CompilingRuntimeException("the annotation " + namespace + "." + name + " is not found");
+        }
+
         DefinitionReference annotationDefRef = new DefinitionReference(namespace, name, referenceManager);
-        referenceManager.putPlaceholder(annotationDefRef, ctx.AnnotationLabel(), sourceFile.getPath());
         Map<String, ParseTree> fieldMap = new HashMap<>();
         AnnotationValue annotationValue = new AnnotationValue(annotationDefRef, fieldMap);
         sourceFile.getAnnotations().add(annotationValue);
