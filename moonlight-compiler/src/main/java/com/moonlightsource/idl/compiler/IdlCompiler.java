@@ -40,6 +40,8 @@ abstract public class IdlCompiler {
 
     public static final ThreadLocal<Path> CURRENT_PATH = new ThreadLocal<>();
 
+    public static final Predicate<Path> DEFAULT_SUFFIX = path -> path.getFileName().toString().endsWith(".mol");
+
     /**
      * Parallel compiling all files in the root directory
      *
