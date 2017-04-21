@@ -37,7 +37,7 @@ abstract public class ParseTreeUtils {
                 if (c.length() == 3) {
                     return terminalNode.getText().charAt(1);
                 } else {
-                    throw new CompilingRuntimeException("the char must be not null");
+                    throw new CompilingRuntimeException("the char must be not null", terminalNode);
                 }
             }
             case MoonlightParser.StringLiteral: {
@@ -53,7 +53,7 @@ abstract public class ParseTreeUtils {
             case MoonlightParser.FloatingPointLiteral:
                 return Double.parseDouble(terminalNode.getText());
         }
-        throw new CompilingRuntimeException("the literal is not recognized");
+        throw new CompilingRuntimeException("the literal is not recognized", terminalNode);
     }
 
     public static List<Object> getBaseListValues(MoonlightParser.BaseListExprContext baseListExprContext) {

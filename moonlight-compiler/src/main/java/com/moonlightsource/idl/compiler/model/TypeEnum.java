@@ -6,22 +6,27 @@ import java.util.EnumSet;
  * @author Pengtao Qiu
  */
 public enum TypeEnum {
-    BOOLEAN, BYTE, SHORT, CHAR, INT, LONG, FLOAT, DOUBLE, STRING,
+    BOOLEAN("boolean"), BYTE("byte"), SHORT("short"), CHAR("char"), INT("int"), LONG("long"), FLOAT("float"), DOUBLE("double"), STRING("string"),
 
-    LIST, SET, MAP,
+    LIST("list"), SET("set"), MAP("map"),
 
-    STRUCT, ENUM, INTERFACE, ANNOTATION,
+    STRUCT("struct"), ENUM("enum"), INTERFACE("interface"), ANNOTATION("annotation"),
 
-    GENERIC, VOID;
+    GENERIC("generic"), VOID("void");
 
+    private final String keyword;
 
-    private static final EnumSet<TypeEnum> BASE_TYPE_ENUMS = EnumSet.of(
+    TypeEnum(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public static final EnumSet<TypeEnum> BASE_TYPE_ENUMS = EnumSet.of(
             BOOLEAN, BYTE, SHORT, CHAR, INT, LONG, FLOAT, DOUBLE, STRING
     );
 
-    private static final EnumSet<TypeEnum> CONTAINER_TYPE_ENUMS = EnumSet.of(LIST, SET, MAP);
+    public static final EnumSet<TypeEnum> CONTAINER_TYPE_ENUMS = EnumSet.of(LIST, SET, MAP);
 
-    private static final EnumSet<TypeEnum> CUSTOM_TYPE_ENUMS = EnumSet.of(STRUCT, ENUM, INTERFACE, ANNOTATION);
+    public static final EnumSet<TypeEnum> CUSTOM_TYPE_ENUMS = EnumSet.of(STRUCT, ENUM, INTERFACE, ANNOTATION);
 
     public boolean isBaseType() {
         return BASE_TYPE_ENUMS.contains(this);
@@ -33,5 +38,9 @@ public enum TypeEnum {
 
     public boolean isCustomType() {
         return CUSTOM_TYPE_ENUMS.contains(this);
+    }
+
+    public String getKeyword() {
+        return keyword;
     }
 }

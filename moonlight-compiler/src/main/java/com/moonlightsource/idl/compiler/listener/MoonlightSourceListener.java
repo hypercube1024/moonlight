@@ -1,6 +1,7 @@
 package com.moonlightsource.idl.compiler.listener;
 
 import com.firefly.utils.function.Action1;
+import com.firefly.utils.function.Func0;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.*;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
@@ -92,15 +93,38 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         String namespace = sourceFile.getNamespace();
         String name = ctx.Identifier().getText();
         checkAnnotationName(name, ctx.Identifier());
+
         List<AnnotationFieldDefinition> fields = new ArrayList<>();
         AnnotationDefinition annotationDefinition = new AnnotationDefinition(TypeEnum.ANNOTATION, name, namespace,
                 getAnnotationDeclarationAnnotations(ctx), fields);
         sourceFile.getAnnotationDefinitions().add(annotationDefinition);
+
+        DefinitionReference reference = new DefinitionReference(namespace, name, referenceManager);
+        referenceManager.put(reference, () -> annotationDefinition);
+
         if (ctx.baseField() != null && !ctx.baseField().isEmpty()) {
             for (MoonlightParser.BaseFieldContext baseFieldContext : ctx.baseField()) {
                 // TODO create annotation fields
+                fields.add(createAnnotationFieldDef(baseFieldContext));
             }
         }
+    }
+
+    private AnnotationFieldDefinition createAnnotationFieldDef(MoonlightParser.BaseFieldContext baseFieldContext) {
+        if (baseFieldContext instanceof MoonlightParser.BoolFieldContext) {
+
+        } else if (baseFieldContext instanceof MoonlightParser.ByteFieldContext) {
+
+        } else if (baseFieldContext instanceof MoonlightParser.ShortFieldContext) {
+
+        } else if (baseFieldContext instanceof MoonlightParser.IntFieldContext) {
+
+        } else if (baseFieldContext instanceof MoonlightParser.LongFieldContext) {
+
+        } else if (baseFieldContext instanceof MoonlightParser.CharFieldContext) {
+
+        }
+        throw new CompilingRuntimeException("the field type is not support");
     }
 
     private void checkAnnotationName(String name, TerminalNode node) {

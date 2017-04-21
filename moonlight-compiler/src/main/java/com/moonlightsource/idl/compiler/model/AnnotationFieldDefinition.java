@@ -9,10 +9,12 @@ import java.util.List;
 public class AnnotationFieldDefinition extends FieldDefinition {
 
     private final List<Object> values;
+    private final DefinitionReference declaredAnnotationReference;
 
-    public AnnotationFieldDefinition(String name, DefinitionReference typeReference, List<Object> values) {
+    public AnnotationFieldDefinition(String name, DefinitionReference typeReference, List<Object> values, DefinitionReference declaredAnnotationReference) {
         super(name, Collections.emptyList(), typeReference);
         this.values = values;
+        this.declaredAnnotationReference = declaredAnnotationReference;
     }
 
     public List<Object> getValues() {
@@ -25,5 +27,9 @@ public class AnnotationFieldDefinition extends FieldDefinition {
         } else {
             return values.get(0);
         }
+    }
+
+    public AnnotationDefinition getDeclaredAnnotationDefinition() {
+        return (AnnotationDefinition) declaredAnnotationReference.getClassDefinition();
     }
 }

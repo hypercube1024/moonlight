@@ -1,3 +1,4 @@
+// Generated from /Users/bjhl/Develop/local_git/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -141,17 +142,17 @@ public interface MoonlightListener extends ParseTreeListener {
 	 */
 	void exitByteField(MoonlightParser.ByteFieldContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code shorField}
+	 * Enter a parse tree produced by the {@code shortField}
 	 * labeled alternative in {@link MoonlightParser#baseField}.
 	 * @param ctx the parse tree
 	 */
-	void enterShorField(MoonlightParser.ShorFieldContext ctx);
+	void enterShortField(MoonlightParser.ShortFieldContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code shorField}
+	 * Exit a parse tree produced by the {@code shortField}
 	 * labeled alternative in {@link MoonlightParser#baseField}.
 	 * @param ctx the parse tree
 	 */
-	void exitShorField(MoonlightParser.ShorFieldContext ctx);
+	void exitShortField(MoonlightParser.ShortFieldContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code intField}
 	 * labeled alternative in {@link MoonlightParser#baseField}.

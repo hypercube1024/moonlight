@@ -1,3 +1,4 @@
+// Generated from /Users/bjhl/Develop/local_git/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -90,12 +91,12 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitByteField(MoonlightParser.ByteFieldContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code shorField}
+	 * Visit a parse tree produced by the {@code shortField}
 	 * labeled alternative in {@link MoonlightParser#baseField}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitShorField(MoonlightParser.ShorFieldContext ctx);
+	T visitShortField(MoonlightParser.ShortFieldContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code intField}
 	 * labeled alternative in {@link MoonlightParser#baseField}.

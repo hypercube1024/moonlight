@@ -56,7 +56,7 @@ enumField
 baseField
     : BOOLEAN Identifier ('=' BooleanLiteral)? ';'                      #boolField
     | BYTE Identifier ('=' IntegerLiteral)? ';'                         #byteField
-    | SHORT Identifier ('=' IntegerLiteral)? ';'                        #shorField
+    | SHORT Identifier ('=' IntegerLiteral)? ';'                        #shortField
     | INT Identifier ('=' IntegerLiteral)? ';'                          #intField
     | LONG Identifier ('=' IntegerLiteral)? ';'                         #longField
     | CHAR Identifier ('=' CharacterLiteral)? ';'                       #charField

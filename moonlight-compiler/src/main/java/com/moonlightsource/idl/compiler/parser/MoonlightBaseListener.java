@@ -1,3 +1,4 @@
+// Generated from /Users/bjhl/Develop/local_git/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -171,13 +172,13 @@ public class MoonlightBaseListener implements MoonlightListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterShorField(MoonlightParser.ShorFieldContext ctx) { }
+	@Override public void enterShortField(MoonlightParser.ShortFieldContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitShorField(MoonlightParser.ShorFieldContext ctx) { }
+	@Override public void exitShortField(MoonlightParser.ShortFieldContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

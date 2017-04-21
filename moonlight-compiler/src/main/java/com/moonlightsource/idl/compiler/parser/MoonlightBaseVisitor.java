@@ -1,3 +1,4 @@
+// Generated from /Users/bjhl/Develop/local_git/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -107,7 +108,7 @@ public class MoonlightBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitShorField(MoonlightParser.ShorFieldContext ctx) { return visitChildren(ctx); }
+	@Override public T visitShortField(MoonlightParser.ShortFieldContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

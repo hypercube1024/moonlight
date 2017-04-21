@@ -1,3 +1,4 @@
+// Generated from /Users/bjhl/Develop/local_git/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -1268,6 +1269,25 @@ public class MoonlightParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class ShortFieldContext extends BaseFieldContext {
+		public TerminalNode SHORT() { return getToken(MoonlightParser.SHORT, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode IntegerLiteral() { return getToken(MoonlightParser.IntegerLiteral, 0); }
+		public ShortFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterShortField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitShortField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitShortField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class CharListFieldContext extends BaseFieldContext {
 		public CharListContext charList() {
 			return getRuleContext(CharListContext.class,0);
@@ -1424,25 +1444,6 @@ public class MoonlightParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class ShorFieldContext extends BaseFieldContext {
-		public TerminalNode SHORT() { return getToken(MoonlightParser.SHORT, 0); }
-		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
-		public TerminalNode IntegerLiteral() { return getToken(MoonlightParser.IntegerLiteral, 0); }
-		public ShorFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterShorField(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitShorField(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitShorField(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class StringFieldContext extends BaseFieldContext {
 		public TerminalNode STRING() { return getToken(MoonlightParser.STRING, 0); }
 		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
@@ -1520,7 +1521,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 3:
-				_localctx = new ShorFieldContext(_localctx);
+				_localctx = new ShortFieldContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(249);

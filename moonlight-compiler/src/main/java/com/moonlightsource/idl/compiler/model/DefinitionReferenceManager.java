@@ -5,6 +5,7 @@ import com.moonlightsource.idl.compiler.exception.ClassNotFoundRuntimeException;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -15,6 +16,12 @@ import java.util.function.Function;
 public class DefinitionReferenceManager {
 
     private Map<DefinitionReference, Func0<ClassDefinition>> map = new HashMap<>();
+
+    public DefinitionReferenceManager() {
+        TypeEnum.BASE_TYPE_ENUMS
+                .forEach(t -> map.put(new DefinitionReference("", t.getKeyword(), this),
+                        () -> new ClassDefinition(t, t.getKeyword(), "", Collections.emptyList(), Collections.emptyList())));
+    }
 
     public synchronized ClassDefinition getClassDefinition(DefinitionReference ref) {
         return map.get(ref).call();
