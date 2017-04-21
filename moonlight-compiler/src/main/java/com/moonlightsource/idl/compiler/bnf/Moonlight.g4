@@ -26,7 +26,7 @@ importValue
 
 // struct
 structDeclaration
-    : annotation* STRUCT referenceType (EXTENDS referenceType )? '{' structField* '}'
+    : annotation* STRUCT Identifier parametricTypeExpr? (EXTENDS referenceType )? '{' structField* '}'
     ;
 
 structField
@@ -139,7 +139,7 @@ functionReturnType
 
 // interface
 interfaceDeclaration
-    : annotation* INTERFACE interfaceName (EXTENDS interfaceName )? '{' functionDeclaration* '}'
+    : annotation* INTERFACE Identifier (EXTENDS interfaceName )? '{' functionDeclaration* '}'
     ;
 
 interfaceName

@@ -3,6 +3,8 @@ package com.moonlightsource.idl.compiler.exception;
 import com.moonlightsource.idl.compiler.utils.ParseTreeUtils;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.nio.file.Path;
+
 /**
  * @author Pengtao Qiu
  */
@@ -16,8 +18,8 @@ public class CompilingRuntimeException extends RuntimeException {
         super(message);
     }
 
-    public CompilingRuntimeException(String message, TerminalNode node) {
-        super(message + " " + ParseTreeUtils.getErrorLine(node));
+    public CompilingRuntimeException(String message, TerminalNode node, Path path) {
+        super(message + " " + ParseTreeUtils.getErrorLine(path, node));
     }
 
     public CompilingRuntimeException(String message, Throwable cause) {

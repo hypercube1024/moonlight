@@ -1,7 +1,6 @@
 package com.moonlightsource.idl.compiler.listener;
 
 import com.firefly.utils.function.Action1;
-import com.firefly.utils.function.Func0;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.*;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
@@ -76,16 +75,30 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
 
     @Override
     public void enterImportDeclaration(MoonlightParser.ImportDeclarationContext ctx) {
-        String importValue = ctx.importValue().getText();
-        log.debug("import -> {}", importValue);
-        if (!importDeclarationCheck(importValue)) {
-            throw new CompilingRuntimeException("the import declaration \"" + importValue + "\" is duplicated. ", ctx.IMPORT());
+        int count = ctx.importValue().getChildCount();
+        if (count <= 2) {
+            throw new CompilingRuntimeException("the import format error -> " + ctx.importValue().getText());
         }
-        sourceFile.getImports().add(importValue);
-    }
 
-    protected boolean importDeclarationCheck(String importValue) {
-        return !sourceFile.getImports().contains(importValue);
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < count - 2; i++) {
+            sb.append(ctx.importValue().getChild(i));
+        }
+        String namespace = sb.toString();
+        if (!referenceManager.containNamespace(namespace)) {
+            throw new CompilingRuntimeException("the namespace " + namespace + " does not exists.", ctx.IMPORT(), sourceFile.getPath());
+        }
+
+        Set<String> classNameSet = referenceManager.getClassNames(namespace);
+        String className = ctx.importValue().getChild(count - 1).getText();
+        if ("*".equals(className)) {
+            sourceFile.getImports().computeIfAbsent(namespace, k -> new HashSet<>()).addAll(classNameSet);
+        } else {
+            if (!classNameSet.contains(className)) {
+                throw new CompilingRuntimeException("the class " + className + " does not exists.", ctx.IMPORT(), sourceFile.getPath());
+            }
+            sourceFile.getImports().computeIfAbsent(namespace, k -> new HashSet<>()).add(className);
+        }
     }
 
     @Override
@@ -105,7 +118,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         if (ctx.baseField() != null && !ctx.baseField().isEmpty()) {
             for (MoonlightParser.BaseFieldContext baseFieldContext : ctx.baseField()) {
                 // TODO create annotation fields
-                fields.add(createAnnotationFieldDef(baseFieldContext));
+//                fields.add(createAnnotationFieldDef(baseFieldContext));
             }
         }
     }
@@ -128,9 +141,9 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
     }
 
     private void checkAnnotationName(String name, TerminalNode node) {
-        for(AnnotationDefinition definition : sourceFile.getAnnotationDefinitions()) {
+        for (AnnotationDefinition definition : sourceFile.getAnnotationDefinitions()) {
             if (definition.getName().equals(name)) {
-                throw new CompilingRuntimeException("the annotation " + name + " exists.", node);
+                throw new CompilingRuntimeException("the annotation " + name + " exists.", node, sourceFile.getPath());
             }
         }
     }
@@ -157,7 +170,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         log.debug("source file annotation, namespace -> {}, name -> {}", namespace, name);
 
         DefinitionReference annotationDefRef = new DefinitionReference(namespace, name, referenceManager);
-        referenceManager.putPlaceholder(annotationDefRef, ctx.AnnotationLabel());
+        referenceManager.putPlaceholder(annotationDefRef, ctx.AnnotationLabel(), sourceFile.getPath());
         Map<String, ParseTree> fieldMap = new HashMap<>();
         AnnotationValue annotationValue = new AnnotationValue(annotationDefRef, fieldMap);
         sourceFile.getAnnotations().add(annotationValue);
@@ -173,7 +186,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
                 } else if (baseAssignmentContext.baseListExpr() != null) {
                     fieldMap.put(fieldName, baseAssignmentContext.baseListExpr());
                 } else {
-                    throw new CompilingRuntimeException("the annotation " + name + " is not recognized.", ctx.AnnotationLabel());
+                    throw new CompilingRuntimeException("the annotation " + name + " is not recognized.", ctx.AnnotationLabel(), sourceFile.getPath());
                 }
             }
         }
@@ -181,7 +194,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
 
     private void checkDuplicatedAnnotationValue(Map<String, ParseTree> fieldMap, TerminalNode node) {
         if (fieldMap.get(node.getText()) != null) {
-            throw new CompilingRuntimeException("the field " + node.getText() + " exists.", node);
+            throw new CompilingRuntimeException("the field " + node.getText() + " exists.", node, sourceFile.getPath());
         }
     }
 

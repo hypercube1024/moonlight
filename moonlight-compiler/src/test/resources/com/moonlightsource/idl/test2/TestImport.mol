@@ -1,4 +1,4 @@
 namespace com.moonlightsource.idl.test2;
 
 import com.moonlightsource.idl.test.*;
-import com.moonlightsource.idl.test3.*;
+import com.moonlightsource.idl.common.*;

@@ -4,6 +4,7 @@ import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ abstract public class ParseTreeUtils {
                 if (c.length() == 3) {
                     return terminalNode.getText().charAt(1);
                 } else {
-                    throw new CompilingRuntimeException("the char must be not null", terminalNode);
+                    throw new CompilingRuntimeException("the char must be not null");
                 }
             }
             case MoonlightParser.StringLiteral: {
@@ -53,7 +54,7 @@ abstract public class ParseTreeUtils {
             case MoonlightParser.FloatingPointLiteral:
                 return Double.parseDouble(terminalNode.getText());
         }
-        throw new CompilingRuntimeException("the literal is not recognized", terminalNode);
+        throw new CompilingRuntimeException("the literal is not recognized");
     }
 
     public static List<Object> getBaseListValues(MoonlightParser.BaseListExprContext baseListExprContext) {
@@ -84,7 +85,7 @@ abstract public class ParseTreeUtils {
         }
     }
 
-    public static String getErrorLine(TerminalNode node) {
-        return "@line[" + node.getSymbol().getLine() + ", " + node.getSymbol().getCharPositionInLine() + "]";
+    public static String getErrorLine(Path path, TerminalNode node) {
+        return "@file[" + path + "] ,line[" + node.getSymbol().getLine() + ", " + node.getSymbol().getCharPositionInLine() + "]";
     }
 }

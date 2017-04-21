@@ -1,7 +1,6 @@
 package com.moonlightsource.idl.compiler.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Pengtao Qiu
@@ -10,7 +9,7 @@ public class Source {
 
     private final List<AnnotationValue> annotations = new ArrayList<>();
     private String namespace;
-    private final List<String> imports = new ArrayList<>();
+    private final Map<String, Set<String>> imports = new HashMap<>();
     private final List<EnumDefinition> enumDefinitions = new ArrayList<>();
     private final List<AnnotationDefinition> annotationDefinitions = new ArrayList<>();
     private final List<StructDefinition> structDefinitions = new ArrayList<>();
@@ -28,7 +27,7 @@ public class Source {
         this.namespace = namespace;
     }
 
-    public List<String> getImports() {
+    public Map<String, Set<String>> getImports() {
         return imports;
     }
 

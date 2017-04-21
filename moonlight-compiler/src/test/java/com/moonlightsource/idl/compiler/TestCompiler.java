@@ -43,6 +43,7 @@ public class TestCompiler {
         SourceFile sourceFile = find(path);
         Assert.assertThat(sourceFile.getNamespace(), is("com.moonlightsource.idl.test2"));
         Assert.assertThat(sourceFile.getImports().size(), greaterThanOrEqualTo(2));
+        System.out.println(sourceFile.getImports());
     }
 
     @Test
