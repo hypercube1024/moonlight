@@ -24,7 +24,7 @@ public class TestIdlCompiler {
         try {
             sourceFiles = IdlCompiler.compileAll(
                     Paths.get(IdlCompiler.getClasspath().toString(), "/com/moonlightsource/idl"),
-                    ".mol",
+                    path -> path.getFileName().toString().endsWith(".mol"),
                     StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();

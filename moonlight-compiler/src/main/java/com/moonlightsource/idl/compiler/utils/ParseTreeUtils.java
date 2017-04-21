@@ -86,6 +86,6 @@ abstract public class ParseTreeUtils {
     }
 
     public static String getErrorLine(Path path, TerminalNode node) {
-        return "@file[" + path + "] ,line[" + node.getSymbol().getLine() + ", " + node.getSymbol().getCharPositionInLine() + "]";
+        return "@file[" + path + "], line[" + node.getSymbol().getLine() + ", " + node.getSymbol().getCharPositionInLine() + "]";
     }
 }

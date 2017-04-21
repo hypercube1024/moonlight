@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,28 +44,28 @@ abstract public class IdlCompiler {
      * Parallel compiling all files in the root directory
      *
      * @param root    The source file's root path
-     * @param suffix  The source file suffix
+     * @param filter  The source file filter
      * @param charset The source file charset
      * @return All SourceFile objects
      * @throws IOException Read source file I/O exception
      */
-    public static List<SourceFile> compileAll(Path root, String suffix, Charset charset) throws IOException {
+    public static List<SourceFile> compileAll(Path root, Predicate<Path> filter, Charset charset) throws IOException {
         DefinitionReferenceManager referenceManager = new DefinitionReferenceManager();
-        walk(root, suffix).map(path -> findClassDef(root, path, charset, referenceManager))
+        walk(root, filter).map(path -> findClassDef(root, path, charset, referenceManager))
                           .collect(Collectors.toList())
                           .forEach(IdlCompiler::waitAsyncResult);
 
         List<SourceFile> sourceFiles = new ArrayList<>();
-        walk(root, suffix).map(path -> asyncCompile(root, path, charset, referenceManager))
+        walk(root, filter).map(path -> asyncCompile(root, path, charset, referenceManager))
                           .collect(Collectors.toList())
                           .forEach(future -> getAsyncResult(future, sourceFiles));
         return sourceFiles;
     }
 
-    private static Stream<Path> walk(Path root, String suffix) throws IOException {
+    private static Stream<Path> walk(Path root, Predicate<Path> filter) throws IOException {
         return Files.walk(root)
                     .filter(path -> !Files.isDirectory(path))
-                    .filter(path -> path.getFileName().toString().endsWith(suffix))
+                    .filter(filter)
                     .map(path -> Paths.get(path.toString().substring(root.toString().length())));
     }
 
@@ -148,7 +149,7 @@ abstract public class IdlCompiler {
      * @return SourceFile object
      * @throws IOException Read source file I/O exception
      */
-    public static SourceFile compile(Path root, Path path, Charset charset, DefinitionReferenceManager referenceManager) throws IOException {
+    private static SourceFile compile(Path root, Path path, Charset charset, DefinitionReferenceManager referenceManager) throws IOException {
         SourceFile sourceFile = new SourceFile();
         sourceFile.setPath(path);
         sourceFile.setRoot(root);
@@ -162,7 +163,7 @@ abstract public class IdlCompiler {
         return sourceFile;
     }
 
-    public static MoonlightSourceListener createListener(CharStream input, SourceFile sourceFile, DefinitionReferenceManager referenceManager) {
+    private static MoonlightSourceListener createListener(CharStream input, SourceFile sourceFile, DefinitionReferenceManager referenceManager) {
         MoonlightLexer lexer = new MoonlightLexer(input);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         MoonlightParser parser = new MoonlightParser(tokenStream);

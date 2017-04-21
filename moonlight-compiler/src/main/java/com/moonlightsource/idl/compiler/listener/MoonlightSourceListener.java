@@ -170,7 +170,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         log.debug("source file annotation, namespace -> {}, name -> {}", namespace, name);
 
         if (!referenceManager.containClass(namespace, name)) {
-            throw new CompilingRuntimeException("the annotation " + namespace + "." + name + " is not found");
+            throw new CompilingRuntimeException("the annotation " + namespace + "." + name + " is not found", ctx.AnnotationLabel(), sourceFile.getPath());
         }
 
         DefinitionReference annotationDefRef = new DefinitionReference(namespace, name, referenceManager);
