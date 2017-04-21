@@ -1,13 +1,17 @@
 package com.moonlightsource.idl.compiler;
 
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
+import com.moonlightsource.idl.compiler.exception.LogErrorListener;
+import com.moonlightsource.idl.compiler.exception.LogErrorStrategy;
 import com.moonlightsource.idl.compiler.listener.ClassDefinitionListener;
 import com.moonlightsource.idl.compiler.listener.MoonlightSourceListener;
 import com.moonlightsource.idl.compiler.model.DefinitionReferenceManager;
 import com.moonlightsource.idl.compiler.model.SourceFile;
 import com.moonlightsource.idl.compiler.parser.MoonlightLexer;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.slf4j.Logger;
@@ -29,9 +33,11 @@ import java.util.stream.Stream;
 /**
  * @author Pengtao Qiu
  */
-abstract public class Compiler {
+abstract public class IdlCompiler {
 
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
+
+    public static final ThreadLocal<Path> CURRENT_PATH = new ThreadLocal<>();
 
     /**
      * Parallel compiling all files in the root directory
@@ -46,7 +52,7 @@ abstract public class Compiler {
         DefinitionReferenceManager referenceManager = new DefinitionReferenceManager();
         walk(root, suffix).map(path -> findClassDef(root, path, charset, referenceManager))
                           .collect(Collectors.toList())
-                          .forEach(Compiler::waitAsyncResult);
+                          .forEach(IdlCompiler::waitAsyncResult);
 
         List<SourceFile> sourceFiles = new ArrayList<>();
         walk(root, suffix).map(path -> asyncCompile(root, path, charset, referenceManager))
@@ -92,7 +98,7 @@ abstract public class Compiler {
     }
 
     private static CompletableFuture<Integer> findClassDef(Path root, Path path, Charset charset,
-                                                        DefinitionReferenceManager referenceManager) {
+                                                           DefinitionReferenceManager referenceManager) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 if (log.isDebugEnabled()) {
@@ -110,10 +116,14 @@ abstract public class Compiler {
     private static void findAllClassDefinition(Path root, Path path, Charset charset,
                                                DefinitionReferenceManager referenceManager) throws IOException {
         Path p = Paths.get(root.toString(), path.toString());
+        CURRENT_PATH.set(p);
         CharStream input = CharStreams.fromPath(p, charset);
-        MoonlightLexer lexer = createLexer(input);
-        CommonTokenStream tokenStream = createTokenStream(lexer);
-        MoonlightParser parser = createParser(tokenStream);
+        MoonlightLexer lexer = new MoonlightLexer(input);
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        MoonlightParser parser = new MoonlightParser(tokenStream);
+        parser.setErrorHandler(new LogErrorStrategy());
+        parser.removeErrorListeners();
+        parser.addErrorListener(new LogErrorListener());
         ClassDefinitionListener listener = new ClassDefinitionListener(referenceManager, root, path);
         ParseTree tree = parser.moonlightFile();
         ParseTreeWalker walker = new ParseTreeWalker();
@@ -122,7 +132,7 @@ abstract public class Compiler {
 
     public static Path getClasspath() {
         try {
-            return Paths.get(Compiler.class.getResource("/").toURI());
+            return Paths.get(IdlCompiler.class.getResource("/").toURI());
         } catch (URISyntaxException e) {
             throw new CompilingRuntimeException(e);
         }
@@ -143,6 +153,7 @@ abstract public class Compiler {
         sourceFile.setPath(path);
         sourceFile.setRoot(root);
         Path p = Paths.get(root.toString(), path.toString());
+        CURRENT_PATH.set(p);
         CharStream input = CharStreams.fromPath(p, charset);
         MoonlightSourceListener listener = createListener(input, sourceFile, referenceManager);
         ParseTree tree = listener.getParser().moonlightFile();
@@ -152,21 +163,12 @@ abstract public class Compiler {
     }
 
     public static MoonlightSourceListener createListener(CharStream input, SourceFile sourceFile, DefinitionReferenceManager referenceManager) {
-        MoonlightLexer lexer = createLexer(input);
-        CommonTokenStream tokenStream = createTokenStream(lexer);
-        MoonlightParser parser = createParser(tokenStream);
+        MoonlightLexer lexer = new MoonlightLexer(input);
+        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+        MoonlightParser parser = new MoonlightParser(tokenStream);
+        parser.setErrorHandler(new LogErrorStrategy());
+        parser.removeErrorListeners();
+        parser.addErrorListener(new LogErrorListener());
         return new MoonlightSourceListener(parser, tokenStream, lexer, sourceFile, referenceManager);
-    }
-
-    public static MoonlightLexer createLexer(CharStream input) {
-        return new MoonlightLexer(input);
-    }
-
-    public static CommonTokenStream createTokenStream(Lexer lexer) {
-        return new CommonTokenStream(lexer);
-    }
-
-    public static MoonlightParser createParser(TokenStream tokenStream) {
-        return new MoonlightParser(tokenStream);
     }
 }

@@ -16,14 +16,14 @@ import static org.hamcrest.Matchers.is;
 /**
  * @author Pengtao Qiu
  */
-public class TestCompiler {
+public class TestIdlCompiler {
 
     private static List<SourceFile> sourceFiles;
 
     static {
         try {
-            sourceFiles = Compiler.compileAll(
-                    Paths.get(Compiler.getClasspath().toString(), "/com/moonlightsource/idl"),
+            sourceFiles = IdlCompiler.compileAll(
+                    Paths.get(IdlCompiler.getClasspath().toString(), "/com/moonlightsource/idl"),
                     ".mol",
                     StandardCharsets.UTF_8);
         } catch (IOException e) {
