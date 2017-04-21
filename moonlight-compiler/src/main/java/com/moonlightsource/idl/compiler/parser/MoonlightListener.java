@@ -117,15 +117,221 @@ public interface MoonlightListener extends ParseTreeListener {
 	 */
 	void exitEnumField(MoonlightParser.EnumFieldContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MoonlightParser#baseField}.
+	 * Enter a parse tree produced by the {@code boolField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
 	 * @param ctx the parse tree
 	 */
-	void enterBaseField(MoonlightParser.BaseFieldContext ctx);
+	void enterBoolField(MoonlightParser.BoolFieldContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MoonlightParser#baseField}.
+	 * Exit a parse tree produced by the {@code boolField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
 	 * @param ctx the parse tree
 	 */
-	void exitBaseField(MoonlightParser.BaseFieldContext ctx);
+	void exitBoolField(MoonlightParser.BoolFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code byteField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterByteField(MoonlightParser.ByteFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code byteField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitByteField(MoonlightParser.ByteFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code shorField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterShorField(MoonlightParser.ShorFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code shorField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitShorField(MoonlightParser.ShorFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code intField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntField(MoonlightParser.IntFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code intField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntField(MoonlightParser.IntFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code longField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterLongField(MoonlightParser.LongFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code longField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitLongField(MoonlightParser.LongFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code charField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharField(MoonlightParser.CharFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code charField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharField(MoonlightParser.CharFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code floatField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloatField(MoonlightParser.FloatFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code floatField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloatField(MoonlightParser.FloatFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code doubleField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterDoubleField(MoonlightParser.DoubleFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code doubleField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitDoubleField(MoonlightParser.DoubleFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code stringField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringField(MoonlightParser.StringFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code stringField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringField(MoonlightParser.StringFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code boolListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolListField(MoonlightParser.BoolListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code boolListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolListField(MoonlightParser.BoolListFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code byteListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterByteListField(MoonlightParser.ByteListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code byteListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitByteListField(MoonlightParser.ByteListFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code shortListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterShortListField(MoonlightParser.ShortListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code shortListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitShortListField(MoonlightParser.ShortListFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code intListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntListField(MoonlightParser.IntListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code intListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntListField(MoonlightParser.IntListFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code longListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterLongListField(MoonlightParser.LongListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code longListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitLongListField(MoonlightParser.LongListFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code charListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharListField(MoonlightParser.CharListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code charListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharListField(MoonlightParser.CharListFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code floatListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloatListField(MoonlightParser.FloatListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code floatListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloatListField(MoonlightParser.FloatListFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code doubleListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterDoubleListField(MoonlightParser.DoubleListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code doubleListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitDoubleListField(MoonlightParser.DoubleListFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code stringListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void enterStringListField(MoonlightParser.StringListFieldContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code stringListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 */
+	void exitStringListField(MoonlightParser.StringListFieldContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MoonlightParser#baseAssignment}.
 	 * @param ctx the parse tree

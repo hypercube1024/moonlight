@@ -76,11 +76,131 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEnumField(MoonlightParser.EnumFieldContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MoonlightParser#baseField}.
+	 * Visit a parse tree produced by the {@code boolField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBaseField(MoonlightParser.BaseFieldContext ctx);
+	T visitBoolField(MoonlightParser.BoolFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code byteField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitByteField(MoonlightParser.ByteFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code shorField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitShorField(MoonlightParser.ShorFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code intField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntField(MoonlightParser.IntFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code longField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLongField(MoonlightParser.LongFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code charField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharField(MoonlightParser.CharFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code floatField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatField(MoonlightParser.FloatFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code doubleField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoubleField(MoonlightParser.DoubleFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code stringField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringField(MoonlightParser.StringFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code boolListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolListField(MoonlightParser.BoolListFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code byteListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitByteListField(MoonlightParser.ByteListFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code shortListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitShortListField(MoonlightParser.ShortListFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code intListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntListField(MoonlightParser.IntListFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code longListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLongListField(MoonlightParser.LongListFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code charListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharListField(MoonlightParser.CharListFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code floatListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloatListField(MoonlightParser.FloatListFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code doubleListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDoubleListField(MoonlightParser.DoubleListFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code stringListField}
+	 * labeled alternative in {@link MoonlightParser#baseField}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStringListField(MoonlightParser.StringListFieldContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MoonlightParser#baseAssignment}.
 	 * @param ctx the parse tree

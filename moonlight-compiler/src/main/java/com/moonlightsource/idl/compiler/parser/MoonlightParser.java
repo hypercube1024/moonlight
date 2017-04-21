@@ -1047,81 +1047,418 @@ public class MoonlightParser extends Parser {
 	}
 
 	public static class BaseFieldContext extends ParserRuleContext {
+		public BaseFieldContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_baseField; }
+	 
+		public BaseFieldContext() { }
+		public void copyFrom(BaseFieldContext ctx) {
+			super.copyFrom(ctx);
+		}
+	}
+	public static class FloatFieldContext extends BaseFieldContext {
+		public TerminalNode FLOAT() { return getToken(MoonlightParser.FLOAT, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode FloatingPointLiteral() { return getToken(MoonlightParser.FloatingPointLiteral, 0); }
+		public FloatFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterFloatField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitFloatField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitFloatField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LongFieldContext extends BaseFieldContext {
+		public TerminalNode LONG() { return getToken(MoonlightParser.LONG, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode IntegerLiteral() { return getToken(MoonlightParser.IntegerLiteral, 0); }
+		public LongFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterLongField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitLongField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitLongField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DoubleFieldContext extends BaseFieldContext {
+		public TerminalNode DOUBLE() { return getToken(MoonlightParser.DOUBLE, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode FloatingPointLiteral() { return getToken(MoonlightParser.FloatingPointLiteral, 0); }
+		public DoubleFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterDoubleField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitDoubleField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitDoubleField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DoubleListFieldContext extends BaseFieldContext {
+		public DoubleListContext doubleList() {
+			return getRuleContext(DoubleListContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public FloatListExprContext floatListExpr() {
+			return getRuleContext(FloatListExprContext.class,0);
+		}
+		public EmptyListExprContext emptyListExpr() {
+			return getRuleContext(EmptyListExprContext.class,0);
+		}
+		public DoubleListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterDoubleListField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitDoubleListField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitDoubleListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class CharFieldContext extends BaseFieldContext {
+		public TerminalNode CHAR() { return getToken(MoonlightParser.CHAR, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode CharacterLiteral() { return getToken(MoonlightParser.CharacterLiteral, 0); }
+		public CharFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterCharField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitCharField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitCharField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ByteListFieldContext extends BaseFieldContext {
+		public ByteListContext byteList() {
+			return getRuleContext(ByteListContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public IntListExprContext intListExpr() {
+			return getRuleContext(IntListExprContext.class,0);
+		}
+		public EmptyListExprContext emptyListExpr() {
+			return getRuleContext(EmptyListExprContext.class,0);
+		}
+		public ByteListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterByteListField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitByteListField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitByteListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringListFieldContext extends BaseFieldContext {
+		public StringListContext stringList() {
+			return getRuleContext(StringListContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public StringListExprContext stringListExpr() {
+			return getRuleContext(StringListExprContext.class,0);
+		}
+		public EmptyListExprContext emptyListExpr() {
+			return getRuleContext(EmptyListExprContext.class,0);
+		}
+		public StringListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterStringListField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitStringListField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitStringListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ByteFieldContext extends BaseFieldContext {
+		public TerminalNode BYTE() { return getToken(MoonlightParser.BYTE, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode IntegerLiteral() { return getToken(MoonlightParser.IntegerLiteral, 0); }
+		public ByteFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterByteField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitByteField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitByteField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IntFieldContext extends BaseFieldContext {
+		public TerminalNode INT() { return getToken(MoonlightParser.INT, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode IntegerLiteral() { return getToken(MoonlightParser.IntegerLiteral, 0); }
+		public IntFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterIntField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitIntField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitIntField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BoolFieldContext extends BaseFieldContext {
 		public TerminalNode BOOLEAN() { return getToken(MoonlightParser.BOOLEAN, 0); }
 		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
 		public TerminalNode BooleanLiteral() { return getToken(MoonlightParser.BooleanLiteral, 0); }
-		public TerminalNode BYTE() { return getToken(MoonlightParser.BYTE, 0); }
-		public TerminalNode IntegerLiteral() { return getToken(MoonlightParser.IntegerLiteral, 0); }
-		public TerminalNode SHORT() { return getToken(MoonlightParser.SHORT, 0); }
-		public TerminalNode INT() { return getToken(MoonlightParser.INT, 0); }
-		public TerminalNode LONG() { return getToken(MoonlightParser.LONG, 0); }
-		public TerminalNode CHAR() { return getToken(MoonlightParser.CHAR, 0); }
-		public TerminalNode CharacterLiteral() { return getToken(MoonlightParser.CharacterLiteral, 0); }
-		public TerminalNode FLOAT() { return getToken(MoonlightParser.FLOAT, 0); }
-		public TerminalNode FloatingPointLiteral() { return getToken(MoonlightParser.FloatingPointLiteral, 0); }
-		public TerminalNode DOUBLE() { return getToken(MoonlightParser.DOUBLE, 0); }
-		public TerminalNode STRING() { return getToken(MoonlightParser.STRING, 0); }
-		public TerminalNode StringLiteral() { return getToken(MoonlightParser.StringLiteral, 0); }
+		public BoolFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterBoolField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitBoolField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitBoolField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class CharListFieldContext extends BaseFieldContext {
+		public CharListContext charList() {
+			return getRuleContext(CharListContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public CharListExprContext charListExpr() {
+			return getRuleContext(CharListExprContext.class,0);
+		}
+		public EmptyListExprContext emptyListExpr() {
+			return getRuleContext(EmptyListExprContext.class,0);
+		}
+		public CharListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterCharListField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitCharListField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitCharListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class FloatListFieldContext extends BaseFieldContext {
+		public FloatListContext floatList() {
+			return getRuleContext(FloatListContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public FloatListExprContext floatListExpr() {
+			return getRuleContext(FloatListExprContext.class,0);
+		}
+		public EmptyListExprContext emptyListExpr() {
+			return getRuleContext(EmptyListExprContext.class,0);
+		}
+		public FloatListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterFloatListField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitFloatListField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitFloatListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IntListFieldContext extends BaseFieldContext {
+		public IntListContext intList() {
+			return getRuleContext(IntListContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public IntListExprContext intListExpr() {
+			return getRuleContext(IntListExprContext.class,0);
+		}
+		public EmptyListExprContext emptyListExpr() {
+			return getRuleContext(EmptyListExprContext.class,0);
+		}
+		public IntListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterIntListField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitIntListField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitIntListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LongListFieldContext extends BaseFieldContext {
+		public LongListContext longList() {
+			return getRuleContext(LongListContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public IntListExprContext intListExpr() {
+			return getRuleContext(IntListExprContext.class,0);
+		}
+		public EmptyListExprContext emptyListExpr() {
+			return getRuleContext(EmptyListExprContext.class,0);
+		}
+		public LongListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterLongListField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitLongListField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitLongListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ShortListFieldContext extends BaseFieldContext {
+		public ShortListContext shortList() {
+			return getRuleContext(ShortListContext.class,0);
+		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public IntListExprContext intListExpr() {
+			return getRuleContext(IntListExprContext.class,0);
+		}
+		public EmptyListExprContext emptyListExpr() {
+			return getRuleContext(EmptyListExprContext.class,0);
+		}
+		public ShortListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterShortListField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitShortListField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitShortListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BoolListFieldContext extends BaseFieldContext {
 		public BoolListContext boolList() {
 			return getRuleContext(BoolListContext.class,0);
 		}
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
 		public BoolListExprContext boolListExpr() {
 			return getRuleContext(BoolListExprContext.class,0);
 		}
 		public EmptyListExprContext emptyListExpr() {
 			return getRuleContext(EmptyListExprContext.class,0);
 		}
-		public ByteListContext byteList() {
-			return getRuleContext(ByteListContext.class,0);
-		}
-		public IntListExprContext intListExpr() {
-			return getRuleContext(IntListExprContext.class,0);
-		}
-		public ShortListContext shortList() {
-			return getRuleContext(ShortListContext.class,0);
-		}
-		public IntListContext intList() {
-			return getRuleContext(IntListContext.class,0);
-		}
-		public LongListContext longList() {
-			return getRuleContext(LongListContext.class,0);
-		}
-		public CharListContext charList() {
-			return getRuleContext(CharListContext.class,0);
-		}
-		public CharListExprContext charListExpr() {
-			return getRuleContext(CharListExprContext.class,0);
-		}
-		public FloatListContext floatList() {
-			return getRuleContext(FloatListContext.class,0);
-		}
-		public FloatListExprContext floatListExpr() {
-			return getRuleContext(FloatListExprContext.class,0);
-		}
-		public DoubleListContext doubleList() {
-			return getRuleContext(DoubleListContext.class,0);
-		}
-		public StringListContext stringList() {
-			return getRuleContext(StringListContext.class,0);
-		}
-		public StringListExprContext stringListExpr() {
-			return getRuleContext(StringListExprContext.class,0);
-		}
-		public BaseFieldContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_baseField; }
+		public BoolListFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterBaseField(this);
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterBoolListField(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitBaseField(this);
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitBoolListField(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitBaseField(this);
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitBoolListField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ShorFieldContext extends BaseFieldContext {
+		public TerminalNode SHORT() { return getToken(MoonlightParser.SHORT, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode IntegerLiteral() { return getToken(MoonlightParser.IntegerLiteral, 0); }
+		public ShorFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterShorField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitShorField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitShorField(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringFieldContext extends BaseFieldContext {
+		public TerminalNode STRING() { return getToken(MoonlightParser.STRING, 0); }
+		public TerminalNode Identifier() { return getToken(MoonlightParser.Identifier, 0); }
+		public TerminalNode StringLiteral() { return getToken(MoonlightParser.StringLiteral, 0); }
+		public StringFieldContext(BaseFieldContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).enterStringField(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MoonlightListener ) ((MoonlightListener)listener).exitStringField(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MoonlightVisitor ) return ((MoonlightVisitor<? extends T>)visitor).visitStringField(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1135,6 +1472,7 @@ public class MoonlightParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,47,_ctx) ) {
 			case 1:
+				_localctx = new BoolFieldContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(235);
@@ -1158,6 +1496,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 2:
+				_localctx = new ByteFieldContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(242);
@@ -1181,6 +1520,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 3:
+				_localctx = new ShorFieldContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(249);
@@ -1204,6 +1544,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 4:
+				_localctx = new IntFieldContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(256);
@@ -1227,6 +1568,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 5:
+				_localctx = new LongFieldContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(263);
@@ -1250,6 +1592,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 6:
+				_localctx = new CharFieldContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
 				setState(270);
@@ -1273,6 +1616,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 7:
+				_localctx = new FloatFieldContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
 				setState(277);
@@ -1296,6 +1640,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 8:
+				_localctx = new DoubleFieldContext(_localctx);
 				enterOuterAlt(_localctx, 8);
 				{
 				setState(284);
@@ -1319,6 +1664,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 9:
+				_localctx = new StringFieldContext(_localctx);
 				enterOuterAlt(_localctx, 9);
 				{
 				setState(291);
@@ -1342,6 +1688,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 10:
+				_localctx = new BoolListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 10);
 				{
 				setState(298);
@@ -1379,6 +1726,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 11:
+				_localctx = new ByteListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 11);
 				{
 				setState(309);
@@ -1416,6 +1764,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 12:
+				_localctx = new ShortListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 12);
 				{
 				setState(320);
@@ -1453,6 +1802,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 13:
+				_localctx = new IntListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 13);
 				{
 				setState(331);
@@ -1490,6 +1840,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 14:
+				_localctx = new LongListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 14);
 				{
 				setState(342);
@@ -1527,6 +1878,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 15:
+				_localctx = new CharListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 15);
 				{
 				setState(353);
@@ -1564,6 +1916,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 16:
+				_localctx = new FloatListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 16);
 				{
 				setState(364);
@@ -1601,6 +1954,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 17:
+				_localctx = new DoubleListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 17);
 				{
 				setState(375);
@@ -1638,6 +1992,7 @@ public class MoonlightParser extends Parser {
 				}
 				break;
 			case 18:
+				_localctx = new StringListFieldContext(_localctx);
 				enterOuterAlt(_localctx, 18);
 				{
 				setState(386);

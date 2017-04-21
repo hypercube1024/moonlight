@@ -54,24 +54,24 @@ enumField
 
 // base field definition
 baseField
-    : BOOLEAN Identifier ('=' BooleanLiteral)? ';'
-    | BYTE Identifier ('=' IntegerLiteral)? ';'
-    | SHORT Identifier ('=' IntegerLiteral)? ';'
-    | INT Identifier ('=' IntegerLiteral)? ';'
-    | LONG Identifier ('=' IntegerLiteral)? ';'
-    | CHAR Identifier ('=' CharacterLiteral)? ';'
-    | FLOAT Identifier ('=' FloatingPointLiteral)? ';'
-    | DOUBLE Identifier ('=' FloatingPointLiteral)? ';'
-    | STRING Identifier ('=' StringLiteral)? ';'
-    | boolList Identifier ('=' (boolListExpr | emptyListExpr))? ';'
-    | byteList Identifier ('=' (intListExpr | emptyListExpr))? ';'
-    | shortList Identifier ('=' (intListExpr | emptyListExpr))? ';'
-    | intList Identifier ('=' (intListExpr | emptyListExpr))? ';'
-    | longList Identifier ('=' (intListExpr | emptyListExpr))? ';'
-    | charList Identifier ('=' (charListExpr | emptyListExpr))? ';'
-    | floatList Identifier ('=' (floatListExpr | emptyListExpr))? ';'
-    | doubleList Identifier ('=' (floatListExpr | emptyListExpr))? ';'
-    | stringList Identifier ('=' (stringListExpr| emptyListExpr))? ';'
+    : BOOLEAN Identifier ('=' BooleanLiteral)? ';'                      #boolField
+    | BYTE Identifier ('=' IntegerLiteral)? ';'                         #byteField
+    | SHORT Identifier ('=' IntegerLiteral)? ';'                        #shorField
+    | INT Identifier ('=' IntegerLiteral)? ';'                          #intField
+    | LONG Identifier ('=' IntegerLiteral)? ';'                         #longField
+    | CHAR Identifier ('=' CharacterLiteral)? ';'                       #charField
+    | FLOAT Identifier ('=' FloatingPointLiteral)? ';'                  #floatField
+    | DOUBLE Identifier ('=' FloatingPointLiteral)? ';'                 #doubleField
+    | STRING Identifier ('=' StringLiteral)? ';'                        #stringField
+    | boolList Identifier ('=' (boolListExpr | emptyListExpr))? ';'     #boolListField
+    | byteList Identifier ('=' (intListExpr | emptyListExpr))? ';'      #byteListField
+    | shortList Identifier ('=' (intListExpr | emptyListExpr))? ';'     #shortListField
+    | intList Identifier ('=' (intListExpr | emptyListExpr))? ';'       #intListField
+    | longList Identifier ('=' (intListExpr | emptyListExpr))? ';'      #longListField
+    | charList Identifier ('=' (charListExpr | emptyListExpr))? ';'     #charListField
+    | floatList Identifier ('=' (floatListExpr | emptyListExpr))? ';'   #floatListField
+    | doubleList Identifier ('=' (floatListExpr | emptyListExpr))? ';'  #doubleListField
+    | stringList Identifier ('=' (stringListExpr| emptyListExpr))? ';'  #stringListField
     ;
 
 baseAssignment
