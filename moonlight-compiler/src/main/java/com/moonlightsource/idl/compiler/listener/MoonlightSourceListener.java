@@ -1,6 +1,7 @@
 package com.moonlightsource.idl.compiler.listener;
 
 import com.firefly.utils.function.Action1;
+import com.firefly.utils.function.Func1;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.*;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
@@ -48,7 +49,6 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         annotationListeners.put(MoonlightParser.FunctionDeclarationContext.class, this::enterFunctionDeclarationAnnotation);
         annotationListeners.put(MoonlightParser.FunctionParameterContext.class, this::enterFunctionParameterAnnotation);
         annotationListeners.put(MoonlightParser.InterfaceDeclarationContext.class, this::enterInterfaceDeclarationAnnotation);
-
     }
 
     public MoonlightParser getParser() {
@@ -119,14 +119,17 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         if (ctx.baseField() != null && !ctx.baseField().isEmpty()) {
             for (MoonlightParser.BaseFieldContext baseFieldContext : ctx.baseField()) {
                 // TODO create annotation fields
+                if (log.isDebugEnabled()) {
+                    log.debug("base field type -> {}", baseFieldContext.getClass());
+                }
 //                fields.add(createAnnotationFieldDef(baseFieldContext));
             }
         }
     }
 
-    private AnnotationFieldDefinition createAnnotationFieldDef(MoonlightParser.BaseFieldContext baseFieldContext) {
+    private <R extends FieldDefinition, T extends MoonlightParser.BaseFieldContext> R createBaseField(T baseFieldContext, Func1<T, R> creator) {
         if (baseFieldContext instanceof MoonlightParser.BoolFieldContext) {
-
+            return creator.call(baseFieldContext);
         } else if (baseFieldContext instanceof MoonlightParser.ByteFieldContext) {
 
         } else if (baseFieldContext instanceof MoonlightParser.ShortFieldContext) {
@@ -136,6 +139,12 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         } else if (baseFieldContext instanceof MoonlightParser.LongFieldContext) {
 
         } else if (baseFieldContext instanceof MoonlightParser.CharFieldContext) {
+
+        } else if (baseFieldContext instanceof MoonlightParser.FloatFieldContext) {
+
+        } else if (baseFieldContext instanceof MoonlightParser.DoubleFieldContext) {
+
+        } else if (baseFieldContext instanceof MoonlightParser.StringFieldContext) {
 
         }
         throw new CompilingRuntimeException("the field type is not support");
@@ -153,6 +162,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         List<AnnotationValue> ret = annotationDeclarationAnnotations.get(ctx);
         if (ret == null) {
             ret = new ArrayList<>();
+            annotationDeclarationAnnotations.put(ctx, ret);
         }
         return ret;
     }
