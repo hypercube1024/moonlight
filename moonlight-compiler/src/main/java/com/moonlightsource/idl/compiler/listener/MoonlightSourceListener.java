@@ -1,7 +1,6 @@
 package com.moonlightsource.idl.compiler.listener;
 
 import com.firefly.utils.function.Action1;
-import com.firefly.utils.function.Func1;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.*;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
@@ -31,6 +30,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
     private final SourceFile sourceFile;
     private final Map<Class<? extends ParserRuleContext>, Action1<MoonlightParser.AnnotationContext>> annotationListeners = new HashMap<>();
     private final ParseTreeProperty<List<AnnotationValue>> annotationDeclarationAnnotations = new ParseTreeProperty<>();
+    private final AnnotationFieldListener annotationFieldListener = new AnnotationFieldListener();
 
     public MoonlightSourceListener(MoonlightParser parser, CommonTokenStream tokenStream, MoonlightLexer lexer,
                                    SourceFile sourceFile, DefinitionReferenceManager referenceManager) {
@@ -118,36 +118,12 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
 
         if (ctx.baseField() != null && !ctx.baseField().isEmpty()) {
             for (MoonlightParser.BaseFieldContext baseFieldContext : ctx.baseField()) {
-                // TODO create annotation fields
                 if (log.isDebugEnabled()) {
                     log.debug("base field type -> {}", baseFieldContext.getClass());
                 }
-//                fields.add(createAnnotationFieldDef(baseFieldContext));
+                fields.add(annotationFieldListener.createBaseField(baseFieldContext));
             }
         }
-    }
-
-    private <R extends FieldDefinition, T extends MoonlightParser.BaseFieldContext> R createBaseField(T baseFieldContext, Func1<T, R> creator) {
-        if (baseFieldContext instanceof MoonlightParser.BoolFieldContext) {
-            return creator.call(baseFieldContext);
-        } else if (baseFieldContext instanceof MoonlightParser.ByteFieldContext) {
-
-        } else if (baseFieldContext instanceof MoonlightParser.ShortFieldContext) {
-
-        } else if (baseFieldContext instanceof MoonlightParser.IntFieldContext) {
-
-        } else if (baseFieldContext instanceof MoonlightParser.LongFieldContext) {
-
-        } else if (baseFieldContext instanceof MoonlightParser.CharFieldContext) {
-
-        } else if (baseFieldContext instanceof MoonlightParser.FloatFieldContext) {
-
-        } else if (baseFieldContext instanceof MoonlightParser.DoubleFieldContext) {
-
-        } else if (baseFieldContext instanceof MoonlightParser.StringFieldContext) {
-
-        }
-        throw new CompilingRuntimeException("the field type is not support");
     }
 
     private void checkAnnotationName(String name, TerminalNode node) {
