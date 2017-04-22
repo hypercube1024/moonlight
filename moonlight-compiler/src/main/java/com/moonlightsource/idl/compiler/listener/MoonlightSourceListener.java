@@ -108,12 +108,13 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         checkAnnotationName(name, ctx.Identifier());
 
         List<AnnotationFieldDefinition> fields = new ArrayList<>();
-        AnnotationDefinition annotationDefinition = new AnnotationDefinition(TypeEnum.ANNOTATION, name, namespace,
+        AnnotationDefinition annotationDefinition = new AnnotationDefinition(
+                TypeEnum.ANNOTATION, name, namespace,
                 getAnnotationDeclarationAnnotations(ctx), fields);
         sourceFile.getAnnotationDefinitions().add(annotationDefinition);
 
         DefinitionReference reference = new DefinitionReference(namespace, name, referenceManager);
-        referenceManager.put(reference, () -> annotationDefinition);
+        referenceManager.put(reference, annotationDefinition);
 
         if (ctx.baseField() != null && !ctx.baseField().isEmpty()) {
             for (MoonlightParser.BaseFieldContext baseFieldContext : ctx.baseField()) {

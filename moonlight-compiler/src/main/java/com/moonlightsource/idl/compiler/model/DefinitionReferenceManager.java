@@ -1,13 +1,9 @@
 package com.moonlightsource.idl.compiler.model;
 
-import com.firefly.utils.function.Func0;
-import com.moonlightsource.idl.compiler.exception.ClassNotFoundRuntimeException;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
-import org.antlr.v4.runtime.tree.TerminalNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Path;
 import java.util.*;
 
 /**
@@ -17,38 +13,38 @@ public class DefinitionReferenceManager {
 
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
 
-    private Map<DefinitionReference, Func0<ClassDefinition>> map = new HashMap<>();
-    private Map<String, Set<String>> classDefinitions = new HashMap<>();
+    private Map<DefinitionReference, ClassDefinition> classDefinitionMap = new HashMap<>();
+    private Map<String, Set<String>> classNames = new HashMap<>();
 
     public DefinitionReferenceManager() {
         TypeEnum.BASE_TYPE_ENUMS
-                .forEach(t -> map.put(new DefinitionReference("", t.getKeyword(), this),
-                        () -> new ClassDefinition(t, t.getKeyword(), "", Collections.emptyList(), Collections.emptyList())));
+                .forEach(t -> classDefinitionMap.put(new DefinitionReference("", t.getKeyword(), this),
+                        new ClassDefinition(t, t.getKeyword(), "", Collections.emptyList(), Collections.emptyList())));
     }
 
     public synchronized ClassDefinition getClassDefinition(DefinitionReference ref) {
-        return map.get(ref).call();
+        return classDefinitionMap.get(ref);
     }
 
-    public synchronized void put(DefinitionReference ref, Func0<ClassDefinition> func0) {
-        Func0<ClassDefinition> func = map.get(ref);
-        if (func != null && func.call().equals(func0.call())) {
-            throw new CompilingRuntimeException("the class " + func.call() + " exists");
+    public synchronized void put(DefinitionReference ref, ClassDefinition classDefinition) {
+        ClassDefinition def = classDefinitionMap.get(ref);
+        if (def != null && def.equals(classDefinition)) {
+            throw new CompilingRuntimeException("the class " + def + " exists");
         } else {
-            map.put(ref, func0);
+            classDefinitionMap.put(ref, classDefinition);
         }
     }
 
     public synchronized void putNamespace(String namespace) {
-        classDefinitions.computeIfAbsent(namespace, k -> new HashSet<>());
+        classNames.computeIfAbsent(namespace, k -> new HashSet<>());
     }
 
-    public synchronized void putClass(String namespace, String className) {
-        classDefinitions.computeIfAbsent(namespace, k -> new HashSet<>()).add(className);
+    public synchronized void putClassName(String namespace, String className) {
+        classNames.computeIfAbsent(namespace, k -> new HashSet<>()).add(className);
     }
 
     public synchronized Set<String> getClassNames(String namespace) {
-        Set<String> names = classDefinitions.get(namespace);
+        Set<String> names = classNames.get(namespace);
         if (names != null && !names.isEmpty()) {
             return names;
         } else {
@@ -58,9 +54,9 @@ public class DefinitionReferenceManager {
 
     public synchronized boolean containNamespace(String namespace) {
         if (log.isDebugEnabled()) {
-            log.debug("existed namespaces -> {}", classDefinitions.keySet());
+            log.debug("existed namespaces -> {}", classNames.keySet());
         }
-        return classDefinitions.keySet().contains(namespace);
+        return classNames.keySet().contains(namespace);
     }
 
     public synchronized boolean containClass(String namespace, String className) {

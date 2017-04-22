@@ -42,7 +42,7 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
         if (referenceManager.containClass(namespace, className)) {
             throw new CompilingRuntimeException("the class " + namespace + "." + className + " exists", ctx.Identifier(), path);
         }
-        referenceManager.putClass(namespace, className);
+        referenceManager.putClassName(namespace, className);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
         if (referenceManager.containClass(namespace, className)) {
             throw new CompilingRuntimeException("the class " + namespace + "." + className + " exists", ctx.Identifier(), path);
         }
-        referenceManager.putClass(namespace, className);
+        referenceManager.putClassName(namespace, className);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
         if (referenceManager.containClass(namespace, className)) {
             throw new CompilingRuntimeException("the class " + namespace + "." + className + " exists", ctx.Identifier(), path);
         }
-        referenceManager.putClass(namespace, className);
+        referenceManager.putClassName(namespace, className);
     }
 
     @Override
@@ -69,6 +69,6 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
         if (referenceManager.containClass(namespace, className)) {
             throw new CompilingRuntimeException("the class " + namespace + "." + className + " exists", ctx.Identifier(), path);
         }
-        referenceManager.putClass(namespace, className);
+        referenceManager.putClassName(namespace, className);
     }
 }
