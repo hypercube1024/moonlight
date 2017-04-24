@@ -148,10 +148,17 @@ abstract public class IdlCompiler {
     }
 
     private static Parser createParser(Path root, Path path, Charset charset) throws IOException {
+        Path p = Paths.get(root.toString(), path.toString());
+        CURRENT_PATH.set(p);
+        Parser ret = createParser(CharStreams.fromPath(p, charset));
+        ret.path = path;
+        ret.root = root;
+        ret.absolutePath = p;
+        return ret;
+    }
+
+    private static Parser createParser(CharStream input) {
         Parser ret = new Parser();
-        ret.path = Paths.get(root.toString(), path.toString());
-        CURRENT_PATH.set(ret.path);
-        CharStream input = CharStreams.fromPath(ret.path, charset);
         ret.lexer = new MoonlightLexer(input);
         ret.tokenStream = new CommonTokenStream(ret.lexer);
         ret.parser = new MoonlightParser(ret.tokenStream);
@@ -165,7 +172,9 @@ abstract public class IdlCompiler {
         MoonlightParser parser;
         CommonTokenStream tokenStream;
         MoonlightLexer lexer;
+        Path root;
         Path path;
+        Path absolutePath;
     }
 
     public static Path getClasspath() {
