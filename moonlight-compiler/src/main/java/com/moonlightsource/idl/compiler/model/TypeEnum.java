@@ -12,7 +12,7 @@ public enum TypeEnum {
 
     STRUCT("struct"), ENUM("enum"), INTERFACE("interface"), ANNOTATION("annotation"),
 
-    GENERIC("generic"), VOID("void");
+    REFERENCE("reference"), VOID("void");
 
     private final String keyword;
 

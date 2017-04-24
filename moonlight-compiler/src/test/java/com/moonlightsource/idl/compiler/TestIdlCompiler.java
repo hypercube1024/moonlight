@@ -79,6 +79,8 @@ public class TestIdlCompiler {
                 Assert.assertThat(type.getName(), is(TypeEnum.LIST.getKeyword()));
                 Assert.assertThat(type.getParametricTypes().get(0).getName(), is(TypeEnum.STRING.getKeyword()));
                 Assert.assertThat(field.getAnnotations().isEmpty(), is(true));
+                field.getValues().stream().map(Object::toString).forEach(System.out::println);
+                Assert.assertThat(field.getValues().size(), is(3));
             }
         }
     }

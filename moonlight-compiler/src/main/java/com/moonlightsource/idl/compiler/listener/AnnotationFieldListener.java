@@ -1,5 +1,6 @@
 package com.moonlightsource.idl.compiler.listener;
 
+import com.firefly.utils.function.Func1;
 import com.moonlightsource.idl.compiler.model.*;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -112,21 +113,22 @@ public class AnnotationFieldListener extends BaseFieldListener<AnnotationFieldDe
         String namespace = sourceFile.getNamespace();
         String fieldName = ctx.Identifier().getText();
         String className = ctx.stringList().getText();
-        DefinitionReference reference = new DefinitionReference(namespace, className, referenceManager);
-        List<DefinitionReference> parametricTypeRefs = Collections.singletonList(new DefinitionReference("", TypeEnum.STRING.getKeyword(), referenceManager));
-        ClassDefinition classDefinition = new ClassDefinition(TypeEnum.LIST, TypeEnum.LIST.getKeyword(), namespace, parametricTypeRefs, Collections.emptyList());
-        referenceManager.put(reference, classDefinition);
         List<Object> values;
         if (ctx.stringListExpr() != null) {
             List<TerminalNode> list = ctx.stringListExpr().StringLiteral();
             if (list != null && !list.isEmpty()) {
-                values = list.stream().map(t -> (Object) t.getText()).collect(Collectors.toList());
+                values = list.stream().map(t -> (Object) t.getText().substring(1, t.getText().length() - 1)).collect(Collectors.toList());
             } else {
                 values = Collections.emptyList();
             }
         } else {
             values = Collections.emptyList();
         }
+
+        DefinitionReference reference = new DefinitionReference(namespace, className, referenceManager);
+        List<DefinitionReference> parametricTypeRefs = Collections.singletonList(new DefinitionReference("", TypeEnum.STRING.getKeyword(), referenceManager));
+        ClassDefinition classDefinition = new ClassDefinition(TypeEnum.LIST, TypeEnum.LIST.getKeyword(), namespace, parametricTypeRefs, Collections.emptyList());
+        referenceManager.put(reference, classDefinition);
         return new AnnotationFieldDefinition(fieldName, reference, values, declaredAnnotationReference);
     }
 }

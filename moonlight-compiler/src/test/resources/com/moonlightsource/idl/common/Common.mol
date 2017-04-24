@@ -1,5 +1,5 @@
 namespace com.moonlightsource.idl.common;
 
 annotation Template {
-    list<string> names;
+    list<string> names = ["hello", "foo", ""];
 }
