@@ -1,4 +1,3 @@
-// Generated from /Users/qiupengtao/Develop/github_project/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -77,6 +76,16 @@ public interface MoonlightListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStructField(MoonlightParser.StructFieldContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MoonlightParser#parametricTypeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterParametricTypeDeclaration(MoonlightParser.ParametricTypeDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MoonlightParser#parametricTypeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitParametricTypeDeclaration(MoonlightParser.ParametricTypeDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MoonlightParser#annotationDeclaration}.
 	 * @param ctx the parse tree

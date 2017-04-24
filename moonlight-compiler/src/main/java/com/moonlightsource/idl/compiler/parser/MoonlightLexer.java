@@ -1,4 +1,3 @@
-// Generated from /Users/qiupengtao/Develop/github_project/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -54,7 +53,7 @@ public class MoonlightLexer extends Lexer {
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'*'", "'='", "'<'", "'>'", "'map'", "'set'", "'list'", "'boolean'", 
+		null, "'*'", "'<'", "'>'", "'='", "'map'", "'set'", "'list'", "'boolean'", 
 		"'byte'", "'short'", "'char'", "'int'", "'long'", "'float'", "'double'", 
 		"'string'", "'void'", "'enum'", "'extends'", "'import'", "'interface'", 
 		"'namespace'", "'struct'", "'annotation'", "'[]'", null, null, null, null, 
@@ -208,8 +207,8 @@ public class MoonlightLexer extends Lexer {
 		"\2\2\u009f\u024a\3\2\2\2\u00a1\u024c\3\2\2\2\u00a3\u024e\3\2\2\2\u00a5"+
 		"\u0250\3\2\2\2\u00a7\u0252\3\2\2\2\u00a9\u0259\3\2\2\2\u00ab\u025b\3\2"+
 		"\2\2\u00ad\u025e\3\2\2\2\u00af\u0264\3\2\2\2\u00b1\u0272\3\2\2\2\u00b3"+
-		"\u00b4\7,\2\2\u00b4\4\3\2\2\2\u00b5\u00b6\7?\2\2\u00b6\6\3\2\2\2\u00b7"+
-		"\u00b8\7>\2\2\u00b8\b\3\2\2\2\u00b9\u00ba\7@\2\2\u00ba\n\3\2\2\2\u00bb"+
+		"\u00b4\7,\2\2\u00b4\4\3\2\2\2\u00b5\u00b6\7>\2\2\u00b6\6\3\2\2\2\u00b7"+
+		"\u00b8\7@\2\2\u00b8\b\3\2\2\2\u00b9\u00ba\7?\2\2\u00ba\n\3\2\2\2\u00bb"+
 		"\u00bc\7o\2\2\u00bc\u00bd\7c\2\2\u00bd\u00be\7r\2\2\u00be\f\3\2\2\2\u00bf"+
 		"\u00c0\7u\2\2\u00c0\u00c1\7g\2\2\u00c1\u00c2\7v\2\2\u00c2\16\3\2\2\2\u00c3"+
 		"\u00c4\7n\2\2\u00c4\u00c5\7k\2\2\u00c5\u00c6\7u\2\2\u00c6\u00c7\7v\2\2"+

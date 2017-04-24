@@ -30,7 +30,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
     private final SourceFile sourceFile;
     private final Map<Class<? extends ParserRuleContext>, Action1<MoonlightParser.AnnotationContext>> annotationListeners = new HashMap<>();
     private final ParseTreeProperty<List<AnnotationValue>> annotationDeclarationAnnotations = new ParseTreeProperty<>();
-    private final AnnotationFieldListener annotationFieldListener = new AnnotationFieldListener();
+    private final AnnotationFieldListener annotationFieldListener;
 
     public MoonlightSourceListener(MoonlightParser parser, CommonTokenStream tokenStream, MoonlightLexer lexer,
                                    SourceFile sourceFile, DefinitionReferenceManager referenceManager) {
@@ -49,6 +49,8 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         annotationListeners.put(MoonlightParser.FunctionDeclarationContext.class, this::enterFunctionDeclarationAnnotation);
         annotationListeners.put(MoonlightParser.FunctionParameterContext.class, this::enterFunctionParameterAnnotation);
         annotationListeners.put(MoonlightParser.InterfaceDeclarationContext.class, this::enterInterfaceDeclarationAnnotation);
+
+        annotationFieldListener = new AnnotationFieldListener(sourceFile, referenceManager);
     }
 
     public MoonlightParser getParser() {
@@ -121,7 +123,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
                 if (log.isDebugEnabled()) {
                     log.debug("base field type -> {}", baseFieldContext.getClass());
                 }
-                fields.add(annotationFieldListener.createBaseField(baseFieldContext));
+                fields.add(annotationFieldListener.createBaseField(baseFieldContext, reference));
             }
         }
     }

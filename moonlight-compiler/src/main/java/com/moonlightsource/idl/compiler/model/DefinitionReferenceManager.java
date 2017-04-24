@@ -1,5 +1,6 @@
 package com.moonlightsource.idl.compiler.model;
 
+import com.firefly.utils.StringUtils;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +15,21 @@ public class DefinitionReferenceManager {
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
 
     private Map<DefinitionReference, ClassDefinition> classDefinitionMap = new HashMap<>();
-    private Map<String, Set<String>> classNames = new HashMap<>();
+    private Map<String, Map<String, Set<String>>> classDeclarationMap = new HashMap<>();
 
     public DefinitionReferenceManager() {
         TypeEnum.BASE_TYPE_ENUMS
-                .forEach(t -> classDefinitionMap.put(new DefinitionReference("", t.getKeyword(), this),
-                        new ClassDefinition(t, t.getKeyword(), "", Collections.emptyList(), Collections.emptyList())));
+                .forEach(t -> {
+                    classDefinitionMap.put(new DefinitionReference("", t.getKeyword(), this),
+                            new ClassDefinition(t, t.getKeyword(), "", Collections.emptyList(), Collections.emptyList()));
+
+                    putClassDeclaration("", t.getKeyword(), "");
+                });
+
+        putClassDeclaration("", TypeEnum.LIST.getKeyword(), "T");
+        putClassDeclaration("", TypeEnum.SET.getKeyword(), "T");
+        putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T0");
+        putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T1");
     }
 
     public synchronized ClassDefinition getClassDefinition(DefinitionReference ref) {
@@ -36,17 +46,27 @@ public class DefinitionReferenceManager {
     }
 
     public synchronized void putNamespace(String namespace) {
-        classNames.computeIfAbsent(namespace, k -> new HashSet<>());
+        classDeclarationMap.computeIfAbsent(namespace, k -> new HashMap<>());
     }
 
-    public synchronized void putClassName(String namespace, String className) {
-        classNames.computeIfAbsent(namespace, k -> new HashSet<>()).add(className);
+    public synchronized void putClassDeclaration(String namespace, String className, String parametricDef) {
+        if (checkParametricDeclaration(namespace, className, parametricDef)) {
+            if (StringUtils.hasText(parametricDef)) {
+                throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] or parametric declaration [" + parametricDef + "] exists");
+            } else {
+                throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] exists");
+            }
+        }
+
+        classDeclarationMap.computeIfAbsent(namespace, k -> new HashMap<>())
+                           .computeIfAbsent(className, k -> new HashSet<>())
+                           .add(parametricDef);
     }
 
     public synchronized Set<String> getClassNames(String namespace) {
-        Set<String> names = classNames.get(namespace);
-        if (names != null && !names.isEmpty()) {
-            return names;
+        Map<String, Set<String>> classNameAndParametricDeclaration = classDeclarationMap.get(namespace);
+        if (classNameAndParametricDeclaration != null && !classNameAndParametricDeclaration.isEmpty()) {
+            return classNameAndParametricDeclaration.keySet();
         } else {
             return Collections.emptySet();
         }
@@ -54,13 +74,43 @@ public class DefinitionReferenceManager {
 
     public synchronized boolean containNamespace(String namespace) {
         if (log.isDebugEnabled()) {
-            log.debug("existed namespaces -> {}", classNames.keySet());
+            log.debug("existed namespaces -> {}", classDeclarationMap.keySet());
         }
-        return classNames.keySet().contains(namespace);
+        return classDeclarationMap.keySet().contains(namespace);
     }
 
     public synchronized boolean containClass(String namespace, String className) {
         return getClassNames(namespace).contains(className);
+    }
+
+    public synchronized boolean checkParametricDeclaration(String namespace, String className, String parametricType) {
+        Map<String, Set<String>> classNameAndParametricDeclaration = classDeclarationMap.get(namespace);
+        if (classNameAndParametricDeclaration == null || classNameAndParametricDeclaration.isEmpty()) {
+            return false;
+        }
+
+        if (!classNameAndParametricDeclaration.containsKey(className)) {
+            return false;
+        }
+
+        Set<String> parametricTypes = classNameAndParametricDeclaration.get(className);
+        if (parametricTypes == null || parametricTypes.isEmpty()) {
+            return false;
+        }
+
+        if (!parametricTypes.contains(parametricType)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public synchronized boolean checkParametricTypeCount(String namespace, String className, int count) {
+        if(!containClass(namespace, className)) {
+            throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] is not found");
+        }
+
+        return classDeclarationMap.get(namespace).get(className).size() == count;
     }
 
 }

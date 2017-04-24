@@ -10,7 +10,7 @@ struct Hello<T> extends Request<string> {
     required list<Hero> heroList;
 }
 
-struct Answer<Foo<T>> extends Response<string> {
+struct Answer<T> extends Response<string> {
     optional T data;
     long time;
 }

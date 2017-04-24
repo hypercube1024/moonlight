@@ -1,6 +1,6 @@
 package com.moonlightsource.idl.compiler;
 
-import com.moonlightsource.idl.compiler.model.SourceFile;
+import com.moonlightsource.idl.compiler.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.is;
@@ -51,7 +52,35 @@ public class TestIdlCompiler {
 
     @Test
     public void testAnnotation() {
-        Path path = Paths.get("/test2/TestAnnotation.mol");
+        Path path = Paths.get("/common/Common.mol");
+        SourceFile sourceFile = find(path);
+        Assert.assertThat(sourceFile.getAnnotationDefinitions().size(), greaterThanOrEqualTo(1));
+
+        Optional<AnnotationDefinition> opt = sourceFile.getAnnotationDefinitions()
+                                                       .stream()
+                                                       .filter(d -> d.getName().equals("Template"))
+                                                       .findFirst();
+
+        Assert.assertThat(opt.isPresent(), is(true));
+
+        if (opt.isPresent()) {
+            AnnotationDefinition d = opt.get();
+            Assert.assertThat(d.getFields().size(), greaterThanOrEqualTo(1));
+            Optional<AnnotationFieldDefinition> nameOpt = d.getFields()
+                                                           .stream()
+                                                           .filter(field -> field.getName().equals("names"))
+                                                           .findFirst();
+
+            Assert.assertThat(nameOpt.isPresent(), is(true));
+            if (nameOpt.isPresent()) {
+                AnnotationFieldDefinition field = nameOpt.get();
+                Assert.assertThat(field.getDeclaredAnnotationDefinition(), is(d));
+                ClassDefinition type = field.getClassDefinition();
+                Assert.assertThat(type.getName(), is(TypeEnum.LIST.getKeyword()));
+                Assert.assertThat(type.getParametricTypes().get(0).getName(), is(TypeEnum.STRING.getKeyword()));
+
+            }
+        }
     }
 
 

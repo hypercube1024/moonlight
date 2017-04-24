@@ -26,11 +26,15 @@ importValue
 
 // struct
 structDeclaration
-    : annotation* STRUCT Identifier parametricTypeExpr? (EXTENDS referenceType )? '{' structField* '}'
+    : annotation* STRUCT Identifier parametricTypeDeclaration? (EXTENDS referenceType )? '{' structField* '}'
     ;
 
 structField
     : annotation* FieldReq? fieldType Identifier ';'
+    ;
+
+parametricTypeDeclaration
+    : '<' Identifier (',' Identifier)* '>'
     ;
 
 // annotation

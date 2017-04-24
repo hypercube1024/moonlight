@@ -1,4 +1,3 @@
-// Generated from /Users/qiupengtao/Develop/github_project/moonlight/moonlight-compiler/src/main/java/com/moonlightsource/idl/compiler/bnf/Moonlight.g4 by ANTLR 4.7
 package com.moonlightsource.idl.compiler.parser;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -52,6 +51,12 @@ public interface MoonlightVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStructField(MoonlightParser.StructFieldContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MoonlightParser#parametricTypeDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParametricTypeDeclaration(MoonlightParser.ParametricTypeDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MoonlightParser#annotationDeclaration}.
 	 * @param ctx the parse tree

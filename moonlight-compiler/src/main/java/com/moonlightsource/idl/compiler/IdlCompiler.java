@@ -127,7 +127,7 @@ abstract public class IdlCompiler {
         parser.setErrorHandler(new LogErrorStrategy());
         parser.removeErrorListeners();
         parser.addErrorListener(new LogErrorListener());
-        ClassDefinitionListener listener = new ClassDefinitionListener(referenceManager, root, path);
+        ClassDefinitionListener listener = new ClassDefinitionListener(referenceManager);
         ParseTree tree = parser.moonlightFile();
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(listener, tree);

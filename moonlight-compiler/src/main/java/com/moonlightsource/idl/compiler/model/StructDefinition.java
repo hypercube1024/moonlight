@@ -10,7 +10,7 @@ public class StructDefinition extends ClassDefinition {
     private final DefinitionReference parentReference;
     private final List<StructFieldDefinition> fields;
 
-    public StructDefinition(TypeEnum type, String name, String namespace, List<ClassDefinition> parametricTypes, List<AnnotationValue> annotations, DefinitionReference parentReference, List<StructFieldDefinition> fields) {
+    public StructDefinition(TypeEnum type, String name, String namespace, List<DefinitionReference> parametricTypes, List<AnnotationValue> annotations, DefinitionReference parentReference, List<StructFieldDefinition> fields) {
         super(type, name, namespace, parametricTypes, annotations);
         this.parentReference = parentReference;
         this.fields = fields;

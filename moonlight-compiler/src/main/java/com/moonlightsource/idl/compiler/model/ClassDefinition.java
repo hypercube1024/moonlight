@@ -1,7 +1,9 @@
 package com.moonlightsource.idl.compiler.model;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author Pengtao Qiu
@@ -11,10 +13,10 @@ public class ClassDefinition {
     private final TypeEnum type;
     private final String name;
     private final String namespace;
-    private final List<ClassDefinition> parametricTypes;
+    private final List<DefinitionReference> parametricTypes;
     private final List<AnnotationValue> annotations;
 
-    public ClassDefinition(TypeEnum type, String name, String namespace, List<ClassDefinition> parametricTypes, List<AnnotationValue> annotations) {
+    public ClassDefinition(TypeEnum type, String name, String namespace, List<DefinitionReference> parametricTypes, List<AnnotationValue> annotations) {
         this.type = type;
         this.name = name;
         this.namespace = namespace;
@@ -35,7 +37,11 @@ public class ClassDefinition {
     }
 
     public List<ClassDefinition> getParametricTypes() {
-        return parametricTypes;
+        if (parametricTypes == null || parametricTypes.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return parametricTypes.stream().map(DefinitionReference::getClassDefinition).collect(Collectors.toList());
+        }
     }
 
     public List<AnnotationValue> getAnnotations() {
