@@ -125,7 +125,7 @@ public class AnnotationFieldListener extends BaseFieldListener<AnnotationFieldDe
             values = Collections.emptyList();
         }
 
-        DefinitionReference reference = new DefinitionReference(namespace, className, referenceManager);
+        DefinitionReference reference = new DefinitionReference(namespace, className + fieldName, referenceManager);
         List<DefinitionReference> parametricTypeRefs = Collections.singletonList(new DefinitionReference("", TypeEnum.STRING.getKeyword(), referenceManager));
         ClassDefinition classDefinition = new ClassDefinition(TypeEnum.LIST, TypeEnum.LIST.getKeyword(), namespace, parametricTypeRefs, Collections.emptyList());
         referenceManager.put(reference, classDefinition);

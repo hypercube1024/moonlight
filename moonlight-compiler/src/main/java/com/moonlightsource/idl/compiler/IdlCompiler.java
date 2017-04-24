@@ -118,27 +118,11 @@ abstract public class IdlCompiler {
 
     private static void findAllClassDefinition(Path root, Path path, Charset charset,
                                                DefinitionReferenceManager referenceManager) throws IOException {
-        Path p = Paths.get(root.toString(), path.toString());
-        CURRENT_PATH.set(p);
-        CharStream input = CharStreams.fromPath(p, charset);
-        MoonlightLexer lexer = new MoonlightLexer(input);
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        MoonlightParser parser = new MoonlightParser(tokenStream);
-        parser.setErrorHandler(new LogErrorStrategy());
-        parser.removeErrorListeners();
-        parser.addErrorListener(new LogErrorListener());
+        Parser parser = createParser(root, path, charset);
         ClassDefinitionListener listener = new ClassDefinitionListener(referenceManager);
-        ParseTree tree = parser.moonlightFile();
+        ParseTree tree = parser.parser.moonlightFile();
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(listener, tree);
-    }
-
-    public static Path getClasspath() {
-        try {
-            return Paths.get(IdlCompiler.class.getResource("/").toURI());
-        } catch (URISyntaxException e) {
-            throw new CompilingRuntimeException(e);
-        }
     }
 
     /**
@@ -155,23 +139,42 @@ abstract public class IdlCompiler {
         SourceFile sourceFile = new SourceFile();
         sourceFile.setPath(path);
         sourceFile.setRoot(root);
-        Path p = Paths.get(root.toString(), path.toString());
-        CURRENT_PATH.set(p);
-        CharStream input = CharStreams.fromPath(p, charset);
-        MoonlightSourceListener listener = createListener(input, sourceFile, referenceManager);
+        Parser parser = createParser(root, path, charset);
+        MoonlightSourceListener listener = new MoonlightSourceListener(parser.parser, parser.tokenStream, parser.lexer, sourceFile, referenceManager);
         ParseTree tree = listener.getParser().moonlightFile();
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(listener, tree);
         return sourceFile;
     }
 
-    private static MoonlightSourceListener createListener(CharStream input, SourceFile sourceFile, DefinitionReferenceManager referenceManager) {
-        MoonlightLexer lexer = new MoonlightLexer(input);
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        MoonlightParser parser = new MoonlightParser(tokenStream);
-        parser.setErrorHandler(new LogErrorStrategy());
-        parser.removeErrorListeners();
-        parser.addErrorListener(new LogErrorListener());
-        return new MoonlightSourceListener(parser, tokenStream, lexer, sourceFile, referenceManager);
+    private static Parser createParser(Path root, Path path, Charset charset) throws IOException {
+        Parser ret = new Parser();
+        ret.path = Paths.get(root.toString(), path.toString());
+        CURRENT_PATH.set(ret.path);
+        CharStream input = CharStreams.fromPath(ret.path, charset);
+        ret.lexer = new MoonlightLexer(input);
+        ret.tokenStream = new CommonTokenStream(ret.lexer);
+        ret.parser = new MoonlightParser(ret.tokenStream);
+        ret.parser.setErrorHandler(new LogErrorStrategy());
+        ret.parser.removeErrorListeners();
+        ret.parser.addErrorListener(new LogErrorListener());
+        return ret;
     }
+
+    public static class Parser {
+        MoonlightParser parser;
+        CommonTokenStream tokenStream;
+        MoonlightLexer lexer;
+        Path path;
+    }
+
+    public static Path getClasspath() {
+        try {
+            return Paths.get(IdlCompiler.class.getResource("/").toURI());
+        } catch (URISyntaxException e) {
+            throw new CompilingRuntimeException(e);
+        }
+    }
+
+
 }
