@@ -78,7 +78,7 @@ public class TestIdlCompiler {
                 ClassDefinition type = field.getClassDefinition();
                 Assert.assertThat(type.getName(), is(TypeEnum.LIST.getKeyword()));
                 Assert.assertThat(type.getParametricTypes().get(0).getName(), is(TypeEnum.STRING.getKeyword()));
-
+                Assert.assertThat(field.getAnnotations().isEmpty(), is(true));
             }
         }
     }
