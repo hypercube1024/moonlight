@@ -30,14 +30,14 @@ public class DefinitionReferenceManager {
                 });
 
         putClassDeclaration("", TypeEnum.LIST.getKeyword(), "T");
-        classDefinitionMap.put(new DefinitionReference("", TypeEnum.LIST.getKeyword(), this),
+        classDefinitionMap.put(createListRef(),
                 new ClassDefinition(TypeEnum.LIST, TypeEnum.LIST.getKeyword(), "",
                         Collections.emptyList(),
                         Collections.singleton("T"),
                         Collections.emptyList()));
 
         putClassDeclaration("", TypeEnum.SET.getKeyword(), "T");
-        classDefinitionMap.put(new DefinitionReference("", TypeEnum.SET.getKeyword(), this),
+        classDefinitionMap.put(createSetRef(),
                 new ClassDefinition(TypeEnum.SET, TypeEnum.SET.getKeyword(), "",
                         Collections.emptyList(),
                         Collections.singleton("T"),
@@ -45,11 +45,23 @@ public class DefinitionReferenceManager {
 
         putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T0");
         putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T1");
-        classDefinitionMap.put(new DefinitionReference("", TypeEnum.MAP.getKeyword(), this),
+        classDefinitionMap.put(createMapRef(),
                 new ClassDefinition(TypeEnum.MAP, TypeEnum.MAP.getKeyword(), "",
                         Collections.emptyList(),
                         new HashSet<>(Arrays.asList("T0", "T1")),
                         Collections.emptyList()));
+    }
+
+    public DefinitionReference createMapRef() {
+        return new DefinitionReference("", TypeEnum.MAP.getKeyword(), this);
+    }
+
+    public DefinitionReference createListRef() {
+        return new DefinitionReference("", TypeEnum.LIST.getKeyword(), this);
+    }
+
+    public DefinitionReference createSetRef() {
+        return new DefinitionReference("", TypeEnum.SET.getKeyword(), this);
     }
 
     public synchronized ClassDefinition getClassDefinition(DefinitionReference ref) {

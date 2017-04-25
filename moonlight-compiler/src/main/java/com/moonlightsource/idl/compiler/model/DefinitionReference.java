@@ -29,6 +29,10 @@ public class DefinitionReference {
         return manager.getClassDefinition(this);
     }
 
+    public DefinitionReferenceManager getManager() {
+        return manager;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
