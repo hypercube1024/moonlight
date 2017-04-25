@@ -1,0 +1,29 @@
+namespace com.moonlightsource.idl.api;
+
+import com.moonlightsource.idl.common.*;
+
+struct Product {
+    long id;
+    string name;
+    int type;
+    long stockId;
+}
+
+enum ProductType {
+    int FRUIT = 1;
+    int ELECTRIC = 2;
+}
+
+struct Order {
+    long id;
+    long userId;
+    int num;
+    long productId;
+}
+
+interface StoreService {
+
+    @Web(path = "/store/buy")
+    Response<Order> buy(Request<Product> request);
+
+}

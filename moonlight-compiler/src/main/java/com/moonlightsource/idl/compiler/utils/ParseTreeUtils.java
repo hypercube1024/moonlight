@@ -1,13 +1,10 @@
 package com.moonlightsource.idl.compiler.utils;
 
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
-import com.moonlightsource.idl.compiler.model.*;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -92,10 +89,4 @@ abstract public class ParseTreeUtils {
         return "@file[" + path + "], line[" + node.getSymbol().getLine() + ", " + node.getSymbol().getCharPositionInLine() + "]";
     }
 
-    public static ParametricType getStringListParametricType(DefinitionReferenceManager referenceManager) {
-        DefinitionReference listRef = new DefinitionReference("", TypeEnum.LIST.getKeyword(), referenceManager);
-        DefinitionReference stringRef = new DefinitionReference("", TypeEnum.STRING.getKeyword(), referenceManager);
-        ParametricType stringType = new ParametricType(stringRef, Collections.emptyList());
-        return new ParametricType(listRef, Collections.singletonList(stringType));
-    }
 }

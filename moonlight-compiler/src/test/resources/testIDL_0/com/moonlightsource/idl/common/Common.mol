@@ -1,0 +1,25 @@
+namespace com.moonlightsource.idl.common;
+
+struct Request<T> {
+    T data;
+    string token;
+    long id;
+    string ua;
+}
+
+struct Response<T> {
+    T data;
+    int code;
+    string msg;
+}
+
+enum ResponseCode {
+    int OK = 200;
+    int CLIENT_ERROR = 400;
+    int SERVER_ERROR = 500;
+}
+
+annotation Web {
+    string host = "http://www.test.store.api";
+    string path;
+}

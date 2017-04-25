@@ -5,9 +5,9 @@ import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.exception.LogErrorListener;
 import com.moonlightsource.idl.compiler.exception.LogErrorStrategy;
 import com.moonlightsource.idl.compiler.listener.ClassDefinitionListener;
-import com.moonlightsource.idl.compiler.listener.MoonlightSourceListener;
-import com.moonlightsource.idl.compiler.model.DefinitionReferenceManager;
-import com.moonlightsource.idl.compiler.model.SourceFile;
+import com.moonlightsource.idl.compiler.listener.SyntaxCheckListener;
+import com.moonlightsource.idl.compiler.model.ClassDefinitions;
+import com.moonlightsource.idl.compiler.model.Source;
 import com.moonlightsource.idl.compiler.parser.MoonlightLexer;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.CharStreams;
@@ -27,7 +27,6 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -47,37 +46,37 @@ abstract public class IdlCompiler {
      * @param root    The source file's root path
      * @param filter  The source file filter
      * @param charset The source file charset
-     * @return All SourceFile objects
      * @throws IOException Read source file I/O exception
      */
-    public static List<SourceFile> compileAll(Path root, Predicate<Path> filter, Charset charset) throws IOException {
-        DefinitionReferenceManager referenceManager = new DefinitionReferenceManager();
-        List<SourceWrap> sources = walk(root, filter, charset).collect(Collectors.toList());
-        sources.parallelStream().map(ParserWrap::new).forEach(parserWrap -> {
+    public static void compile(Path root, Predicate<Path> filter, Charset charset) throws IOException {
+        ClassDefinitions classDefinitions = new ClassDefinitions();
+        List<SourceWrap> sourceWraps = walk(root, filter, charset).collect(Collectors.toList());
+        sourceWraps.parallelStream().map(ParserWrap::new).forEach(parserWrap -> {
             if (log.isDebugEnabled()) {
                 log.debug("moonlight find class thread -> {}", Thread.currentThread().getName());
             }
             CURRENT_PATH.set(parserWrap.sourceWrap.absolutePath);
             ParseTree tree = parserWrap.parser.moonlightFile();
             ParseTreeWalker walker = new ParseTreeWalker();
-            ClassDefinitionListener listener = new ClassDefinitionListener(referenceManager);
+
+            Source source = new Source();
+            source.setPath(parserWrap.sourceWrap.path);
+            source.setRoot(parserWrap.sourceWrap.root);
+            source.setAbsolutePath(parserWrap.sourceWrap.absolutePath);
+            ClassDefinitionListener listener = new ClassDefinitionListener(classDefinitions, source);
             walker.walk(listener, tree);
         });
 
-        return sources.parallelStream().map(ParserWrap::new).map(parserWrap -> {
+         sourceWraps.parallelStream().map(ParserWrap::new).forEach(parserWrap -> {
             if (log.isDebugEnabled()) {
-                log.debug("moonlight compiling thread -> {}", Thread.currentThread().getName());
+                log.debug("moonlight syntax check thread -> {}", Thread.currentThread().getName());
             }
             CURRENT_PATH.set(parserWrap.sourceWrap.absolutePath);
-            SourceFile sourceFile = new SourceFile();
-            sourceFile.setPath(parserWrap.sourceWrap.path);
-            sourceFile.setRoot(parserWrap.sourceWrap.root);
-            MoonlightSourceListener listener = new MoonlightSourceListener(parserWrap.parser, parserWrap.tokenStream, parserWrap.lexer, sourceFile, referenceManager);
-            ParseTree tree = listener.getParser().moonlightFile();
+            ParseTree tree = parserWrap.parser.moonlightFile();
             ParseTreeWalker walker = new ParseTreeWalker();
+            SyntaxCheckListener listener = new SyntaxCheckListener(classDefinitions);
             walker.walk(listener, tree);
-            return sourceFile;
-        }).collect(Collectors.toList());
+        });
     }
 
     private static Stream<SourceWrap> walk(Path root, Predicate<Path> filter, Charset charset) throws IOException {

@@ -10,75 +10,21 @@ import java.util.*;
 /**
  * @author Pengtao Qiu
  */
-public class DefinitionReferenceManager {
+public class ClassDefinitions {
 
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
 
-    private Map<DefinitionReference, ClassDefinition> classDefinitionMap = new HashMap<>();
     private Map<String, Map<String, Set<String>>> classDeclarationMap = new HashMap<>();
+    private List<Source> sources = new ArrayList<>();
 
-    public DefinitionReferenceManager() {
+    public ClassDefinitions() {
         TypeEnum.BASE_TYPE_ENUMS
-                .forEach(t -> {
-                    classDefinitionMap.put(new DefinitionReference("", t.getKeyword(), this),
-                            new ClassDefinition(t, t.getKeyword(), "",
-                                    Collections.emptyList(),
-                                    Collections.emptySet(),
-                                    Collections.emptyList()));
-
-                    putClassDeclaration("", t.getKeyword(), "");
-                });
+                .forEach(t -> putClassDeclaration("", t.getKeyword(), ""));
 
         putClassDeclaration("", TypeEnum.LIST.getKeyword(), "T");
-        classDefinitionMap.put(createListRef(),
-                new ClassDefinition(TypeEnum.LIST, TypeEnum.LIST.getKeyword(), "",
-                        Collections.emptyList(),
-                        Collections.singleton("T"),
-                        Collections.emptyList()));
-
         putClassDeclaration("", TypeEnum.SET.getKeyword(), "T");
-        classDefinitionMap.put(createSetRef(),
-                new ClassDefinition(TypeEnum.SET, TypeEnum.SET.getKeyword(), "",
-                        Collections.emptyList(),
-                        Collections.singleton("T"),
-                        Collections.emptyList()));
-
         putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T0");
         putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T1");
-        classDefinitionMap.put(createMapRef(),
-                new ClassDefinition(TypeEnum.MAP, TypeEnum.MAP.getKeyword(), "",
-                        Collections.emptyList(),
-                        new HashSet<>(Arrays.asList("T0", "T1")),
-                        Collections.emptyList()));
-    }
-
-    public DefinitionReference createRef(String namespace, String className) {
-        return new DefinitionReference(namespace, className, this);
-    }
-
-    public DefinitionReference createMapRef() {
-        return new DefinitionReference("", TypeEnum.MAP.getKeyword(), this);
-    }
-
-    public DefinitionReference createListRef() {
-        return new DefinitionReference("", TypeEnum.LIST.getKeyword(), this);
-    }
-
-    public DefinitionReference createSetRef() {
-        return new DefinitionReference("", TypeEnum.SET.getKeyword(), this);
-    }
-
-    public synchronized ClassDefinition getClassDefinition(DefinitionReference ref) {
-        return classDefinitionMap.get(ref);
-    }
-
-    public synchronized void put(DefinitionReference ref, ClassDefinition classDefinition) {
-        ClassDefinition def = classDefinitionMap.get(ref);
-        if (def != null && def.equals(classDefinition)) {
-            throw new CompilingRuntimeException("the class " + def + " exists");
-        } else {
-            classDefinitionMap.put(ref, classDefinition);
-        }
     }
 
     public synchronized void putNamespace(String namespace) {
@@ -147,6 +93,10 @@ public class DefinitionReferenceManager {
         }
 
         return classDeclarationMap.get(namespace).get(className).size() == count;
+    }
+
+    public synchronized void addSource(Source source) {
+        sources.add(source);
     }
 
 }

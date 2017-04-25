@@ -1,23 +1,20 @@
 package com.moonlightsource.idl.compiler.model;
 
-import java.util.*;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Pengtao Qiu
  */
 public class Source {
 
-    private final List<AnnotationValue> annotations = new ArrayList<>();
+    private Path root;
+    private Path path;
+    private Path absolutePath;
     private String namespace;
     private final Map<String, Set<String>> imports = new HashMap<>();
-    private final List<ClassDefinition> enumDefinitions = new ArrayList<>();
-    private final List<ClassDefinition> annotationDefinitions = new ArrayList<>();
-    private final List<ClassDefinition> structDefinitions = new ArrayList<>();
-    private final List<ClassDefinition> interfaceDefinitions = new ArrayList<>();
-
-    public List<AnnotationValue> getAnnotations() {
-        return annotations;
-    }
 
     public String getNamespace() {
         return namespace;
@@ -39,19 +36,27 @@ public class Source {
                       .orElse(null);
     }
 
-    public List<ClassDefinition> getEnumDefinitions() {
-        return enumDefinitions;
+    public Path getRoot() {
+        return root;
     }
 
-    public List<ClassDefinition> getAnnotationDefinitions() {
-        return annotationDefinitions;
+    public void setRoot(Path root) {
+        this.root = root;
     }
 
-    public List<ClassDefinition> getStructDefinitions() {
-        return structDefinitions;
+    public Path getPath() {
+        return path;
     }
 
-    public List<ClassDefinition> getInterfaceDefinitions() {
-        return interfaceDefinitions;
+    public void setPath(Path path) {
+        this.path = path;
+    }
+
+    public Path getAbsolutePath() {
+        return absolutePath;
+    }
+
+    public void setAbsolutePath(Path absolutePath) {
+        this.absolutePath = absolutePath;
     }
 }
