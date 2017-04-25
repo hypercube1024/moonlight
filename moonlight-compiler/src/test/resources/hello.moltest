@@ -13,6 +13,7 @@ struct Hello<T> extends Request<string> {
 struct Answer<T> extends Response<string> {
     optional T data;
     long time;
+    Tmp<A<C>, list<B<Map<int, string>>>> tmp;
 }
 
 @Abc

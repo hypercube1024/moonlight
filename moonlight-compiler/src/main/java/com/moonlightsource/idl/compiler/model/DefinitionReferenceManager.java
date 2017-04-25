@@ -52,6 +52,10 @@ public class DefinitionReferenceManager {
                         Collections.emptyList()));
     }
 
+    public DefinitionReference createRef(String namespace, String className) {
+        return new DefinitionReference(namespace, className, this);
+    }
+
     public DefinitionReference createMapRef() {
         return new DefinitionReference("", TypeEnum.MAP.getKeyword(), this);
     }

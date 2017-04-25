@@ -31,6 +31,14 @@ public class Source {
         return imports;
     }
 
+    public String findNamespaceByClassName(String className) {
+        return imports.entrySet().stream()
+                      .filter(e -> e.getValue().contains(className))
+                      .map(Map.Entry::getKey)
+                      .findAny()
+                      .orElse(null);
+    }
+
     public List<ClassDefinition> getEnumDefinitions() {
         return enumDefinitions;
     }
