@@ -1,9 +1,9 @@
 package com.moonlightsource.idl.compiler.model;
 
+import com.moonlightsource.idl.compiler.parser.MoonlightParser;
+
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Pengtao Qiu
@@ -15,6 +15,10 @@ public class Source {
     private Path absolutePath;
     private String namespace;
     private final Map<String, Set<String>> imports = new HashMap<>();
+    private final List<MoonlightParser.StructDeclarationContext> structs = new ArrayList<>();
+    private final List<MoonlightParser.AnnotationDeclarationContext> annotations = new ArrayList<>();
+    private final List<MoonlightParser.EnumDeclarationContext> enums = new ArrayList<>();
+    private final List<MoonlightParser.InterfaceDeclarationContext> interfaces = new ArrayList<>();
 
     public String getNamespace() {
         return namespace;
@@ -58,5 +62,27 @@ public class Source {
 
     public void setAbsolutePath(Path absolutePath) {
         this.absolutePath = absolutePath;
+    }
+
+    public List<MoonlightParser.StructDeclarationContext> getStructs() {
+        return structs;
+    }
+
+    public List<MoonlightParser.AnnotationDeclarationContext> getAnnotations() {
+        return annotations;
+    }
+
+    public List<MoonlightParser.EnumDeclarationContext> getEnums() {
+        return enums;
+    }
+
+    public List<MoonlightParser.InterfaceDeclarationContext> getInterfaces() {
+        return interfaces;
+    }
+
+    public MoonlightParser.StructDeclarationContext findStruct(String name) {
+        return structs.parallelStream()
+                      .filter(ctx -> ctx.Identifier().getText().equals(name))
+                      .findFirst().orElse(null);
     }
 }

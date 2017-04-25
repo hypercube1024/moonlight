@@ -5,19 +5,20 @@ import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.*;
 
 /**
  * @author Pengtao Qiu
  */
-public class ClassDefinitions {
+public class ClassDefs {
 
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
 
     private Map<String, Map<String, Set<String>>> classDeclarationMap = new HashMap<>();
     private List<Source> sources = new ArrayList<>();
 
-    public ClassDefinitions() {
+    public ClassDefs() {
         TypeEnum.BASE_TYPE_ENUMS
                 .forEach(t -> putClassDeclaration("", t.getKeyword(), ""));
 
@@ -97,6 +98,14 @@ public class ClassDefinitions {
 
     public synchronized void addSource(Source source) {
         sources.add(source);
+    }
+
+    public List<Source> getSources() {
+        return sources;
+    }
+
+    public void checkSyntax() {
+        // TODO
     }
 
 }

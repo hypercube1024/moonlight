@@ -1,6 +1,6 @@
 package com.moonlightsource.idl.compiler.listener;
 
-import com.moonlightsource.idl.compiler.model.ClassDefinitions;
+import com.moonlightsource.idl.compiler.model.ClassDefs;
 import com.moonlightsource.idl.compiler.model.Source;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
@@ -13,51 +13,59 @@ import java.util.List;
  */
 public class ClassDefinitionListener extends MoonlightBaseListener {
 
-    private final ClassDefinitions classDefinitions;
+    private final ClassDefs classDefs;
     private final Source source;
     private String namespace;
 
-    public ClassDefinitionListener(ClassDefinitions classDefinitions, Source source) {
-        this.classDefinitions = classDefinitions;
+    public ClassDefinitionListener(ClassDefs classDefs, Source source) {
+        this.classDefs = classDefs;
         this.source = source;
-        classDefinitions.addSource(source);
+        classDefs.addSource(source);
     }
 
     @Override
     public void enterNamespaceDeclaration(MoonlightParser.NamespaceDeclarationContext ctx) {
         namespace = ctx.namespaceValue().getText();
-        classDefinitions.putNamespace(namespace);
+        classDefs.putNamespace(namespace);
         source.setNamespace(namespace);
     }
 
     @Override
     public void enterStructDeclaration(MoonlightParser.StructDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
-        List<TerminalNode> list = ctx.parametricTypeDeclaration().Identifier();
-        if (list != null && !list.isEmpty()) {
-            for (TerminalNode terminalNode : list) {
-                classDefinitions.putClassDeclaration(namespace, className, terminalNode.getText());
+        if (ctx.parametricTypeDeclaration() != null) {
+            List<TerminalNode> list = ctx.parametricTypeDeclaration().Identifier();
+            if (list != null && !list.isEmpty()) {
+                for (TerminalNode terminalNode : list) {
+                    classDefs.putClassDeclaration(namespace, className, terminalNode.getText());
+                }
+            } else {
+                classDefs.putClassDeclaration(namespace, className, "");
             }
         } else {
-            classDefinitions.putClassDeclaration(namespace, className, "");
+            classDefs.putClassDeclaration(namespace, className, "");
         }
+        source.getStructs().add(ctx);
     }
 
     @Override
     public void enterAnnotationDeclaration(MoonlightParser.AnnotationDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
-        classDefinitions.putClassDeclaration(namespace, className, "");
+        classDefs.putClassDeclaration(namespace, className, "");
+        source.getAnnotations().add(ctx);
     }
 
     @Override
     public void enterEnumDeclaration(MoonlightParser.EnumDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
-        classDefinitions.putClassDeclaration(namespace, className, "");
+        classDefs.putClassDeclaration(namespace, className, "");
+        source.getEnums().add(ctx);
     }
 
     @Override
     public void enterInterfaceDeclaration(MoonlightParser.InterfaceDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
-        classDefinitions.putClassDeclaration(namespace, className, "");
+        classDefs.putClassDeclaration(namespace, className, "");
+        source.getInterfaces().add(ctx);
     }
 }

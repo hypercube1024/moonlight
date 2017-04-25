@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.List;
 
-import com.moonlightsource.idl.compiler.IdlCompiler;
+import com.moonlightsource.idl.compiler.MoonlightCompiler;
 
 /**
  * @author Pengtao Qiu
@@ -29,6 +29,6 @@ public class LogErrorListener extends BaseErrorListener {
         List<String> stack = ((Parser) recognizer).getRuleInvocationStack();
         Collections.reverse(stack);
         log.error("rule stack: " + stack);
-        log.error("file[" + IdlCompiler.CURRENT_PATH.get() + "], line[" + line + ":" + charPositionInLine + "] at " + offendingSymbol + ". " + msg, e);
+        log.error("file[" + MoonlightCompiler.CURRENT_PATH.get() + "], line[" + line + ":" + charPositionInLine + "] at " + offendingSymbol + ". " + msg, e);
     }
 }
