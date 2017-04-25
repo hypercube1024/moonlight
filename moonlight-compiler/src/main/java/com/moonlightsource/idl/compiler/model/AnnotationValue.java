@@ -48,7 +48,7 @@ public class AnnotationValue {
         return ParseTreeUtils.getBaseListValues((MoonlightParser.BaseListExprContext) parseTree);
     }
 
-    public AnnotationDefinition getAnnotationDefinition() {
-        return (AnnotationDefinition) annotationDefinitionReference.getClassDefinition();
+    public ClassDefinition getAnnotationDefinition() {
+        return annotationDefinitionReference.getClassDefinition();
     }
 }

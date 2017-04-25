@@ -10,18 +10,18 @@ public class FunctionDefinition {
     private final String name;
     private final DefinitionReference returnTypeReference;
     private final List<AnnotationValue> annotations;
-    private final DefinitionReference declaredInterfaceReference;
-    private final List<ParameterDefinition> parameters;
+    private final DefinitionReference declaredClassReference;
+    private final List<FieldDefinition> parameters;
 
     public FunctionDefinition(String name,
                               DefinitionReference returnTypeReference,
                               List<AnnotationValue> annotations,
-                              DefinitionReference declaredInterfaceReference,
-                              List<ParameterDefinition> parameters) {
+                              DefinitionReference declaredClassReference,
+                              List<FieldDefinition> parameters) {
         this.name = name;
         this.returnTypeReference = returnTypeReference;
         this.annotations = annotations;
-        this.declaredInterfaceReference = declaredInterfaceReference;
+        this.declaredClassReference = declaredClassReference;
         this.parameters = parameters;
     }
 
@@ -37,11 +37,11 @@ public class FunctionDefinition {
         return annotations;
     }
 
-    public InterfaceDefinition getDeclaredInterface() {
-        return (InterfaceDefinition) declaredInterfaceReference.getClassDefinition();
+    public ClassDefinition getDeclaredClassDefinition() {
+        return declaredClassReference.getClassDefinition();
     }
 
-    public List<ParameterDefinition> getParameters() {
+    public List<FieldDefinition> getParameters() {
         return parameters;
     }
 }

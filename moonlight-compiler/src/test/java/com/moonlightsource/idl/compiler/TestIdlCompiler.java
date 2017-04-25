@@ -1,6 +1,9 @@
 package com.moonlightsource.idl.compiler;
 
-import com.moonlightsource.idl.compiler.model.*;
+import com.moonlightsource.idl.compiler.model.ClassDefinition;
+import com.moonlightsource.idl.compiler.model.FieldDefinition;
+import com.moonlightsource.idl.compiler.model.SourceFile;
+import com.moonlightsource.idl.compiler.model.TypeEnum;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -56,51 +59,55 @@ public class TestIdlCompiler {
         SourceFile sourceFile = find(path);
         Assert.assertThat(sourceFile.getAnnotationDefinitions().size(), greaterThanOrEqualTo(1));
 
-        Optional<AnnotationDefinition> opt = sourceFile.getAnnotationDefinitions()
-                                                       .stream()
-                                                       .filter(d -> d.getName().equals("Template"))
-                                                       .findFirst();
+        Optional<ClassDefinition> opt = sourceFile.getAnnotationDefinitions()
+                                                  .stream()
+                                                  .filter(d -> d.getName().equals("Template"))
+                                                  .findFirst();
 
         Assert.assertThat(opt.isPresent(), is(true));
 
         if (opt.isPresent()) {
-            AnnotationDefinition d = opt.get();
-            Assert.assertThat(d.getFields().size(), greaterThanOrEqualTo(1));
-            Optional<AnnotationFieldDefinition> namesOpt = d.getFields()
-                                                           .stream()
-                                                           .filter(field -> field.getName().equals("names"))
-                                                           .findFirst();
+            ClassDefinition d = opt.get();
+            Assert.assertThat(d.getFieldDefinitions().size(), greaterThanOrEqualTo(1));
+            Optional<FieldDefinition> namesOpt = d.getFieldDefinitions()
+                                                  .stream()
+                                                  .filter(field -> field.getName().equals("names"))
+                                                  .findFirst();
 
             Assert.assertThat(namesOpt.isPresent(), is(true));
             if (namesOpt.isPresent()) {
-                AnnotationFieldDefinition field = namesOpt.get();
-                Assert.assertThat(field.getDeclaredAnnotationDefinition(), is(d));
+                FieldDefinition field = namesOpt.get();
+                Assert.assertThat(field.getDeclaredClassDefinition(), is(d));
                 ClassDefinition type = field.getClassDefinition();
                 Assert.assertThat(type.getName(), is(TypeEnum.LIST.getKeyword()));
-                Assert.assertThat(type.getParametricTypes().get(0).getName(), is(TypeEnum.STRING.getKeyword()));
+                Assert.assertThat(field.getParametricType().getParametricTypes().get(0).getClassDefinition().getName(),
+                        is(TypeEnum.STRING.getKeyword()));
                 Assert.assertThat(field.getAnnotations().isEmpty(), is(true));
-                field.getValues().stream().map(Object::toString).forEach(System.out::println);
-                Assert.assertThat(field.getValues().size(), is(3));
+                Assert.assertThat(field.getDefaultValue() instanceof List, is(true));
+                List<Object> values = field.getDefaultValues();
+                values.stream().map(Object::toString).forEach(System.out::println);
+                Assert.assertThat(values.size(), is(3));
             }
 
-            Optional<AnnotationFieldDefinition> typesOpt = d.getFields()
-                                                            .stream()
-                                                            .filter(field -> field.getName().equals("types"))
-                                                            .findFirst();
+            Optional<FieldDefinition> typesOpt = d.getFieldDefinitions()
+                                                  .stream()
+                                                  .filter(field -> field.getName().equals("types"))
+                                                  .findFirst();
 
             Assert.assertThat(typesOpt.isPresent(), is(true));
             if (typesOpt.isPresent()) {
-                AnnotationFieldDefinition field = typesOpt.get();
-                Assert.assertThat(field.getDeclaredAnnotationDefinition(), is(d));
+                FieldDefinition field = typesOpt.get();
+                Assert.assertThat(field.getDeclaredClassDefinition(), is(d));
                 ClassDefinition type = field.getClassDefinition();
                 Assert.assertThat(type.getName(), is(TypeEnum.LIST.getKeyword()));
-                Assert.assertThat(type.getParametricTypes().get(0).getName(), is(TypeEnum.STRING.getKeyword()));
+                Assert.assertThat(field.getParametricType().getParametricTypes().get(0).getClassDefinition().getName(),
+                        is(TypeEnum.STRING.getKeyword()));
                 Assert.assertThat(field.getAnnotations().isEmpty(), is(true));
-                field.getValues().stream().map(Object::toString).forEach(System.out::println);
-                Assert.assertThat(field.getValues().size(), is(0));
+                List<Object> values = field.getDefaultValues();
+                values.stream().map(Object::toString).forEach(System.out::println);
+                Assert.assertThat(values.size(), is(0));
             }
         }
     }
-
 
 }

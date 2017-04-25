@@ -127,7 +127,7 @@
     <properties>
         <log.level>INFO</log.level>
         <log.path>D:/log/</log.path>
-        <firefly.version>4.0.22</firefly.version>
+        <firefly.version>4.0.23</firefly.version>
     </properties>
 
     <profiles>

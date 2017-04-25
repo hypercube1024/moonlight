@@ -1,6 +1,10 @@
 package com.moonlightsource.idl.compiler.utils;
 
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
+import com.moonlightsource.idl.compiler.model.DefinitionReference;
+import com.moonlightsource.idl.compiler.model.DefinitionReferenceManager;
+import com.moonlightsource.idl.compiler.model.ParametricType;
+import com.moonlightsource.idl.compiler.model.TypeEnum;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -87,5 +91,12 @@ abstract public class ParseTreeUtils {
 
     public static String getErrorLine(Path path, TerminalNode node) {
         return "@file[" + path + "], line[" + node.getSymbol().getLine() + ", " + node.getSymbol().getCharPositionInLine() + "]";
+    }
+
+    public static ParametricType getStringListParametricType(DefinitionReferenceManager referenceManager) {
+        DefinitionReference listRef = new DefinitionReference("", TypeEnum.LIST.getKeyword(), referenceManager);
+        DefinitionReference stringRef = new DefinitionReference("", TypeEnum.STRING.getKeyword(), referenceManager);
+        ParametricType stringType = new ParametricType(stringRef, Collections.emptyList());
+        return new ParametricType(listRef, Collections.singletonList(stringType));
     }
 }

@@ -109,10 +109,12 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
         String name = ctx.Identifier().getText();
         checkAnnotationName(name, ctx.Identifier());
 
-        List<AnnotationFieldDefinition> fields = new ArrayList<>();
-        AnnotationDefinition annotationDefinition = new AnnotationDefinition(
-                TypeEnum.ANNOTATION, name, namespace,
-                getAnnotationDeclarationAnnotations(ctx), fields);
+        List<FieldDefinition> fields = new ArrayList<>();
+        ClassDefinition annotationDefinition = new ClassDefinition(TypeEnum.ANNOTATION,
+                name, namespace,
+                getAnnotationDeclarationAnnotations(ctx),
+                Collections.emptySet(),
+                fields);
         sourceFile.getAnnotationDefinitions().add(annotationDefinition);
 
         DefinitionReference reference = new DefinitionReference(namespace, name, referenceManager);
@@ -129,7 +131,7 @@ public class MoonlightSourceListener extends MoonlightBaseListener {
     }
 
     private void checkAnnotationName(String name, TerminalNode node) {
-        for (AnnotationDefinition definition : sourceFile.getAnnotationDefinitions()) {
+        for (ClassDefinition definition : sourceFile.getAnnotationDefinitions()) {
             if (definition.getName().equals(name)) {
                 throw new CompilingRuntimeException("the annotation " + name + " exists.", node, sourceFile.getPath());
             }

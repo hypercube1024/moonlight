@@ -21,15 +21,35 @@ public class DefinitionReferenceManager {
         TypeEnum.BASE_TYPE_ENUMS
                 .forEach(t -> {
                     classDefinitionMap.put(new DefinitionReference("", t.getKeyword(), this),
-                            new ClassDefinition(t, t.getKeyword(), "", Collections.emptyList(), Collections.emptyList()));
+                            new ClassDefinition(t, t.getKeyword(), "",
+                                    Collections.emptyList(),
+                                    Collections.emptySet(),
+                                    Collections.emptyList()));
 
                     putClassDeclaration("", t.getKeyword(), "");
                 });
 
         putClassDeclaration("", TypeEnum.LIST.getKeyword(), "T");
+        classDefinitionMap.put(new DefinitionReference("", TypeEnum.LIST.getKeyword(), this),
+                new ClassDefinition(TypeEnum.LIST, TypeEnum.LIST.getKeyword(), "",
+                        Collections.emptyList(),
+                        Collections.singleton("T"),
+                        Collections.emptyList()));
+
         putClassDeclaration("", TypeEnum.SET.getKeyword(), "T");
+        classDefinitionMap.put(new DefinitionReference("", TypeEnum.SET.getKeyword(), this),
+                new ClassDefinition(TypeEnum.SET, TypeEnum.SET.getKeyword(), "",
+                        Collections.emptyList(),
+                        Collections.singleton("T"),
+                        Collections.emptyList()));
+
         putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T0");
         putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T1");
+        classDefinitionMap.put(new DefinitionReference("", TypeEnum.MAP.getKeyword(), this),
+                new ClassDefinition(TypeEnum.MAP, TypeEnum.MAP.getKeyword(), "",
+                        Collections.emptyList(),
+                        new HashSet<>(Arrays.asList("T0", "T1")),
+                        Collections.emptyList()));
     }
 
     public synchronized ClassDefinition getClassDefinition(DefinitionReference ref) {
@@ -106,7 +126,7 @@ public class DefinitionReferenceManager {
     }
 
     public synchronized boolean checkParametricTypeCount(String namespace, String className, int count) {
-        if(!containClass(namespace, className)) {
+        if (!containClass(namespace, className)) {
             throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] is not found");
         }
 

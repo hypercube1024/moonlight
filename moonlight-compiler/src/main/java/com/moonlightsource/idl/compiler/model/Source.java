@@ -10,10 +10,10 @@ public class Source {
     private final List<AnnotationValue> annotations = new ArrayList<>();
     private String namespace;
     private final Map<String, Set<String>> imports = new HashMap<>();
-    private final List<EnumDefinition> enumDefinitions = new ArrayList<>();
-    private final List<AnnotationDefinition> annotationDefinitions = new ArrayList<>();
-    private final List<StructDefinition> structDefinitions = new ArrayList<>();
-    private final List<InterfaceDefinition> interfaceDefinitions = new ArrayList<>();
+    private final List<ClassDefinition> enumDefinitions = new ArrayList<>();
+    private final List<ClassDefinition> annotationDefinitions = new ArrayList<>();
+    private final List<ClassDefinition> structDefinitions = new ArrayList<>();
+    private final List<ClassDefinition> interfaceDefinitions = new ArrayList<>();
 
     public List<AnnotationValue> getAnnotations() {
         return annotations;
@@ -31,19 +31,19 @@ public class Source {
         return imports;
     }
 
-    public List<EnumDefinition> getEnumDefinitions() {
+    public List<ClassDefinition> getEnumDefinitions() {
         return enumDefinitions;
     }
 
-    public List<AnnotationDefinition> getAnnotationDefinitions() {
+    public List<ClassDefinition> getAnnotationDefinitions() {
         return annotationDefinitions;
     }
 
-    public List<StructDefinition> getStructDefinitions() {
+    public List<ClassDefinition> getStructDefinitions() {
         return structDefinitions;
     }
 
-    public List<InterfaceDefinition> getInterfaceDefinitions() {
+    public List<ClassDefinition> getInterfaceDefinitions() {
         return interfaceDefinitions;
     }
 }
