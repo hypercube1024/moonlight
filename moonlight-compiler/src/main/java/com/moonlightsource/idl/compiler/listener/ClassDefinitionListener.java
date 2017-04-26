@@ -1,5 +1,6 @@
 package com.moonlightsource.idl.compiler.listener;
 
+import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.ClassDefs;
 import com.moonlightsource.idl.compiler.model.Source;
 import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
@@ -28,6 +29,25 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
         namespace = ctx.namespaceValue().getText();
         classDefs.putNamespace(namespace);
         source.setNamespace(namespace);
+    }
+
+    @Override
+    public void enterImportDeclaration(MoonlightParser.ImportDeclarationContext ctx) {
+        StringBuilder namespace = new StringBuilder();
+        String name = null;
+        MoonlightParser.ImportValueContext importCtx = ctx.importValue();
+        final int childCount = importCtx.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            if (i < childCount - 2) {
+                namespace.append(importCtx.getChild(i).getText());
+            } else if (i == childCount - 1) {
+                name = importCtx.getChild(i).getText();
+            }
+        }
+        if (name == null) {
+            throw new CompilingRuntimeException("import name is null", ctx.IMPORT(), source.getPath());
+        }
+        classDefs.putImport(source.getPath(), namespace.toString(), name);
     }
 
     @Override

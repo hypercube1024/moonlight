@@ -37,5 +37,11 @@ public class TestClassVisitor {
         Assert.assertThat(product, notNullValue());
         System.out.println(product.structField().size());
         Assert.assertThat(product.structField().size(), is(4));
+
+        Assert.assertThat(source.getImportNamespace("Response"), is("com.moonlightsource.idl.common"));
+        Assert.assertThat(source.getImportNamespace("Request"), is("com.moonlightsource.idl.common"));
+        Assert.assertThat(source.getImportNamespace("ResponseCode"), is("com.moonlightsource.idl.common"));
+
+        Assert.assertThat(source.containClassNameInImports("test"), is(false));
     }
 }

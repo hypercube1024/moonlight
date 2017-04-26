@@ -32,12 +32,20 @@ public class Source {
         return imports;
     }
 
-    public String findNamespaceByClassName(String className) {
-        return imports.entrySet().stream()
+    public void putImport(String namespace, String name) {
+        imports.computeIfAbsent(namespace, k -> new HashSet<>()).add(name);
+    }
+
+    public String getImportNamespace(String className) {
+        return imports.entrySet().parallelStream()
                       .filter(e -> e.getValue().contains(className))
                       .map(Map.Entry::getKey)
                       .findAny()
                       .orElse(null);
+    }
+
+    public boolean containClassNameInImports(String className) {
+        return getImportNamespace(className) != null;
     }
 
     public Path getRoot() {
