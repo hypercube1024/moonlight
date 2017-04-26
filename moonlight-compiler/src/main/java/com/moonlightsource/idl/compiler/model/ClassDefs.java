@@ -1,6 +1,5 @@
 package com.moonlightsource.idl.compiler.model;
 
-import com.firefly.utils.StringUtils;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,40 +14,33 @@ public class ClassDefs {
 
     private static final Logger log = LoggerFactory.getLogger("moonlight-system");
 
-    private Map<String, Map<String, Set<String>>> classDeclarationMap = new HashMap<>();
+    private Map<String, Map<String, List<String>>> classDeclarationMap = new HashMap<>();
     private List<Source> sources = new ArrayList<>();
     private Map<Path, Map<String, Set<String>>> imports = new HashMap<>();
 
     public ClassDefs() {
-        TypeEnum.BASE_TYPE_ENUMS
-                .forEach(t -> putClassDeclaration("", t.getKeyword(), ""));
-
-        putClassDeclaration("", TypeEnum.LIST.getKeyword(), "T");
-        putClassDeclaration("", TypeEnum.SET.getKeyword(), "T");
-        putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T0");
-        putClassDeclaration("", TypeEnum.MAP.getKeyword(), "T1");
+        TypeEnum.BASE_TYPE_ENUMS.forEach(t -> putClassDeclaration("", t.getKeyword(), Collections.emptyList()));
+        putClassDeclaration("", TypeEnum.LIST.getKeyword(), Collections.singletonList("T"));
+        putClassDeclaration("", TypeEnum.SET.getKeyword(), Collections.singletonList("T"));
+        putClassDeclaration("", TypeEnum.MAP.getKeyword(), Arrays.asList("T0", "T1"));
     }
 
     public synchronized void putNamespace(String namespace) {
         classDeclarationMap.computeIfAbsent(namespace, k -> new HashMap<>());
     }
 
-    public synchronized void putClassDeclaration(String namespace, String className, String parametricDef) {
-        if (checkParametricDeclaration(namespace, className, parametricDef)) {
-            if (StringUtils.hasText(parametricDef)) {
-                throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] or parametric declaration [" + parametricDef + "] exists");
-            } else {
-                throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] exists");
-            }
+    public synchronized void putClassDeclaration(String namespace, String className, List<String> parametricDefs) {
+        if (containClass(namespace, className)) {
+            throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] exists");
         }
 
         classDeclarationMap.computeIfAbsent(namespace, k -> new HashMap<>())
-                           .computeIfAbsent(className, k -> new HashSet<>())
-                           .add(parametricDef);
+                           .computeIfAbsent(className, k -> new ArrayList<>())
+                           .addAll(parametricDefs);
     }
 
     private Set<String> getClassNames(String namespace) {
-        Map<String, Set<String>> classNameAndParametricDeclaration = classDeclarationMap.get(namespace);
+        Map<String, List<String>> classNameAndParametricDeclaration = classDeclarationMap.get(namespace);
         if (classNameAndParametricDeclaration != null && !classNameAndParametricDeclaration.isEmpty()) {
             return classNameAndParametricDeclaration.keySet();
         } else {
@@ -67,29 +59,7 @@ public class ClassDefs {
         return getClassNames(namespace).contains(className);
     }
 
-    private boolean checkParametricDeclaration(String namespace, String className, String parametricType) {
-        Map<String, Set<String>> classNameAndParametricDeclaration = classDeclarationMap.get(namespace);
-        if (classNameAndParametricDeclaration == null || classNameAndParametricDeclaration.isEmpty()) {
-            return false;
-        }
-
-        if (!classNameAndParametricDeclaration.containsKey(className)) {
-            return false;
-        }
-
-        Set<String> parametricTypes = classNameAndParametricDeclaration.get(className);
-        if (parametricTypes == null || parametricTypes.isEmpty()) {
-            return false;
-        }
-
-        if (!parametricTypes.contains(parametricType)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private synchronized boolean checkParametricTypeCount(String namespace, String className, int count) {
+    private boolean checkParametricTypeCount(String namespace, String className, int count) {
         if (!containClass(namespace, className)) {
             throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] is not found");
         }
@@ -115,6 +85,7 @@ public class ClassDefs {
         // import semantic check
         if (log.isDebugEnabled()) {
             log.debug("all imports -> {}", imports);
+            log.debug("all classes -> {}", classDeclarationMap);
         }
         imports.forEach((path, m) -> {
             Source source = findSource(path);
@@ -140,7 +111,21 @@ public class ClassDefs {
         // class check
         sources.forEach(source -> {
             source.getStructs().forEach(struct -> {
-
+                struct.annotation().forEach(annotationCtx -> {
+                    String className = annotationCtx.AnnotationLabel().getText();
+                    String namespace;
+                    if (annotationCtx.namespaceValue() != null) {
+                        namespace = annotationCtx.namespaceValue().getText();
+                    } else {
+                        namespace = source.getImportNamespace(className);
+                    }
+                    if (!containClass(namespace, className)) {
+                        throw new CompilingRuntimeException("the annotation [" + namespace + "." + className + "] is not found",
+                                annotationCtx.AnnotationLabel(), source.getPath());
+                    }
+                });
+                String className = struct.Identifier().getText();
+                // TODO
             });
 
             source.getAnnotations().forEach(annotation -> {

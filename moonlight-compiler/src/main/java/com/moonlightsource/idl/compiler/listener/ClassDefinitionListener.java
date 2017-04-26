@@ -7,6 +7,8 @@ import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -56,14 +58,20 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
         if (ctx.parametricTypeDeclaration() != null) {
             List<TerminalNode> list = ctx.parametricTypeDeclaration().Identifier();
             if (list != null && !list.isEmpty()) {
+                List<String> parametricDefs = new ArrayList<>();
                 for (TerminalNode terminalNode : list) {
-                    classDefs.putClassDeclaration(namespace, className, terminalNode.getText());
+                    String p = terminalNode.getText();
+                    if (parametricDefs.contains(p)) {
+                        throw new CompilingRuntimeException("the parametric definition [" + p + "] exists", terminalNode, source.getPath());
+                    }
+                    parametricDefs.add(p);
                 }
+                classDefs.putClassDeclaration(namespace, className, parametricDefs);
             } else {
-                classDefs.putClassDeclaration(namespace, className, "");
+                classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
             }
         } else {
-            classDefs.putClassDeclaration(namespace, className, "");
+            classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
         }
         source.getStructs().add(ctx);
     }
@@ -71,21 +79,21 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
     @Override
     public void enterAnnotationDeclaration(MoonlightParser.AnnotationDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
-        classDefs.putClassDeclaration(namespace, className, "");
+        classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
         source.getAnnotations().add(ctx);
     }
 
     @Override
     public void enterEnumDeclaration(MoonlightParser.EnumDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
-        classDefs.putClassDeclaration(namespace, className, "");
+        classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
         source.getEnums().add(ctx);
     }
 
     @Override
     public void enterInterfaceDeclaration(MoonlightParser.InterfaceDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
-        classDefs.putClassDeclaration(namespace, className, "");
+        classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
         source.getInterfaces().add(ctx);
     }
 }
