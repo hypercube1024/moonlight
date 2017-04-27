@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,11 +23,22 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 public class TestClassVisitor {
 
+    static List<MoonlightCompiler.SourceWrap> sourceWraps = null;
+
+    static {
+        try {
+            sourceWraps = walk(Paths.get(MoonlightCompiler.getClasspath().toString(), "testIDL_0"),
+                    MoonlightCompiler.DEFAULT_SUFFIX,
+                    StandardCharsets.UTF_8).collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Test
     public void test() throws IOException {
-        Path root = Paths.get(MoonlightCompiler.getClasspath().toString(), "testIDL_0");
-        List<MoonlightCompiler.SourceWrap> sourceWraps = walk(root, MoonlightCompiler.DEFAULT_SUFFIX, StandardCharsets.UTF_8).collect(Collectors.toList());
         ClassVisitor classVisitor = createClassDefinitions(sourceWraps);
+        System.out.println(classVisitor.getSources());
 
         Source source = classVisitor.findSource(Paths.get("/com/moonlightsource/idl/api/StoreService.mol"));
         Assert.assertThat(source, notNullValue());
@@ -35,7 +46,6 @@ public class TestClassVisitor {
 
         MoonlightParser.StructDeclarationContext product = source.findStruct("Product");
         Assert.assertThat(product, notNullValue());
-        System.out.println(product.structField().size());
         Assert.assertThat(product.structField().size(), is(4));
 
         Assert.assertThat(source.getImportNamespace("Response"), is("com.moonlightsource.idl.common"));
@@ -43,5 +53,19 @@ public class TestClassVisitor {
         Assert.assertThat(source.getImportNamespace("ResponseCode"), is("com.moonlightsource.idl.common"));
 
         Assert.assertThat(source.containClassNameInImports("test"), is(false));
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testUnmodifiableSource() throws IOException {
+        ClassVisitor classVisitor = createClassDefinitions(sourceWraps);
+        Source source = classVisitor.findSource(Paths.get("/com/moonlightsource/idl/api/StoreService.mol"));
+        source.setImports(Collections.emptyMap());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testUnmodifiableSource2() throws IOException {
+        ClassVisitor classVisitor = createClassDefinitions(sourceWraps);
+        Source source = classVisitor.findSource(Paths.get("/com/moonlightsource/idl/api/StoreService.mol"));
+        source.getImports().put("h", Collections.emptySet());
     }
 }

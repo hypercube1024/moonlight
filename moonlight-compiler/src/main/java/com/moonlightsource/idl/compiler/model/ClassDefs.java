@@ -123,6 +123,7 @@ public class ClassDefs {
                         throw new CompilingRuntimeException("the annotation [" + namespace + "." + className + "] is not found",
                                 annotationCtx.AnnotationLabel(), source.getPath());
                     }
+
                 });
                 String className = struct.Identifier().getText();
                 // TODO
