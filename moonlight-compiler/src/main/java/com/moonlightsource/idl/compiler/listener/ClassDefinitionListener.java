@@ -27,6 +27,11 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
     }
 
     @Override
+    public void enterMoonlightFile(MoonlightParser.MoonlightFileContext ctx) {
+        source.getFileAnnotations().addAll(ctx.annotation());
+    }
+
+    @Override
     public void enterNamespaceDeclaration(MoonlightParser.NamespaceDeclarationContext ctx) {
         namespace = ctx.namespaceValue().getText();
         classDefs.putNamespace(namespace);

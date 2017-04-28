@@ -1,0 +1,7 @@
+namespace com.moonlightsource.idl.api;
+
+import com.moonlightsource.idl.common.*;
+
+interface OrderService {
+    Response<T> listOrders(Request<T> request);
+}

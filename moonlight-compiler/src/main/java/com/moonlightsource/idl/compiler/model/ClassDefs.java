@@ -1,6 +1,8 @@
 package com.moonlightsource.idl.compiler.model;
 
+import com.firefly.utils.StringUtils;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
+import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,32 +111,71 @@ public class ClassDefs {
         });
 
         // class check
-        sources.forEach(source -> {
+        sources.parallelStream().forEach(source -> {
+            source.getFileAnnotations().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
             source.getStructs().forEach(struct -> {
-                struct.annotation().forEach(annotationCtx -> {
-                    String className = annotationCtx.AnnotationLabel().getText();
-                    String namespace;
-                    if (annotationCtx.namespaceValue() != null) {
-                        namespace = annotationCtx.namespaceValue().getText();
-                    } else {
-                        namespace = source.getImportNamespace(className);
-                    }
-                    if (!containClass(namespace, className)) {
-                        throw new CompilingRuntimeException("the annotation [" + namespace + "." + className + "] is not found",
-                                annotationCtx.AnnotationLabel(), source.getPath());
-                    }
+                struct.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+                struct.structField().forEach(structFieldDef -> {
+                    structFieldDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
                 });
-                String className = struct.Identifier().getText();
+
                 // TODO
             });
 
-            source.getAnnotations().forEach(annotation -> {
+            source.getInterfaces().forEach(interfaceDef -> {
+                interfaceDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+                interfaceDef.functionDeclaration().forEach(functionDef -> {
+                    functionDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
+                    functionDef.functionParameter().forEach(functionParamDef -> {
+                        functionParamDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+                    });
+
+                    // TODO
+                });
+
+            });
+
+            source.getAnnotations().forEach(annotationDef -> {
+                annotationDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+                // TODO
+            });
+
+            source.getEnums().forEach(enumDef -> {
+                enumDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+                enumDef.enumField().forEach(enumFieldDef -> {
+                    enumFieldDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+                });
+                // TODO
             });
         });
 
         // TODO
+    }
+
+    private void annotationCheck(MoonlightParser.AnnotationContext annotationCtx, Source source) {
+        String className = annotationCtx.AnnotationLabel().getText().substring(1);
+        String namespace;
+        if (annotationCtx.namespaceValue() != null) {
+            namespace = annotationCtx.namespaceValue().getText();
+        } else {
+            namespace = source.getImportNamespace(className);
+            if (!StringUtils.hasText(namespace)) {
+                throw new CompilingRuntimeException("the annotation [" + className + "] is not found",
+                        annotationCtx.AnnotationLabel(), source.getPath());
+            }
+        }
+        if (!containClass(namespace, className)) {
+            throw new CompilingRuntimeException("the annotation [" + namespace + "." + className + "] is not found",
+                    annotationCtx.AnnotationLabel(), source.getPath());
+        }
     }
 
     private Source findSource(Path path) {

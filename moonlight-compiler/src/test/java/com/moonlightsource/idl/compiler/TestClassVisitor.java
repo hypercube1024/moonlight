@@ -23,11 +23,11 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 public class TestClassVisitor {
 
-    static List<MoonlightCompiler.SourceWrap> sourceWraps = null;
+    private static List<MoonlightCompiler.SourceWrap> sourceWraps = null;
 
     static {
         try {
-            sourceWraps = walk(Paths.get(MoonlightCompiler.getClasspath().toString(), "testIDL_0"),
+            sourceWraps = walk(Paths.get(MoonlightCompiler.getClasspath().toString(), "testIDL"),
                     MoonlightCompiler.DEFAULT_SUFFIX,
                     StandardCharsets.UTF_8).collect(Collectors.toList());
         } catch (IOException e) {
@@ -40,7 +40,7 @@ public class TestClassVisitor {
         ClassVisitor classVisitor = createClassDefinitions(sourceWraps);
         System.out.println(classVisitor.getSources());
 
-        Source source = classVisitor.findSource(Paths.get("/com/moonlightsource/idl/api/StoreService.mol"));
+        Source source = classVisitor.findSource(Paths.get("/api/StoreService.mol"));
         Assert.assertThat(source, notNullValue());
         Assert.assertThat(source.getStructs().size(), is(2));
 
@@ -58,14 +58,14 @@ public class TestClassVisitor {
     @Test(expected = UnsupportedOperationException.class)
     public void testUnmodifiableSource() throws IOException {
         ClassVisitor classVisitor = createClassDefinitions(sourceWraps);
-        Source source = classVisitor.findSource(Paths.get("/com/moonlightsource/idl/api/StoreService.mol"));
+        Source source = classVisitor.findSource(Paths.get("/api/StoreService.mol"));
         source.setImports(Collections.emptyMap());
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void testUnmodifiableSource2() throws IOException {
         ClassVisitor classVisitor = createClassDefinitions(sourceWraps);
-        Source source = classVisitor.findSource(Paths.get("/com/moonlightsource/idl/api/StoreService.mol"));
+        Source source = classVisitor.findSource(Paths.get("/api/StoreService.mol"));
         source.getImports().put("h", Collections.emptySet());
     }
 }

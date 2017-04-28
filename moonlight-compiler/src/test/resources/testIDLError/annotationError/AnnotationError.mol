@@ -1,0 +1,7 @@
+namespace com.moonlightsource.idl.api;
+
+
+interface ErrorService {
+    @Test
+    Response<T> listOrders(Request<T> request);
+}

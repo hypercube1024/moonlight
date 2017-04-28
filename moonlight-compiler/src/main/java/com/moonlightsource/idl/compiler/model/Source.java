@@ -17,6 +17,7 @@ public class Source {
     protected Path path;
     protected Path absolutePath;
     protected String namespace;
+    protected List<MoonlightParser.AnnotationContext> fileAnnotations = new ArrayList<>();
     protected Map<String, Set<String>> imports = new HashMap<>();
     protected List<MoonlightParser.StructDeclarationContext> structs = new ArrayList<>();
     protected List<MoonlightParser.AnnotationDeclarationContext> annotations = new ArrayList<>();
@@ -53,6 +54,14 @@ public class Source {
 
     public void setNamespace(String namespace) {
         this.namespace = namespace;
+    }
+
+    public List<MoonlightParser.AnnotationContext> getFileAnnotations() {
+        return fileAnnotations;
+    }
+
+    public void setFileAnnotations(List<MoonlightParser.AnnotationContext> fileAnnotations) {
+        this.fileAnnotations = fileAnnotations;
     }
 
     public Map<String, Set<String>> getImports() {
@@ -130,6 +139,7 @@ public class Source {
             unmodifiableSource.path = path;
             unmodifiableSource.absolutePath = absolutePath;
             unmodifiableSource.namespace = namespace;
+            unmodifiableSource.fileAnnotations = Collections.unmodifiableList(fileAnnotations);
             unmodifiableSource.imports = Collections.unmodifiableMap(imports);
             unmodifiableSource.structs = Collections.unmodifiableList(structs);
             unmodifiableSource.annotations = Collections.unmodifiableList(annotations);
