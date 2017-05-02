@@ -37,7 +37,7 @@ public class TestError {
         createClassDefinitions(sourceWraps);
     }
 
-    @Test
+    @Test(expected = CompilingRuntimeException.class)
     public void annotationFieldError() throws IOException {
         List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
                 Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/annotationFieldError"),
