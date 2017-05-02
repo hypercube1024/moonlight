@@ -19,31 +19,46 @@ public class TestError {
 
     @Test(expected = CompilingRuntimeException.class)
     public void importError() throws IOException {
-        List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
-                Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/importError"),
-                MoonlightCompiler.DEFAULT_SUFFIX,
-                StandardCharsets.UTF_8).collect(Collectors.toList());
+        try {
+            List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
+                    Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/importError"),
+                    MoonlightCompiler.DEFAULT_SUFFIX,
+                    StandardCharsets.UTF_8).collect(Collectors.toList());
 
-        createClassDefinitions(sourceWraps);
+            createClassDefinitions(sourceWraps);
+        } catch (CompilingRuntimeException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
     @Test(expected = CompilingRuntimeException.class)
     public void annotationError() throws IOException {
-        List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
-                Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/annotationError"),
-                MoonlightCompiler.DEFAULT_SUFFIX,
-                StandardCharsets.UTF_8).collect(Collectors.toList());
+        try {
+            List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
+                    Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/annotationError"),
+                    MoonlightCompiler.DEFAULT_SUFFIX,
+                    StandardCharsets.UTF_8).collect(Collectors.toList());
 
-        createClassDefinitions(sourceWraps);
+            createClassDefinitions(sourceWraps);
+        } catch (CompilingRuntimeException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 
     @Test(expected = CompilingRuntimeException.class)
     public void annotationFieldError() throws IOException {
-        List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
-                Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/annotationFieldError"),
-                MoonlightCompiler.DEFAULT_SUFFIX,
-                StandardCharsets.UTF_8).collect(Collectors.toList());
+        try {
+            List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
+                    Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/annotationFieldError"),
+                    MoonlightCompiler.DEFAULT_SUFFIX,
+                    StandardCharsets.UTF_8).collect(Collectors.toList());
 
-        createClassDefinitions(sourceWraps);
+            createClassDefinitions(sourceWraps);
+        } catch (CompilingRuntimeException e) {
+            System.out.println(e.getMessage());
+            throw e;
+        }
     }
 }

@@ -55,29 +55,6 @@ enumField
     : annotation* baseField
     ;
 
-
-// base field definition
-baseField
-    : BOOLEAN Identifier ('=' BooleanLiteral)? ';'                      #boolField
-    | BYTE Identifier ('=' IntegerLiteral)? ';'                         #byteField
-    | SHORT Identifier ('=' IntegerLiteral)? ';'                        #shortField
-    | INT Identifier ('=' IntegerLiteral)? ';'                          #intField
-    | LONG Identifier ('=' IntegerLiteral)? ';'                         #longField
-    | CHAR Identifier ('=' CharacterLiteral)? ';'                       #charField
-    | FLOAT Identifier ('=' FloatingPointLiteral)? ';'                  #floatField
-    | DOUBLE Identifier ('=' FloatingPointLiteral)? ';'                 #doubleField
-    | STRING Identifier ('=' StringLiteral)? ';'                        #stringField
-    | boolList Identifier ('=' (boolListExpr | emptyListExpr))? ';'     #boolListField
-    | byteList Identifier ('=' (intListExpr | emptyListExpr))? ';'      #byteListField
-    | shortList Identifier ('=' (intListExpr | emptyListExpr))? ';'     #shortListField
-    | intList Identifier ('=' (intListExpr | emptyListExpr))? ';'       #intListField
-    | longList Identifier ('=' (intListExpr | emptyListExpr))? ';'      #longListField
-    | charList Identifier ('=' (charListExpr | emptyListExpr))? ';'     #charListField
-    | floatList Identifier ('=' (floatListExpr | emptyListExpr))? ';'   #floatListField
-    | doubleList Identifier ('=' (floatListExpr | emptyListExpr))? ';'  #doubleListField
-    | stringList Identifier ('=' (stringListExpr| emptyListExpr))? ';'  #stringListField
-    ;
-
 baseAssignment
     : Identifier '=' (literal | baseListExpr)
     ;
@@ -180,57 +157,7 @@ setType
     ;
 
 listType
-    : baseList                      #baseTypeList
-    | 'list' '<' containerType '>'  #containerTypeList
-    | 'list' '<' referenceType '>'  #referenceTypeList
-    ;
-
-baseList
-    : boolList
-    | byteList
-    | shortList
-    | charList
-    | intList
-    | longList
-    | floatList
-    | doubleList
-    | stringList
-    ;
-
-boolList
-    : 'list' '<' BOOLEAN '>'
-    ;
-
-byteList
-    : 'list' '<' BYTE '>'
-    ;
-
-shortList
-    : 'list' '<' SHORT '>'
-    ;
-
-charList
-    : 'list' '<' CHAR '>'
-    ;
-
-intList
-    : 'list' '<' INT '>'
-    ;
-
-longList
-    : 'list' '<' LONG '>'
-    ;
-
-floatList
-    : 'list' '<' FLOAT '>'
-    ;
-
-doubleList
-    : 'list' '<' DOUBLE '>'
-    ;
-
-stringList
-    : 'list' '<' STRING '>'
+    : 'list' '<' fieldType '>'
     ;
 
 baseType
@@ -243,4 +170,26 @@ baseType
     | FLOAT
     | DOUBLE
     | STRING
+    ;
+
+// base field definition
+baseField
+    : BOOLEAN Identifier ('=' BooleanLiteral)? ';'                                 #boolField
+    | BYTE Identifier ('=' IntegerLiteral)? ';'                                    #byteField
+    | SHORT Identifier ('=' IntegerLiteral)? ';'                                   #shortField
+    | INT Identifier ('=' IntegerLiteral)? ';'                                     #intField
+    | LONG Identifier ('=' IntegerLiteral)? ';'                                    #longField
+    | CHAR Identifier ('=' CharacterLiteral)? ';'                                  #charField
+    | FLOAT Identifier ('=' FloatingPointLiteral)? ';'                             #floatField
+    | DOUBLE Identifier ('=' FloatingPointLiteral)? ';'                            #doubleField
+    | STRING Identifier ('=' StringLiteral)? ';'                                   #stringField
+    | 'list' '<' BOOLEAN '>' Identifier ('=' (boolListExpr | emptyListExpr))? ';'  #boolListField
+    | 'list' '<' BYTE '>' Identifier ('=' (intListExpr | emptyListExpr))? ';'      #byteListField
+    | 'list' '<' SHORT '>' Identifier ('=' (intListExpr | emptyListExpr))? ';'     #shortListField
+    | 'list' '<' INT '>' Identifier ('=' (intListExpr | emptyListExpr))? ';'       #intListField
+    | 'list' '<' LONG '>' Identifier ('=' (intListExpr | emptyListExpr))? ';'      #longListField
+    | 'list' '<' CHAR '>' Identifier ('=' (charListExpr | emptyListExpr))? ';'     #charListField
+    | 'list' '<' FLOAT '>' Identifier ('=' (floatListExpr | emptyListExpr))? ';'   #floatListField
+    | 'list' '<' DOUBLE '>' Identifier ('=' (floatListExpr | emptyListExpr))? ';'  #doubleListField
+    | 'list' '<' STRING '>' Identifier ('=' (stringListExpr| emptyListExpr))? ';'  #stringListField
     ;

@@ -26,4 +26,7 @@ interface StoreService {
     @Web(path = "/store/buy")
     Response<Order> buy(Request<Product> request);
 
+    com.moonlightsource.idl.common.@Web(path = "/store/delete")
+    Response<int> delete(Request<long> request);
+
 }

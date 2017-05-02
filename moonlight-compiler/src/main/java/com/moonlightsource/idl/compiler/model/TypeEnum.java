@@ -10,9 +10,7 @@ public enum TypeEnum {
 
     LIST("list"), SET("set"), MAP("map"),
 
-    STRUCT("struct"), ENUM("enum"), INTERFACE("interface"), ANNOTATION("annotation"),
-
-    REFERENCE("reference"), VOID("void");
+    REFERENCE("reference");
 
     private final String keyword;
 
@@ -20,13 +18,10 @@ public enum TypeEnum {
         this.keyword = keyword;
     }
 
-    public static final EnumSet<TypeEnum> BASE_TYPE_ENUMS = EnumSet.of(
-            BOOLEAN, BYTE, SHORT, CHAR, INT, LONG, FLOAT, DOUBLE, STRING
-    );
+    public static final EnumSet<TypeEnum> BASE_TYPE_ENUMS = EnumSet.of(BOOLEAN, BYTE, SHORT, CHAR, INT, LONG, FLOAT, DOUBLE, STRING);
 
     public static final EnumSet<TypeEnum> CONTAINER_TYPE_ENUMS = EnumSet.of(LIST, SET, MAP);
 
-    public static final EnumSet<TypeEnum> CUSTOM_TYPE_ENUMS = EnumSet.of(STRUCT, ENUM, INTERFACE, ANNOTATION);
 
     public boolean isBaseType() {
         return BASE_TYPE_ENUMS.contains(this);
@@ -36,8 +31,8 @@ public enum TypeEnum {
         return CONTAINER_TYPE_ENUMS.contains(this);
     }
 
-    public boolean isCustomType() {
-        return CUSTOM_TYPE_ENUMS.contains(this);
+    public boolean isReferenceType() {
+        return this == REFERENCE;
     }
 
     public String getKeyword() {

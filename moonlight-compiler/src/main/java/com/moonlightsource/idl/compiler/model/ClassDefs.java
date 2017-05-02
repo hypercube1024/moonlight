@@ -119,6 +119,18 @@ public class ClassDefs {
             source.getStructs().parallelStream().forEach(struct -> {
                 struct.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
+                MoonlightParser.ReferenceTypeContext parentTypeCtx = struct.referenceType();
+                if (parentTypeCtx != null) {
+                    // TODO parent struct check
+                    String parentClassName = getReferenceTypeClassName(parentTypeCtx);
+                    String parentNamespace = getReferenceTypeNamespace(parentClassName, parentTypeCtx, source);
+
+                    if (!containClass(parentNamespace, parentClassName)) {
+                        throw new CompilingRuntimeException("the parent struct [" + parentNamespace + "." + parentClassName + "] is not found",
+                                parentTypeCtx.Identifier(), source.getPath());
+                    }
+                }
+
                 struct.structField().parallelStream().forEach(structFieldDef -> {
                     structFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
                     // TODO struct field check

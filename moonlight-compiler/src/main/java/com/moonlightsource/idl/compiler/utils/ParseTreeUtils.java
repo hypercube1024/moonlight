@@ -1,11 +1,16 @@
 package com.moonlightsource.idl.compiler.utils;
 
 import com.firefly.utils.StringUtils;
+import com.firefly.utils.function.Action1;
+import com.firefly.utils.function.Action2;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.Source;
+import com.moonlightsource.idl.compiler.model.TypeEnum;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -152,13 +157,10 @@ abstract public class ParseTreeUtils {
 
     public static String getAnnotationNamespace(String className, MoonlightParser.AnnotationContext annotationCtx, Source source) {
         String namespace;
-        if (annotationCtx.namespaceValue() != null) {
-            namespace = annotationCtx.namespaceValue().getText();
-        } else {
-            namespace = source.getImportNamespace(className);
-            if (!StringUtils.hasText(namespace)) {
-                namespace = source.getNamespace();
-            }
+        try {
+            namespace = getNamespace(className, annotationCtx, source);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            throw new CompilingRuntimeException(e);
         }
         if (!StringUtils.hasText(namespace)) {
             throw new CompilingRuntimeException("the annotation [" + className + "] is not found",
@@ -169,6 +171,102 @@ abstract public class ParseTreeUtils {
 
     public static String getAnnotationClassName(MoonlightParser.AnnotationContext annotationCtx) {
         return annotationCtx.AnnotationLabel().getText().substring(1);
+    }
+
+    public static String getReferenceTypeClassName(MoonlightParser.ReferenceTypeContext referenceTypeContext) {
+        return referenceTypeContext.Identifier().getText();
+    }
+
+    public static String getReferenceTypeNamespace(String className, MoonlightParser.ReferenceTypeContext referenceTypeContext, Source source) {
+        String namespace;
+        try {
+            namespace = getNamespace(className, referenceTypeContext, source);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            throw new CompilingRuntimeException(e);
+        }
+        if (!StringUtils.hasText(namespace)) {
+            throw new CompilingRuntimeException("the reference type [" + className + "] is not found",
+                    referenceTypeContext.Identifier(), source.getPath());
+        }
+        return namespace;
+    }
+
+    private static String getNamespace(String className, ParserRuleContext parserRuleContext, Source source) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String namespace;
+        MoonlightParser.NamespaceValueContext namespaceValueCtx = (MoonlightParser.NamespaceValueContext) parserRuleContext.getClass().getMethod("namespaceValue").invoke(parserRuleContext);
+        if (namespaceValueCtx!= null) {
+            namespace = namespaceValueCtx.getText();
+        } else {
+            namespace = source.getImportNamespace(className);
+            if (!StringUtils.hasText(namespace)) {
+                namespace = source.getNamespace();
+            }
+        }
+        return namespace;
+    }
+
+    public static void walkParametricType(MoonlightParser.FieldTypeContext fieldTypeCtx, Action2<MoonlightParser.FieldTypeContext, TypeEnum> action) {
+        if (fieldTypeCtx.baseType() != null) {
+            action.call(fieldTypeCtx, getBaseFieldTypeEnum(fieldTypeCtx.baseType()));
+        } else if (fieldTypeCtx.referenceType() != null) {
+            action.call(fieldTypeCtx, TypeEnum.REFERENCE);
+            if (fieldTypeCtx.referenceType().parametricTypeExpr() != null) {
+                fieldTypeCtx.referenceType().parametricTypeExpr().fieldType()
+                            .forEach(_fieldTypeCtx -> walkParametricType(_fieldTypeCtx, action));
+            }
+        } else if (fieldTypeCtx.containerType() != null) {
+            TypeEnum typeEnum = getContainerTypeEnum(fieldTypeCtx.containerType());
+            action.call(fieldTypeCtx, typeEnum);
+            switch (typeEnum) {
+                case MAP: {
+                    fieldTypeCtx.containerType().mapType().fieldType()
+                                .forEach(_fieldTypeCtx -> walkParametricType(_fieldTypeCtx, action));
+                }
+                break;
+                case SET: {
+                    walkParametricType(fieldTypeCtx.containerType().setType().fieldType(), action);
+                }
+                break;
+                case LIST: {
+                    walkParametricType(fieldTypeCtx.containerType().listType().fieldType(), action);
+                }
+                break;
+            }
+        }
+    }
+
+    public static TypeEnum getContainerTypeEnum(MoonlightParser.ContainerTypeContext containerTypeContext) {
+        if (containerTypeContext.mapType() != null) {
+            return TypeEnum.MAP;
+        } else if (containerTypeContext.setType() != null) {
+            return TypeEnum.SET;
+        } else if (containerTypeContext.listType() != null) {
+            return TypeEnum.LIST;
+        }
+        throw new CompilingRuntimeException("unknown container type");
+    }
+
+    public static TypeEnum getBaseFieldTypeEnum(MoonlightParser.BaseTypeContext baseTypeContext) {
+        if (baseTypeContext.BOOLEAN() != null) {
+            return TypeEnum.BOOLEAN;
+        } else if (baseTypeContext.BYTE() != null) {
+            return TypeEnum.BYTE;
+        } else if (baseTypeContext.SHORT() != null) {
+            return TypeEnum.SHORT;
+        } else if (baseTypeContext.INT() != null) {
+            return TypeEnum.INT;
+        } else if (baseTypeContext.LONG() != null) {
+            return TypeEnum.LONG;
+        } else if (baseTypeContext.CHAR() != null) {
+            return TypeEnum.CHAR;
+        } else if (baseTypeContext.FLOAT() != null) {
+            return TypeEnum.FLOAT;
+        } else if (baseTypeContext.DOUBLE() != null) {
+            return TypeEnum.DOUBLE;
+        } else if (baseTypeContext.STRING() != null) {
+            return TypeEnum.STRING;
+        }
+        throw new CompilingRuntimeException("unknown container type");
     }
 
 }
