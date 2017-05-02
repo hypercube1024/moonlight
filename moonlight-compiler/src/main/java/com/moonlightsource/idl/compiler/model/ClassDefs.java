@@ -90,6 +90,7 @@ public class ClassDefs {
             log.debug("all imports -> {}", imports);
             log.debug("all classes -> {}", classDeclarationMap);
         }
+
         imports.forEach((path, m) -> {
             Source source = findSource(path);
             if (source != null) {
@@ -120,10 +121,8 @@ public class ClassDefs {
 
                 struct.structField().parallelStream().forEach(structFieldDef -> {
                     structFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-
+                    // TODO struct field check
                 });
-
-                // TODO
             });
 
             source.getInterfaces().parallelStream().forEach(interfaceDef -> {
@@ -133,32 +132,25 @@ public class ClassDefs {
 
                     functionDef.functionParameter().parallelStream().forEach(functionParamDef -> {
                         functionParamDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-
+                        // TODO function field check
                     });
 
-                    // TODO
+                    // TODO function return value check
                 });
 
             });
 
-            source.getAnnotations().parallelStream().forEach(annotationDef -> {
-                annotationDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-
-                // TODO
-            });
+            source.getAnnotations()
+                  .parallelStream()
+                  .forEach(annotationDef -> annotationDef.annotation().parallelStream()
+                                                         .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
 
             source.getEnums().parallelStream().forEach(enumDef -> {
                 enumDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-
-                enumDef.enumField().parallelStream().forEach(enumFieldDef -> {
-                    enumFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-
-                });
-                // TODO
+                enumDef.enumField().parallelStream().forEach(enumFieldDef -> enumFieldDef.annotation().parallelStream()
+                                                                                         .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
             });
         });
-
-        // TODO
     }
 
     private void annotationCheck(MoonlightParser.AnnotationContext annotationCtx, Source source) {
