@@ -36,4 +36,14 @@ public class TestError {
 
         createClassDefinitions(sourceWraps);
     }
+
+    @Test
+    public void annotationFieldError() throws IOException {
+        List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
+                Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/annotationFieldError"),
+                MoonlightCompiler.DEFAULT_SUFFIX,
+                StandardCharsets.UTF_8).collect(Collectors.toList());
+
+        createClassDefinitions(sourceWraps);
+    }
 }

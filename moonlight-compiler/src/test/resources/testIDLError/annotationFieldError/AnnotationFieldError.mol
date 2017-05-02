@@ -1,0 +1,15 @@
+namespace com.moonlightsource.idl.api;
+
+annotation Log {
+    string name;
+}
+
+@Log(name = "system")
+interface ItemService {
+    Item getItem(int id);
+}
+
+@Tx(sources = "ok")
+struct Item {
+    int number;
+}

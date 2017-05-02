@@ -1,5 +1,7 @@
 package com.moonlightsource.idl.compiler.model;
 
+import com.moonlightsource.idl.compiler.parser.MoonlightParser;
+
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
@@ -23,5 +25,12 @@ public class ClassVisitor {
 
     public List<Source> getSources() {
         return sources;
+    }
+
+    public MoonlightParser.AnnotationDeclarationContext findAnnotation(String namespace, String className) {
+        return sources.parallelStream()
+                      .filter(source -> source.getNamespace().equals(namespace))
+                      .map(source -> source.findAnnotation(className))
+                      .findFirst().orElse(null);
     }
 }

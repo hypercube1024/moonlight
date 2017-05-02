@@ -127,6 +127,12 @@ public class Source {
         return getImportNamespace(className) != null;
     }
 
+    public MoonlightParser.AnnotationDeclarationContext findAnnotation(String name) {
+        return annotations.parallelStream()
+                          .filter(ctx -> ctx.Identifier().getText().equals(name))
+                          .findFirst().orElse(null);
+    }
+
     public Source toUnmodifiableSource() {
         try {
             Source unmodifiableSource = JavassistClassProxyFactory.INSTANCE.createProxy(new Source(),

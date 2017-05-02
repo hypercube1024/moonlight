@@ -1,6 +1,5 @@
 package com.moonlightsource.idl.compiler.model;
 
-import com.firefly.utils.StringUtils;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.slf4j.Logger;
@@ -8,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.util.*;
+
+import static com.moonlightsource.idl.compiler.utils.ParseTreeUtils.*;
 
 /**
  * @author Pengtao Qiu
@@ -112,26 +113,26 @@ public class ClassDefs {
 
         // class check
         sources.parallelStream().forEach(source -> {
-            source.getFileAnnotations().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            source.getFileAnnotations().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-            source.getStructs().forEach(struct -> {
-                struct.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            source.getStructs().parallelStream().forEach(struct -> {
+                struct.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-                struct.structField().forEach(structFieldDef -> {
-                    structFieldDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+                struct.structField().parallelStream().forEach(structFieldDef -> {
+                    structFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
                 });
 
                 // TODO
             });
 
-            source.getInterfaces().forEach(interfaceDef -> {
-                interfaceDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-                interfaceDef.functionDeclaration().forEach(functionDef -> {
-                    functionDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            source.getInterfaces().parallelStream().forEach(interfaceDef -> {
+                interfaceDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+                interfaceDef.functionDeclaration().parallelStream().forEach(functionDef -> {
+                    functionDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-                    functionDef.functionParameter().forEach(functionParamDef -> {
-                        functionParamDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+                    functionDef.functionParameter().parallelStream().forEach(functionParamDef -> {
+                        functionParamDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
                     });
 
@@ -140,17 +141,17 @@ public class ClassDefs {
 
             });
 
-            source.getAnnotations().forEach(annotationDef -> {
-                annotationDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            source.getAnnotations().parallelStream().forEach(annotationDef -> {
+                annotationDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
                 // TODO
             });
 
-            source.getEnums().forEach(enumDef -> {
-                enumDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            source.getEnums().parallelStream().forEach(enumDef -> {
+                enumDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-                enumDef.enumField().forEach(enumFieldDef -> {
-                    enumFieldDef.annotation().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+                enumDef.enumField().parallelStream().forEach(enumFieldDef -> {
+                    enumFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
                 });
                 // TODO
@@ -161,21 +162,46 @@ public class ClassDefs {
     }
 
     private void annotationCheck(MoonlightParser.AnnotationContext annotationCtx, Source source) {
-        String className = annotationCtx.AnnotationLabel().getText().substring(1);
-        String namespace;
-        if (annotationCtx.namespaceValue() != null) {
-            namespace = annotationCtx.namespaceValue().getText();
-        } else {
-            namespace = source.getImportNamespace(className);
-            if (!StringUtils.hasText(namespace)) {
-                throw new CompilingRuntimeException("the annotation [" + className + "] is not found",
-                        annotationCtx.AnnotationLabel(), source.getPath());
-            }
-        }
+        String className = getAnnotationClassName(annotationCtx);
+        String namespace = getAnnotationNamespace(className, annotationCtx, source);
+
         if (!containClass(namespace, className)) {
             throw new CompilingRuntimeException("the annotation [" + namespace + "." + className + "] is not found",
                     annotationCtx.AnnotationLabel(), source.getPath());
         }
+
+        // annotation field check
+        MoonlightParser.AnnotationDeclarationContext annotationDef = sources.parallelStream()
+                                                                            .filter(s -> s.getNamespace().equals(namespace))
+                                                                            .filter(s -> s.findAnnotation(className) != null)
+                                                                            .map(s -> s.findAnnotation(className))
+                                                                            .findAny().orElse(null);
+        if (annotationDef == null) {
+            throw new CompilingRuntimeException("the annotation [" + namespace + "." + className + "] is not found",
+                    annotationCtx.AnnotationLabel(), source.getPath());
+        }
+
+        annotationCtx.baseAssignment().parallelStream().forEach(baseAssignmentCtx -> {
+            String fieldName = baseAssignmentCtx.Identifier().getText();
+
+            Optional<MoonlightParser.BaseFieldContext> optional = annotationDef.baseField().parallelStream()
+                                                                               .filter(baseFieldCtx -> fieldName.equals(getBaseFieldName(baseFieldCtx)))
+                                                                               .findAny();
+            if (!optional.isPresent()) {
+                throw new CompilingRuntimeException("the annotation field [" + namespace + "." + className + "." + fieldName + "] is not found",
+                        baseAssignmentCtx.Identifier(), source.getPath());
+            }
+
+            optional = annotationDef.baseField().parallelStream()
+                                    .filter(baseFieldCtx -> fieldName.equals(getBaseFieldName(baseFieldCtx))
+                                            && matchBaseFieldType(baseFieldCtx, baseAssignmentCtx))
+                                    .findAny();
+
+            if (!optional.isPresent()) {
+                throw new CompilingRuntimeException("the annotation field [" + namespace + "." + className + "." + fieldName + "] type does not match.",
+                        baseAssignmentCtx.Identifier(), source.getPath());
+            }
+        });
     }
 
     private Source findSource(Path path) {

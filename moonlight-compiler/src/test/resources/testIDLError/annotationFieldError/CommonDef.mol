@@ -1,0 +1,5 @@
+namespace com.moonlightsource.idl.api;
+
+annotation Tx {
+    list<string> sources;
+}

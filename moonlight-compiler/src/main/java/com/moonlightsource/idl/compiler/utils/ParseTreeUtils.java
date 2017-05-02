@@ -1,6 +1,8 @@
 package com.moonlightsource.idl.compiler.utils;
 
+import com.firefly.utils.StringUtils;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
+import com.moonlightsource.idl.compiler.model.Source;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
@@ -87,6 +89,86 @@ abstract public class ParseTreeUtils {
 
     public static String getErrorLine(Path path, TerminalNode node) {
         return "@file[" + path + "], line[" + node.getSymbol().getLine() + ", " + node.getSymbol().getCharPositionInLine() + "]";
+    }
+
+    public static String getBaseFieldName(MoonlightParser.BaseFieldContext baseFieldContext) {
+        return baseFieldContext.getChild(1).getText();
+    }
+
+    public static boolean matchBaseFieldType(MoonlightParser.BaseFieldContext baseFieldContext, MoonlightParser.BaseAssignmentContext baseAssignmentContext) {
+        if (baseAssignmentContext.literal() != null && baseAssignmentContext.literal().NullLiteral() != null) {
+            return true;
+        }
+
+        if (baseFieldContext instanceof MoonlightParser.BoolFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().BooleanLiteral() != null;
+        } else if (baseFieldContext instanceof MoonlightParser.ByteFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().IntegerLiteral() != null;
+        } else if (baseFieldContext instanceof MoonlightParser.ShortFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().IntegerLiteral() != null;
+        } else if (baseFieldContext instanceof MoonlightParser.IntFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().IntegerLiteral() != null;
+        } else if (baseFieldContext instanceof MoonlightParser.LongFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().IntegerLiteral() != null;
+        } else if (baseFieldContext instanceof MoonlightParser.CharFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().CharacterLiteral() != null;
+        } else if (baseFieldContext instanceof MoonlightParser.FloatFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().FloatingPointLiteral() != null;
+        } else if (baseFieldContext instanceof MoonlightParser.DoubleFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().FloatingPointLiteral() != null;
+        } else if (baseFieldContext instanceof MoonlightParser.StringFieldContext) {
+            return baseAssignmentContext.literal() != null && baseAssignmentContext.literal().StringLiteral() != null;
+        } else {
+            if (baseAssignmentContext.baseListExpr() == null) {
+                return false;
+            }
+
+            if (baseAssignmentContext.baseListExpr().emptyListExpr() != null) {
+                return true;
+            }
+
+            if (baseFieldContext instanceof MoonlightParser.BoolListFieldContext) {
+                return baseAssignmentContext.baseListExpr().boolListExpr() != null;
+            } else if (baseFieldContext instanceof MoonlightParser.ByteListFieldContext) {
+                return baseAssignmentContext.baseListExpr().intListExpr() != null;
+            } else if (baseFieldContext instanceof MoonlightParser.ShortListFieldContext) {
+                return baseAssignmentContext.baseListExpr().intListExpr() != null;
+            } else if (baseFieldContext instanceof MoonlightParser.IntListFieldContext) {
+                return baseAssignmentContext.baseListExpr().intListExpr() != null;
+            } else if (baseFieldContext instanceof MoonlightParser.LongListFieldContext) {
+                return baseAssignmentContext.baseListExpr().intListExpr() != null;
+            } else if (baseFieldContext instanceof MoonlightParser.CharListFieldContext) {
+                return baseAssignmentContext.baseListExpr().charListExpr() != null;
+            } else if (baseFieldContext instanceof MoonlightParser.FloatListFieldContext) {
+                return baseAssignmentContext.baseListExpr().floatListExpr() != null;
+            } else if (baseFieldContext instanceof MoonlightParser.DoubleListFieldContext) {
+                return baseAssignmentContext.baseListExpr().floatListExpr() != null;
+            } else if (baseFieldContext instanceof MoonlightParser.StringListFieldContext) {
+                return baseAssignmentContext.baseListExpr().stringListExpr() != null;
+            }
+        }
+        return false;
+    }
+
+    public static String getAnnotationNamespace(String className, MoonlightParser.AnnotationContext annotationCtx, Source source) {
+        String namespace;
+        if (annotationCtx.namespaceValue() != null) {
+            namespace = annotationCtx.namespaceValue().getText();
+        } else {
+            namespace = source.getImportNamespace(className);
+            if (!StringUtils.hasText(namespace)) {
+                namespace = source.getNamespace();
+            }
+        }
+        if (!StringUtils.hasText(namespace)) {
+            throw new CompilingRuntimeException("the annotation [" + className + "] is not found",
+                    annotationCtx.AnnotationLabel(), source.getPath());
+        }
+        return namespace;
+    }
+
+    public static String getAnnotationClassName(MoonlightParser.AnnotationContext annotationCtx) {
+        return annotationCtx.AnnotationLabel().getText().substring(1);
     }
 
 }
