@@ -15,13 +15,13 @@ import static com.moonlightsource.idl.compiler.utils.ParseTreeUtils.getBaseField
 /**
  * @author Pengtao Qiu
  */
-public class ClassDefinitionListener extends MoonlightBaseListener {
+public class SyntaxCheckListener extends MoonlightBaseListener {
 
     private final ClassDefs classDefs;
     private final Source source;
     private String namespace;
 
-    public ClassDefinitionListener(ClassDefs classDefs, Source source) {
+    public SyntaxCheckListener(ClassDefs classDefs, Source source) {
         this.classDefs = classDefs;
         this.source = source;
         classDefs.addSource(source);

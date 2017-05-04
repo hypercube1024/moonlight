@@ -84,7 +84,7 @@ public class ClassDefs {
                .add(name);
     }
 
-    public void checkSyntax() {
+    public void semanticCheck() {
         if (log.isDebugEnabled()) {
             log.debug("all imports -> {}", imports);
             log.debug("all classes -> {}", classDeclarationMap);

@@ -133,7 +133,7 @@ public class Source {
                           .findFirst().orElse(null);
     }
 
-    public Source toUnmodifiableSource() {
+    Source toUnmodifiableSource() {
         try {
             Source unmodifiableSource = JavassistClassProxyFactory.INSTANCE.createProxy(new Source(),
                     ((handler, originalInstance, args) -> {
