@@ -72,7 +72,6 @@ abstract public class ParseTreeUtils {
         List<TerminalNode> v;
         if (baseListExprContext.boolListExpr() != null) {
             v = baseListExprContext.boolListExpr().BooleanLiteral();
-
         } else if (baseListExprContext.charListExpr() != null) {
             v = baseListExprContext.charListExpr().CharacterLiteral();
         } else if (baseListExprContext.stringListExpr() != null) {
@@ -194,7 +193,7 @@ abstract public class ParseTreeUtils {
     private static String getNamespace(String className, ParserRuleContext parserRuleContext, Source source) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String namespace;
         MoonlightParser.NamespaceValueContext namespaceValueCtx = (MoonlightParser.NamespaceValueContext) parserRuleContext.getClass().getMethod("namespaceValue").invoke(parserRuleContext);
-        if (namespaceValueCtx!= null) {
+        if (namespaceValueCtx != null) {
             namespace = namespaceValueCtx.getText();
         } else {
             namespace = source.getImportNamespace(className);
