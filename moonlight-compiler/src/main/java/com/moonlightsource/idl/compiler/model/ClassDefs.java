@@ -34,7 +34,7 @@ public class ClassDefs {
 
     public synchronized void putClassDeclaration(String namespace, String className, List<String> parametricDefs) {
         if (containClass(namespace, className)) {
-            throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] exists");
+            throw new CompilingRuntimeException("duplicated class [" + namespace + "." + className + "]");
         }
 
         classDeclarationMap.computeIfAbsent(namespace, k -> new HashMap<>())
@@ -85,12 +85,15 @@ public class ClassDefs {
     }
 
     public void checkSyntax() {
-        // import semantic check
         if (log.isDebugEnabled()) {
             log.debug("all imports -> {}", imports);
             log.debug("all classes -> {}", classDeclarationMap);
         }
+        preprocessImport();
+        sourceCheck();
+    }
 
+    private void preprocessImport() {
         imports.forEach((path, m) -> {
             Source source = findSource(path);
             if (source != null) {
@@ -111,57 +114,141 @@ public class ClassDefs {
                 throw new CompilingRuntimeException("the source " + path + " is not found");
             }
         });
+    }
 
-        // class check
+    private void sourceCheck() {
         sources.parallelStream().forEach(source -> {
-            source.getFileAnnotations().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            fileAnnotationCheck(source);
+            structDefinitionCheck(source);
+            interfaceDefinitionCheck(source);
+            annotationDefinitionCheck(source);
+            enumDefinitionCheck(source);
+        });
+    }
 
-            source.getStructs().parallelStream().forEach(struct -> {
-                struct.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+    private void fileAnnotationCheck(Source source) {
+        source.getFileAnnotations().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+    }
 
-                MoonlightParser.ReferenceTypeContext parentTypeCtx = struct.referenceType();
-                if (parentTypeCtx != null) {
-                    // TODO parent struct check
-                    String parentClassName = getReferenceTypeClassName(parentTypeCtx);
-                    String parentNamespace = getReferenceTypeNamespace(parentClassName, parentTypeCtx, source);
+    private void structDefinitionCheck(Source source) {
+        source.getStructs().parallelStream().forEach(struct -> {
+            // struct annotation check
+            struct.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-                    if (!containClass(parentNamespace, parentClassName)) {
-                        throw new CompilingRuntimeException("the parent struct [" + parentNamespace + "." + parentClassName + "] is not found",
-                                parentTypeCtx.Identifier(), source.getPath());
+            // parent struct check
+            MoonlightParser.ReferenceTypeContext parentTypeCtx = struct.referenceType();
+            if (parentTypeCtx != null) {
+                parentTypeCheck(parentTypeCtx, struct, source);
+            }
+
+            struct.structField().parallelStream().forEach(structFieldDef -> {
+                structFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+                // struct field type check
+                MoonlightParser.FieldTypeContext fieldTypeCtx = structFieldDef.fieldType();
+                if (fieldTypeCtx.referenceType() != null) {
+                    referenceTypeCheck(fieldTypeCtx.referenceType(), struct, source);
+                } else if (fieldTypeCtx.containerType() != null) {
+                    MoonlightParser.ContainerTypeContext containerTypeContext = fieldTypeCtx.containerType();
+                    if (containerTypeContext.listType() != null) {
+                        parametricTypeCheck(containerTypeContext.listType().fieldType(), struct, source);
+                    } else if (containerTypeContext.setType() != null) {
+                        parametricTypeCheck(containerTypeContext.setType().fieldType(), struct, source);
+                    } else if (containerTypeContext.mapType() != null) {
+                        containerTypeContext.mapType().fieldType().forEach(f -> parametricTypeCheck(f, struct, source));
                     }
                 }
+            });
+        });
+    }
 
-                struct.structField().parallelStream().forEach(structFieldDef -> {
-                    structFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-                    // TODO struct field check
+    private void interfaceDefinitionCheck(Source source) {
+        source.getInterfaces().parallelStream().forEach(interfaceDef -> {
+            // interface annotation check
+            interfaceDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+            interfaceDef.functionDeclaration().parallelStream().forEach(functionDef -> {
+                // function annotation check
+                functionDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+                functionDef.functionParameter().parallelStream().forEach(functionParamDef -> {
+                    // parameter annotation check
+                    functionParamDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+                    // TODO function parameter check
                 });
+
+                // TODO function return value check
             });
 
-            source.getInterfaces().parallelStream().forEach(interfaceDef -> {
-                interfaceDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-                interfaceDef.functionDeclaration().parallelStream().forEach(functionDef -> {
-                    functionDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+        });
+    }
 
-                    functionDef.functionParameter().parallelStream().forEach(functionParamDef -> {
-                        functionParamDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-                        // TODO function field check
-                    });
+    private void annotationDefinitionCheck(Source source) {
+        source.getAnnotations()
+              .parallelStream()
+              .forEach(a -> a.annotation()
+                             .parallelStream()
+                             .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
+    }
 
-                    // TODO function return value check
-                });
+    private void enumDefinitionCheck(Source source) {
+        source.getEnums().parallelStream().forEach(enumDef -> {
+            enumDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            enumDef.enumField().parallelStream().forEach(enumFieldDef -> enumFieldDef.annotation().parallelStream()
+                                                                                     .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
+        });
+    }
 
-            });
+    private void referenceTypeCheck(MoonlightParser.ReferenceTypeContext refTypeCtx, MoonlightParser.StructDeclarationContext struct, Source source) {
+        // struct check
+        String className = getReferenceTypeClassName(refTypeCtx);
+        String namespace = getReferenceTypeNamespace(className, refTypeCtx, source);
 
-            source.getAnnotations()
-                  .parallelStream()
-                  .forEach(annotationDef -> annotationDef.annotation().parallelStream()
-                                                         .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
+        List<String> parametricDefs = getParametricDefs(struct);
+        if (!(containClass(namespace, className) || parametricDefs.contains(className))) {
+            throw new CompilingRuntimeException("can not resolve symbol [" + className + "]",
+                    refTypeCtx.Identifier(), source.getPath());
+        }
 
-            source.getEnums().parallelStream().forEach(enumDef -> {
-                enumDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-                enumDef.enumField().parallelStream().forEach(enumFieldDef -> enumFieldDef.annotation().parallelStream()
-                                                                                         .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
-            });
+        // parametric type check
+        if (refTypeCtx.parametricTypeExpr() != null) {
+            refTypeCtx.parametricTypeExpr().fieldType().forEach(f -> parametricTypeCheck(f, struct, source));
+        }
+    }
+
+    private void parentTypeCheck(MoonlightParser.ReferenceTypeContext refTypeCtx, MoonlightParser.StructDeclarationContext struct, Source source) {
+        // parent struct check
+        String parentClassName = getReferenceTypeClassName(refTypeCtx);
+        String parentNamespace = getReferenceTypeNamespace(parentClassName, refTypeCtx, source);
+
+        if (parentClassName.equals(struct.Identifier().getText())) {
+            throw new CompilingRuntimeException("the struct [" + struct.Identifier().getText() + "] can not extend self",
+                    refTypeCtx.Identifier(), source.getPath());
+        }
+
+        if (!containClass(parentNamespace, parentClassName)) {
+            throw new CompilingRuntimeException("the parent struct [" + parentNamespace + "." + parentClassName + "] is not found",
+                    refTypeCtx.Identifier(), source.getPath());
+        }
+
+        // parametric type check
+        if (refTypeCtx.parametricTypeExpr() != null) {
+            refTypeCtx.parametricTypeExpr().fieldType().forEach(f -> parametricTypeCheck(f, struct, source));
+        }
+    }
+
+    private void parametricTypeCheck(MoonlightParser.FieldTypeContext f, MoonlightParser.StructDeclarationContext struct, Source source) {
+        List<String> parametricDefs = getParametricDefs(struct);
+        walkParametricTypes(f, (fieldTypeCtx, type) -> {
+            if (type == TypeEnum.REFERENCE) {
+                MoonlightParser.ReferenceTypeContext referenceTypeContext = fieldTypeCtx.referenceType();
+                String className = getReferenceTypeClassName(referenceTypeContext);
+                String namespace = getReferenceTypeNamespace(className, referenceTypeContext, source);
+                log.debug("parametric type -> {}, {}", namespace, className);
+                if (!(containClass(namespace, className) || parametricDefs.contains(className))) {
+                    throw new CompilingRuntimeException("can not resolve symbol [" + className + "]", referenceTypeContext.Identifier(), source.getPath());
+                }
+            }
         });
     }
 

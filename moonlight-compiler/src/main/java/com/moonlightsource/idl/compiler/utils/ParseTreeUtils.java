@@ -1,13 +1,13 @@
 package com.moonlightsource.idl.compiler.utils;
 
 import com.firefly.utils.StringUtils;
-import com.firefly.utils.function.Action1;
 import com.firefly.utils.function.Action2;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.model.Source;
 import com.moonlightsource.idl.compiler.model.TypeEnum;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.lang.reflect.InvocationTargetException;
@@ -205,14 +205,14 @@ abstract public class ParseTreeUtils {
         return namespace;
     }
 
-    public static void walkParametricType(MoonlightParser.FieldTypeContext fieldTypeCtx, Action2<MoonlightParser.FieldTypeContext, TypeEnum> action) {
+    public static void walkParametricTypes(MoonlightParser.FieldTypeContext fieldTypeCtx, Action2<MoonlightParser.FieldTypeContext, TypeEnum> action) {
         if (fieldTypeCtx.baseType() != null) {
             action.call(fieldTypeCtx, getBaseFieldTypeEnum(fieldTypeCtx.baseType()));
         } else if (fieldTypeCtx.referenceType() != null) {
             action.call(fieldTypeCtx, TypeEnum.REFERENCE);
             if (fieldTypeCtx.referenceType().parametricTypeExpr() != null) {
                 fieldTypeCtx.referenceType().parametricTypeExpr().fieldType()
-                            .forEach(_fieldTypeCtx -> walkParametricType(_fieldTypeCtx, action));
+                            .forEach(_fieldTypeCtx -> walkParametricTypes(_fieldTypeCtx, action));
             }
         } else if (fieldTypeCtx.containerType() != null) {
             TypeEnum typeEnum = getContainerTypeEnum(fieldTypeCtx.containerType());
@@ -220,18 +220,27 @@ abstract public class ParseTreeUtils {
             switch (typeEnum) {
                 case MAP: {
                     fieldTypeCtx.containerType().mapType().fieldType()
-                                .forEach(_fieldTypeCtx -> walkParametricType(_fieldTypeCtx, action));
+                                .forEach(_fieldTypeCtx -> walkParametricTypes(_fieldTypeCtx, action));
                 }
                 break;
                 case SET: {
-                    walkParametricType(fieldTypeCtx.containerType().setType().fieldType(), action);
+                    walkParametricTypes(fieldTypeCtx.containerType().setType().fieldType(), action);
                 }
                 break;
                 case LIST: {
-                    walkParametricType(fieldTypeCtx.containerType().listType().fieldType(), action);
+                    walkParametricTypes(fieldTypeCtx.containerType().listType().fieldType(), action);
                 }
                 break;
             }
+        }
+    }
+
+    public static List<String> getParametricDefs(MoonlightParser.StructDeclarationContext ctx) {
+        List<TerminalNode> list = ctx.parametricTypeDeclaration().Identifier();
+        if (list != null && !list.isEmpty()) {
+            return list.stream().map(ParseTree::getText).collect(Collectors.toList());
+        } else {
+            return Collections.emptyList();
         }
     }
 

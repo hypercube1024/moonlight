@@ -1,0 +1,14 @@
+namespace com.moonlightsource.idl.api;
+
+struct Foo<T> {
+    T foo;
+}
+
+struct Bar<T, R> extends Foo<T> {
+    T bar;
+    R rec;
+}
+
+struct BarChild<T> extends Bar<T, list<Foo<Bar<int, string>>>> {
+    T child;
+}

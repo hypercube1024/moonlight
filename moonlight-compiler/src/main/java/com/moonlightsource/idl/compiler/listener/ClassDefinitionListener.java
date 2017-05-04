@@ -7,9 +7,10 @@ import com.moonlightsource.idl.compiler.parser.MoonlightBaseListener;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.moonlightsource.idl.compiler.utils.ParseTreeUtils.getBaseFieldName;
 
 /**
  * @author Pengtao Qiu
@@ -60,6 +61,19 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
     @Override
     public void enterStructDeclaration(MoonlightParser.StructDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
+        // struct field name check
+        if (ctx.structField() != null && !ctx.structField().isEmpty()) {
+            Set<String> fieldNames = new HashSet<>();
+            ctx.structField().forEach(field -> {
+                String name = field.Identifier().getText();
+                if (fieldNames.contains(name)) {
+                    throw new CompilingRuntimeException("duplicated field name [" + name + "]", field.Identifier(), source.getPath());
+                } else {
+                    fieldNames.add(name);
+                }
+            });
+        }
+
         if (ctx.parametricTypeDeclaration() != null) {
             List<TerminalNode> list = ctx.parametricTypeDeclaration().Identifier();
             if (list != null && !list.isEmpty()) {
@@ -67,7 +81,7 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
                 for (TerminalNode terminalNode : list) {
                     String p = terminalNode.getText();
                     if (parametricDefs.contains(p)) {
-                        throw new CompilingRuntimeException("the parametric definition [" + p + "] exists", terminalNode, source.getPath());
+                        throw new CompilingRuntimeException("duplicated parametric definition [" + p + "]", terminalNode, source.getPath());
                     }
                     parametricDefs.add(p);
                 }
@@ -84,6 +98,8 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
     @Override
     public void enterAnnotationDeclaration(MoonlightParser.AnnotationDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
+        // annotation field name check
+        baseFieldNameCheck(ctx.baseField());
         classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
         source.getAnnotations().add(ctx);
     }
@@ -91,13 +107,32 @@ public class ClassDefinitionListener extends MoonlightBaseListener {
     @Override
     public void enterEnumDeclaration(MoonlightParser.EnumDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
+        // enum field name check
+        baseFieldNameCheck(ctx.enumField().stream().map(MoonlightParser.EnumFieldContext::baseField).collect(Collectors.toList()));
         classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
         source.getEnums().add(ctx);
+    }
+
+    private void baseFieldNameCheck(List<MoonlightParser.BaseFieldContext> fields) {
+        if (fields != null && !fields.isEmpty()) {
+            Set<String> fieldNames = new HashSet<>();
+            fields.forEach(field -> _nameCheck(fieldNames, field));
+        }
+    }
+
+    private void _nameCheck(Set<String> fieldNames, MoonlightParser.BaseFieldContext field) {
+        String name = getBaseFieldName(field);
+        if (fieldNames.contains(name)) {
+            throw new CompilingRuntimeException("duplicated field name [" + name + "]", (TerminalNode) field.getChild(1), source.getPath());
+        } else {
+            fieldNames.add(name);
+        }
     }
 
     @Override
     public void enterInterfaceDeclaration(MoonlightParser.InterfaceDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
+        // TODO function signature check
         classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
         source.getInterfaces().add(ctx);
     }
