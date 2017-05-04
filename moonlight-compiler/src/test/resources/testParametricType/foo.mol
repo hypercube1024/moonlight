@@ -12,3 +12,7 @@ struct Bar<T, R> extends Foo<T> {
 struct BarChild<T> extends Bar<T, list<Foo<Bar<int, string>>>> {
     T child;
 }
+
+interface Baaaaa {
+    BarChild<list<Foo<Foo<int>>>> child(int i, Bar<Bar<int, string>, string> bar);
+}
