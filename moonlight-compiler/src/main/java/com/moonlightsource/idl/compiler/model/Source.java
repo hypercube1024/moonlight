@@ -1,7 +1,6 @@
 package com.moonlightsource.idl.compiler.model;
 
 import com.firefly.utils.classproxy.JavassistClassProxyFactory;
-import com.firefly.utils.exception.CommonRuntimeException;
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.parser.MoonlightParser;
 

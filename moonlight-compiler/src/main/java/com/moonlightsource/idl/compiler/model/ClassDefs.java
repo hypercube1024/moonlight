@@ -43,9 +43,9 @@ public class ClassDefs {
     }
 
     private Set<String> getClassNames(String namespace) {
-        Map<String, List<String>> classNameAndParametricDeclaration = classDeclarationMap.get(namespace);
-        if (classNameAndParametricDeclaration != null && !classNameAndParametricDeclaration.isEmpty()) {
-            return classNameAndParametricDeclaration.keySet();
+        Map<String, List<String>> classes = classDeclarationMap.get(namespace);
+        if (classes != null && !classes.isEmpty()) {
+            return classes.keySet();
         } else {
             return Collections.emptySet();
         }
@@ -63,10 +63,6 @@ public class ClassDefs {
     }
 
     private boolean checkParametricTypeCount(String namespace, String className, int count) {
-        if (!containClass(namespace, className)) {
-            throw new CompilingRuntimeException("the class [" + namespace + "." + className + "] is not found");
-        }
-
         return classDeclarationMap.get(namespace).get(className).size() == count;
     }
 
@@ -138,26 +134,28 @@ public class ClassDefs {
             // parent struct check
             MoonlightParser.ReferenceTypeContext parentTypeCtx = struct.referenceType();
             if (parentTypeCtx != null) {
-                parentTypeCheck(parentTypeCtx, struct, source);
+                parentStructTypeCheck(parentTypeCtx, struct, source);
             }
 
-            struct.structField().parallelStream().forEach(structFieldDef -> {
-                structFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-                // struct field type check
-                MoonlightParser.FieldTypeContext fieldTypeCtx = structFieldDef.fieldType();
-                if (fieldTypeCtx.referenceType() != null) {
-                    referenceTypeCheck(fieldTypeCtx.referenceType(), struct, source);
-                } else if (fieldTypeCtx.containerType() != null) {
-                    MoonlightParser.ContainerTypeContext containerTypeContext = fieldTypeCtx.containerType();
-                    if (containerTypeContext.listType() != null) {
-                        parametricTypeCheck(containerTypeContext.listType().fieldType(), struct, source);
-                    } else if (containerTypeContext.setType() != null) {
-                        parametricTypeCheck(containerTypeContext.setType().fieldType(), struct, source);
-                    } else if (containerTypeContext.mapType() != null) {
-                        containerTypeContext.mapType().fieldType().forEach(f -> parametricTypeCheck(f, struct, source));
+            if (struct.structField() != null && !struct.structField().isEmpty()) {
+                struct.structField().parallelStream().forEach(structFieldDef -> {
+                    structFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+                    // struct field type check
+                    MoonlightParser.FieldTypeContext fieldTypeCtx = structFieldDef.fieldType();
+                    if (fieldTypeCtx.referenceType() != null) {
+                        structFieldReferenceTypeCheck(fieldTypeCtx.referenceType(), struct, source);
+                    } else if (fieldTypeCtx.containerType() != null) {
+                        MoonlightParser.ContainerTypeContext containerTypeContext = fieldTypeCtx.containerType();
+                        if (containerTypeContext.listType() != null) {
+                            partialSpecializationTypeCheck(containerTypeContext.listType().fieldType(), struct, source);
+                        } else if (containerTypeContext.setType() != null) {
+                            partialSpecializationTypeCheck(containerTypeContext.setType().fieldType(), struct, source);
+                        } else if (containerTypeContext.mapType() != null) {
+                            containerTypeContext.mapType().fieldType().forEach(f -> partialSpecializationTypeCheck(f, struct, source));
+                        }
                     }
-                }
-            });
+                });
+            }
         });
     }
 
@@ -166,20 +164,61 @@ public class ClassDefs {
             // interface annotation check
             interfaceDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-            interfaceDef.functionDeclaration().parallelStream().forEach(functionDef -> {
-                // function annotation check
-                functionDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-                functionDef.functionParameter().parallelStream().forEach(functionParamDef -> {
-                    // parameter annotation check
-                    functionParamDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            Set<String> signatureSet = new HashSet<>();
+            if (interfaceDef.functionDeclaration() != null && !interfaceDef.functionDeclaration().isEmpty()) {
+                interfaceDef.functionDeclaration().forEach(fun -> {
+                    // function annotation check
+                    fun.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-                    // TODO function parameter check
+
+                    String name = fun.Identifier().getText();
+                    StringBuilder signatureBuilder = new StringBuilder();
+                    signatureBuilder.append(name).append("(");
+                    if (fun.functionParameter() != null && !fun.functionParameter().isEmpty()) {
+                        fun.functionParameter().forEach(p -> {
+                            // parameter annotation check
+                            p.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
+                            // function parameter check
+                            MoonlightParser.FieldTypeContext fieldTypeContext = p.fieldType();
+                            if (fieldTypeContext.referenceType() != null) {
+                                MoonlightParser.ReferenceTypeContext refTypeCtx = fieldTypeContext.referenceType();
+                                functionReferenceTypeCheck(refTypeCtx, source);
+
+                                String paramClassName = getReferenceTypeClassName(refTypeCtx);
+                                String paramNamespace = getReferenceTypeNamespace(paramClassName, refTypeCtx, source);
+                                signatureBuilder.append(paramNamespace).append(".").append(paramClassName).append(",");
+                            } else if (fieldTypeContext.containerType() != null) {
+                                functionContainerTypeCheck(fieldTypeContext.containerType(), source);
+                                signatureBuilder.append(getContainerTypeEnum(fieldTypeContext.containerType()).getKeyword()).append(",");
+                            } else if (fieldTypeContext.baseType() != null) {
+                                signatureBuilder.append(getBaseFieldTypeEnum(fieldTypeContext.baseType()).getKeyword()).append(",");
+                            }
+                        });
+                        signatureBuilder.deleteCharAt(signatureBuilder.length() - 1);
+                    }
+                    signatureBuilder.append(")");
+                    String signature = signatureBuilder.toString();
+                    log.debug("the function signature -> {}", signature);
+                    if (signatureSet.contains(signature)) {
+                        throw new CompilingRuntimeException("duplicated function [" + name + "]", fun.Identifier(), source.getPath());
+                    } else {
+                        signatureSet.add(signature);
+                    }
+
+                    // function return type check
+                    if (fun.functionReturnType().fieldType() != null) {
+                        MoonlightParser.FieldTypeContext fieldTypeContext = fun.functionReturnType().fieldType();
+                        if (fieldTypeContext.referenceType() != null) {
+                            MoonlightParser.ReferenceTypeContext refTypeCtx = fun.functionReturnType().fieldType().referenceType();
+                            functionReferenceTypeCheck(refTypeCtx, source);
+                        } else if (fieldTypeContext.containerType() != null) {
+                            functionContainerTypeCheck(fieldTypeContext.containerType(), source);
+                        }
+                    }
                 });
-
-                // TODO function return value check
-            });
-
+            }
         });
     }
 
@@ -193,30 +232,41 @@ public class ClassDefs {
 
     private void enumDefinitionCheck(Source source) {
         source.getEnums().parallelStream().forEach(enumDef -> {
-            enumDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-            enumDef.enumField().parallelStream().forEach(enumFieldDef -> enumFieldDef.annotation().parallelStream()
-                                                                                     .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
+            if (enumDef.annotation() != null && !enumDef.annotation().isEmpty()) {
+                enumDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+            }
+
+            if (enumDef.enumField() != null && !enumDef.enumField().isEmpty()) {
+                enumDef.enumField().parallelStream().forEach(f -> f.annotation().parallelStream()
+                                                                   .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
+            }
         });
     }
 
-    private void referenceTypeCheck(MoonlightParser.ReferenceTypeContext refTypeCtx, MoonlightParser.StructDeclarationContext struct, Source source) {
+    private void structFieldReferenceTypeCheck(MoonlightParser.ReferenceTypeContext refTypeCtx, MoonlightParser.StructDeclarationContext struct, Source source) {
         // struct check
         String className = getReferenceTypeClassName(refTypeCtx);
         String namespace = getReferenceTypeNamespace(className, refTypeCtx, source);
 
         List<String> parametricDefs = getParametricDefs(struct);
-        if (!(containClass(namespace, className) || parametricDefs.contains(className))) {
+        boolean special = containClass(namespace, className);
+        boolean generic = parametricDefs.contains(className);
+        if (!(special || generic)) {
             throw new CompilingRuntimeException("can not resolve symbol [" + className + "]",
                     refTypeCtx.Identifier(), source.getPath());
         }
 
         // parametric type check
-        if (refTypeCtx.parametricTypeExpr() != null) {
-            refTypeCtx.parametricTypeExpr().fieldType().forEach(f -> parametricTypeCheck(f, struct, source));
+        int parametricTypeCount = refTypeCtx.parametricTypeExpr() != null ? refTypeCtx.parametricTypeExpr().fieldType().size() : 0;
+        if (special && !checkParametricTypeCount(namespace, className, parametricTypeCount)) {
+            throw new CompilingRuntimeException("parametric specialized count error", refTypeCtx.Identifier(), source.getPath());
+        }
+        if (parametricTypeCount > 0) {
+            refTypeCtx.parametricTypeExpr().fieldType().forEach(f -> partialSpecializationTypeCheck(f, struct, source));
         }
     }
 
-    private void parentTypeCheck(MoonlightParser.ReferenceTypeContext refTypeCtx, MoonlightParser.StructDeclarationContext struct, Source source) {
+    private void parentStructTypeCheck(MoonlightParser.ReferenceTypeContext refTypeCtx, MoonlightParser.StructDeclarationContext struct, Source source) {
         // parent struct check
         String parentClassName = getReferenceTypeClassName(refTypeCtx);
         String parentNamespace = getReferenceTypeNamespace(parentClassName, refTypeCtx, source);
@@ -232,12 +282,16 @@ public class ClassDefs {
         }
 
         // parametric type check
-        if (refTypeCtx.parametricTypeExpr() != null) {
-            refTypeCtx.parametricTypeExpr().fieldType().forEach(f -> parametricTypeCheck(f, struct, source));
+        int parametricTypeCount = refTypeCtx.parametricTypeExpr() != null ? refTypeCtx.parametricTypeExpr().fieldType().size() : 0;
+        if (!checkParametricTypeCount(parentNamespace, parentClassName, parametricTypeCount)) {
+            throw new CompilingRuntimeException("parametric specialized count error", refTypeCtx.Identifier(), source.getPath());
+        }
+        if (parametricTypeCount > 0) {
+            refTypeCtx.parametricTypeExpr().fieldType().forEach(f -> partialSpecializationTypeCheck(f, struct, source));
         }
     }
 
-    private void parametricTypeCheck(MoonlightParser.FieldTypeContext f, MoonlightParser.StructDeclarationContext struct, Source source) {
+    private void partialSpecializationTypeCheck(MoonlightParser.FieldTypeContext f, MoonlightParser.StructDeclarationContext struct, Source source) {
         List<String> parametricDefs = getParametricDefs(struct);
         walkParametricTypes(f, (fieldTypeCtx, type) -> {
             if (type == TypeEnum.REFERENCE) {
@@ -245,11 +299,65 @@ public class ClassDefs {
                 String className = getReferenceTypeClassName(referenceTypeContext);
                 String namespace = getReferenceTypeNamespace(className, referenceTypeContext, source);
                 log.debug("parametric type -> {}, {}", namespace, className);
-                if (!(containClass(namespace, className) || parametricDefs.contains(className))) {
+                boolean special = containClass(namespace, className);
+                boolean generic = parametricDefs.contains(className);
+                if (!(special || generic)) {
                     throw new CompilingRuntimeException("can not resolve symbol [" + className + "]", referenceTypeContext.Identifier(), source.getPath());
+                }
+
+                int parametricTypeCount = referenceTypeContext.parametricTypeExpr() != null ? referenceTypeContext.parametricTypeExpr().fieldType().size() : 0;
+                if (special && !checkParametricTypeCount(namespace, className, parametricTypeCount)) {
+                    throw new CompilingRuntimeException("parametric specialized count error", referenceTypeContext.Identifier(), source.getPath());
                 }
             }
         });
+    }
+
+    private void specializationTypeCheck(MoonlightParser.FieldTypeContext f, Source source) {
+        walkParametricTypes(f, (fieldTypeCtx, type) -> {
+            if (type == TypeEnum.REFERENCE) {
+                MoonlightParser.ReferenceTypeContext referenceTypeContext = fieldTypeCtx.referenceType();
+                String className = getReferenceTypeClassName(referenceTypeContext);
+                String namespace = getReferenceTypeNamespace(className, referenceTypeContext, source);
+                log.debug("parametric type -> {}, {}", namespace, className);
+                if (!containClass(namespace, className)) {
+                    throw new CompilingRuntimeException("can not resolve symbol [" + className + "]", referenceTypeContext.Identifier(), source.getPath());
+                }
+
+                int parametricTypeCount = referenceTypeContext.parametricTypeExpr() != null ? referenceTypeContext.parametricTypeExpr().fieldType().size() : 0;
+                if (!checkParametricTypeCount(namespace, className, parametricTypeCount)) {
+                    throw new CompilingRuntimeException("parametric specialized count error", referenceTypeContext.Identifier(), source.getPath());
+                }
+            }
+        });
+    }
+
+    private void functionContainerTypeCheck(MoonlightParser.ContainerTypeContext containerTypeContext, Source source) {
+        if (containerTypeContext.listType() != null) {
+            specializationTypeCheck(containerTypeContext.listType().fieldType(), source);
+        } else if (containerTypeContext.setType() != null) {
+            specializationTypeCheck(containerTypeContext.setType().fieldType(), source);
+        } else if (containerTypeContext.mapType() != null) {
+            containerTypeContext.mapType().fieldType().forEach(f -> specializationTypeCheck(f, source));
+        }
+    }
+
+    private void functionReferenceTypeCheck(MoonlightParser.ReferenceTypeContext refTypeCtx, Source source) {
+        String className = getReferenceTypeClassName(refTypeCtx);
+        String namespace = getReferenceTypeNamespace(className, refTypeCtx, source);
+
+        if (!containClass(namespace, className)) {
+            throw new CompilingRuntimeException("can not resolve symbol [" + className + "]",
+                    refTypeCtx.Identifier(), source.getPath());
+        }
+
+        int parametricTypeCount = refTypeCtx.parametricTypeExpr() != null ? refTypeCtx.parametricTypeExpr().fieldType().size() : 0;
+        if (!checkParametricTypeCount(namespace, className, parametricTypeCount)) {
+            throw new CompilingRuntimeException("parametric specialized count error", refTypeCtx.Identifier(), source.getPath());
+        }
+        if (parametricTypeCount > 0) {
+            refTypeCtx.parametricTypeExpr().fieldType().forEach(f -> specializationTypeCheck(f, source));
+        }
     }
 
     private void annotationCheck(MoonlightParser.AnnotationContext annotationCtx, Source source) {
@@ -272,27 +380,29 @@ public class ClassDefs {
                     annotationCtx.AnnotationLabel(), source.getPath());
         }
 
-        annotationCtx.baseAssignment().parallelStream().forEach(baseAssignmentCtx -> {
-            String fieldName = baseAssignmentCtx.Identifier().getText();
+        if (annotationCtx.baseAssignment() != null && !annotationCtx.baseAssignment().isEmpty()) {
+            annotationCtx.baseAssignment().parallelStream().forEach(baseAssignmentCtx -> {
+                String fieldName = baseAssignmentCtx.Identifier().getText();
 
-            Optional<MoonlightParser.BaseFieldContext> optional = annotationDef.baseField().parallelStream()
-                                                                               .filter(baseFieldCtx -> fieldName.equals(getBaseFieldName(baseFieldCtx)))
-                                                                               .findAny();
-            if (!optional.isPresent()) {
-                throw new CompilingRuntimeException("the annotation field [" + namespace + "." + className + "." + fieldName + "] is not found",
-                        baseAssignmentCtx.Identifier(), source.getPath());
-            }
+                Optional<MoonlightParser.BaseFieldContext> optional = annotationDef.baseField().parallelStream()
+                                                                                   .filter(baseFieldCtx -> fieldName.equals(getBaseFieldName(baseFieldCtx)))
+                                                                                   .findAny();
+                if (!optional.isPresent()) {
+                    throw new CompilingRuntimeException("the annotation field [" + namespace + "." + className + "." + fieldName + "] is not found",
+                            baseAssignmentCtx.Identifier(), source.getPath());
+                }
 
-            optional = annotationDef.baseField().parallelStream()
-                                    .filter(baseFieldCtx -> fieldName.equals(getBaseFieldName(baseFieldCtx))
-                                            && matchBaseFieldType(baseFieldCtx, baseAssignmentCtx))
-                                    .findAny();
+                optional = annotationDef.baseField().parallelStream()
+                                        .filter(baseFieldCtx -> fieldName.equals(getBaseFieldName(baseFieldCtx))
+                                                && matchBaseFieldType(baseFieldCtx, baseAssignmentCtx))
+                                        .findAny();
 
-            if (!optional.isPresent()) {
-                throw new CompilingRuntimeException("the annotation field [" + namespace + "." + className + "." + fieldName + "] type does not match.",
-                        baseAssignmentCtx.Identifier(), source.getPath());
-            }
-        });
+                if (!optional.isPresent()) {
+                    throw new CompilingRuntimeException("the annotation field [" + namespace + "." + className + "." + fieldName + "] type does not match.",
+                            baseAssignmentCtx.Identifier(), source.getPath());
+                }
+            });
+        }
     }
 
     private Source findSource(Path path) {

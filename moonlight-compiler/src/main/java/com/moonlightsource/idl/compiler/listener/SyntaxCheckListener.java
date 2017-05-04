@@ -132,7 +132,6 @@ public class SyntaxCheckListener extends MoonlightBaseListener {
     @Override
     public void enterInterfaceDeclaration(MoonlightParser.InterfaceDeclarationContext ctx) {
         String className = ctx.Identifier().getText();
-        // TODO function signature check
         classDefs.putClassDeclaration(namespace, className, Collections.emptyList());
         source.getInterfaces().add(ctx);
     }
