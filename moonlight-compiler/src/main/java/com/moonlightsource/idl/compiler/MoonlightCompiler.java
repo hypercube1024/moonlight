@@ -22,9 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -45,6 +47,28 @@ abstract public class MoonlightCompiler {
      * Parallel compiling all files in the root directory
      *
      * @param root       The source file's root path
+     * @param generators The target code generators
+     * @throws IOException Read source file I/O exception
+     */
+    public static void compile(Path root, Generator... generators) throws IOException {
+        compile(root, Arrays.asList(generators));
+    }
+
+    /**
+     * Parallel compiling all files in the root directory
+     *
+     * @param root       The source file's root path
+     * @param generators The target code generators
+     * @throws IOException Read source file I/O exception
+     */
+    public static void compile(Path root, List<Generator> generators) throws IOException {
+        compile(root, DEFAULT_SUFFIX, StandardCharsets.UTF_8, generators);
+    }
+
+    /**
+     * Parallel compiling all files in the root directory
+     *
+     * @param root       The source file's root path
      * @param filter     The source file filter
      * @param charset    The source file charset
      * @param generators The target code generators
@@ -56,7 +80,7 @@ abstract public class MoonlightCompiler {
         generators.parallelStream().forEach(generator -> generator.generate(classVisitor));
     }
 
-    public static ClassVisitor createClassDefinitions(List<SourceWrap> sourceWraps) throws IOException {
+    private static ClassVisitor createClassDefinitions(List<SourceWrap> sourceWraps) throws IOException {
         ClassDefs classDefs = new ClassDefs();
         sourceWraps.parallelStream().map(ParserWrap::new).forEach(parserWrap -> {
             if (log.isDebugEnabled()) {
@@ -77,7 +101,7 @@ abstract public class MoonlightCompiler {
         return new ClassVisitor(classDefs.getSources());
     }
 
-    public static Stream<SourceWrap> walk(Path root, Predicate<Path> filter, Charset charset) throws IOException {
+    private static Stream<SourceWrap> walk(Path root, Predicate<Path> filter, Charset charset) throws IOException {
         return walk(root, filter).map(path -> {
             if (log.isDebugEnabled()) {
                 log.debug("moonlight file reading thread -> {}", Thread.currentThread().getName());
@@ -115,7 +139,7 @@ abstract public class MoonlightCompiler {
         }
     }
 
-    public static class SourceWrap {
+    private static class SourceWrap {
         final Path root;
         final Path path;
         final Path absolutePath;

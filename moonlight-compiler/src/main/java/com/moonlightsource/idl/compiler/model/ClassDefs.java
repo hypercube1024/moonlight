@@ -237,8 +237,10 @@ public class ClassDefs {
             }
 
             if (enumDef.enumField() != null && !enumDef.enumField().isEmpty()) {
-                enumDef.enumField().parallelStream().forEach(f -> f.annotation().parallelStream()
-                                                                   .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
+                enumDef.enumField()
+                       .parallelStream()
+                       .forEach(f -> f.annotation().parallelStream()
+                                      .forEach(annotationCtx -> annotationCheck(annotationCtx, source)));
             }
         });
     }

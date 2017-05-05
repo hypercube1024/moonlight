@@ -2,63 +2,36 @@ package com.moonlightsource.idl.compiler;
 
 import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Collection;
 
-import static com.moonlightsource.idl.compiler.MoonlightCompiler.createClassDefinitions;
-import static com.moonlightsource.idl.compiler.MoonlightCompiler.walk;
+import static org.junit.runners.Parameterized.Parameter;
+import static org.junit.runners.Parameterized.Parameters;
 
 /**
  * @author Pengtao Qiu
  */
-public class TestError {
+@RunWith(Parameterized.class)
+public class TestError extends AbstractCompilingErrorTest {
 
-    @Test(expected = CompilingRuntimeException.class)
-    public void importError() throws IOException {
-        try {
-            List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
-                    Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/importError"),
-                    MoonlightCompiler.DEFAULT_SUFFIX,
-                    StandardCharsets.UTF_8).collect(Collectors.toList());
+    @Parameter
+    public String path;
 
-            createClassDefinitions(sourceWraps);
-        } catch (CompilingRuntimeException e) {
-            System.out.println(e.getMessage());
-            throw e;
-        }
+    @Parameters(name = "{0}")
+    public static Collection<String> data() {
+        return Arrays.asList(
+                "/testIDLError/importError",
+                "/testIDLError/annotationError",
+                "/testIDLError/annotationFieldError");
     }
 
     @Test(expected = CompilingRuntimeException.class)
-    public void annotationError() throws IOException {
-        try {
-            List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
-                    Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/annotationError"),
-                    MoonlightCompiler.DEFAULT_SUFFIX,
-                    StandardCharsets.UTF_8).collect(Collectors.toList());
-
-            createClassDefinitions(sourceWraps);
-        } catch (CompilingRuntimeException e) {
-            System.out.println(e.getMessage());
-            throw e;
-        }
+    public void test() throws IOException {
+        compile(path);
     }
 
-    @Test(expected = CompilingRuntimeException.class)
-    public void annotationFieldError() throws IOException {
-        try {
-            List<MoonlightCompiler.SourceWrap> sourceWraps = walk(
-                    Paths.get(MoonlightCompiler.getClasspath().toString(), "/testIDLError/annotationFieldError"),
-                    MoonlightCompiler.DEFAULT_SUFFIX,
-                    StandardCharsets.UTF_8).collect(Collectors.toList());
-
-            createClassDefinitions(sourceWraps);
-        } catch (CompilingRuntimeException e) {
-            System.out.println(e.getMessage());
-            throw e;
-        }
-    }
 }
