@@ -5,7 +5,7 @@ import com.moonlightsource.idl.compiler.exception.CompilingRuntimeException;
 import com.moonlightsource.idl.compiler.exception.LogErrorListener;
 import com.moonlightsource.idl.compiler.exception.LogErrorStrategy;
 import com.moonlightsource.idl.compiler.generator.Generator;
-import com.moonlightsource.idl.compiler.listener.SyntaxCheckListener;
+import com.moonlightsource.idl.compiler.listener.SemanticCheckListener;
 import com.moonlightsource.idl.compiler.model.ClassDefs;
 import com.moonlightsource.idl.compiler.model.ClassVisitor;
 import com.moonlightsource.idl.compiler.model.Source;
@@ -94,7 +94,7 @@ abstract public class MoonlightCompiler {
             source.setPath(parserWrap.sourceWrap.path);
             source.setRoot(parserWrap.sourceWrap.root);
             source.setAbsolutePath(parserWrap.sourceWrap.absolutePath);
-            SyntaxCheckListener listener = new SyntaxCheckListener(classDefs, source);
+            SemanticCheckListener listener = new SemanticCheckListener(classDefs, source);
             walker.walk(listener, tree);
         });
         classDefs.semanticCheck();
