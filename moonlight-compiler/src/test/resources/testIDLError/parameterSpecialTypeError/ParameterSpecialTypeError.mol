@@ -1,0 +1,9 @@
+namespace com.moonlightsource.idl.api.service;
+
+import com.moonlightsource.idl.api.common.*;
+
+interface TestService {
+    int test(Foo<int, string> foo);
+
+    int error(Foo<T, string> foo);
+}

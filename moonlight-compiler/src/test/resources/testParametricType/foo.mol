@@ -15,4 +15,6 @@ struct BarChild<T> extends Bar<T, list<Foo<Bar<int, string>>>> {
 
 interface Baaaaa {
     BarChild<list<Foo<Foo<int>>>> child(int i, Bar<Bar<int, string>, string> bar);
+
+    BarChild<list<set<Foo<list<int>>>>> test(int i);
 }

@@ -1,0 +1,11 @@
+namespace com.moonlightsource.idl.api;
+
+struct Foo<T> {
+    int id;
+    string name;
+    T data;
+}
+
+struct Child<R> extends Foo<list<string>, R> {
+    int id;
+}

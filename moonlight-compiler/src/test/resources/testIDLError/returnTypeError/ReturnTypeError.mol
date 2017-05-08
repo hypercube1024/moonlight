@@ -1,0 +1,11 @@
+namespace com.moonlightsource.idl.api;
+
+struct Foo<T> {
+    int id;
+    string name;
+    T data;
+}
+
+interface TestService {
+    Foo<list<list<R>>> test(string i);
+}

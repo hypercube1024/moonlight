@@ -1,0 +1,11 @@
+namespace com.moonlightsource.idl.api;
+
+struct Foo {
+    int id;
+    string name;
+}
+
+struct Bar {
+    Foo foo;
+    Ggg ggg;
+}

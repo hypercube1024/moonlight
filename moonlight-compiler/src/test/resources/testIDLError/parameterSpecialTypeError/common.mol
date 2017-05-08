@@ -1,0 +1,6 @@
+namespace com.moonlightsource.idl.api.common;
+
+struct Foo<T, R> {
+    T data;
+    R recall;
+}

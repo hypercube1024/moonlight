@@ -1,0 +1,6 @@
+@Webpack
+namespace com.moonlightsource.idl.api;
+
+interface TestService {
+    Response<T> listOrders(Request<T> request);
+}

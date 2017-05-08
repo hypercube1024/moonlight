@@ -1,0 +1,10 @@
+namespace com.moonlightsource.idl.api;
+
+struct Foo {
+    int id;
+    string name;
+}
+
+struct Child extends Bar {
+    int id;
+}

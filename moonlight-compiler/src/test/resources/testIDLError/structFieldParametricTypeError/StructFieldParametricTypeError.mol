@@ -1,0 +1,12 @@
+namespace com.moonlightsource.idl.api;
+
+struct Foo<T> {
+    int id;
+    string name;
+}
+
+struct Bar<T> {
+    T data;
+    Foo<T> foo;
+    Foo<map<string, Foo<Fuck>>> fuck;
+}

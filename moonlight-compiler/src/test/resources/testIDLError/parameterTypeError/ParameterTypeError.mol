@@ -1,0 +1,5 @@
+namespace com.moonlightsource.idl.api;
+
+interface TestService {
+    string ping(Foo foo);
+}

@@ -139,7 +139,9 @@ public class ClassDefs {
 
             if (struct.structField() != null && !struct.structField().isEmpty()) {
                 struct.structField().parallelStream().forEach(structFieldDef -> {
+                    // struct field annotation check
                     structFieldDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
+
                     // struct field type check
                     MoonlightParser.FieldTypeContext fieldTypeCtx = structFieldDef.fieldType();
                     if (fieldTypeCtx.referenceType() != null) {
@@ -164,13 +166,11 @@ public class ClassDefs {
             // interface annotation check
             interfaceDef.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
 
-
             Set<String> signatureSet = new HashSet<>();
             if (interfaceDef.functionDeclaration() != null && !interfaceDef.functionDeclaration().isEmpty()) {
                 interfaceDef.functionDeclaration().forEach(fun -> {
                     // function annotation check
                     fun.annotation().parallelStream().forEach(annotationCtx -> annotationCheck(annotationCtx, source));
-
 
                     String name = fun.Identifier().getText();
                     StringBuilder signatureBuilder = new StringBuilder();

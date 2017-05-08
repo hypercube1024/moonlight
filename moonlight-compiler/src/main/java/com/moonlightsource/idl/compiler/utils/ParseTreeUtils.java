@@ -235,6 +235,9 @@ abstract public class ParseTreeUtils {
     }
 
     public static List<String> getParametricDefs(MoonlightParser.StructDeclarationContext ctx) {
+        if (ctx.parametricTypeDeclaration() == null) {
+            return Collections.emptyList();
+        }
         List<TerminalNode> list = ctx.parametricTypeDeclaration().Identifier();
         if (list != null && !list.isEmpty()) {
             return list.stream().map(ParseTree::getText).collect(Collectors.toList());

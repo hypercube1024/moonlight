@@ -1,0 +1,8 @@
+namespace com.moonlightsource.idl.api;
+
+interface TestService {
+    string ping(string str);
+    string ping(int i);
+    string ping(string str, int i);
+    string ping(string s);
+}
